@@ -6,6 +6,8 @@
 
 - [ ] Now it's a good time for reviewing
 
+- [ ] Branch should have prefix "feature", "fix" or "document"
+
 ##### Comment
 ```
 
