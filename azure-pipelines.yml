@@ -25,4 +25,9 @@ steps:
 - script: 
     cd ./Moonback  
     npm test
-  displayName: 'npm test'
+  displayName: 'npm front-end test'
+
+- script: 
+    cd ./server  
+    npm test
+  displayName: 'npm back-end test'
