@@ -18,17 +18,24 @@ mongoose.connect(database, { useNewUrlParser: true }, error => {
 })
 
 app.use(cors())
-app.use(timeout('5s'))
+app.use(timeout('5s')) 
 app.use(bodyParser.json())
 app.use(haltOnTimedout);
 // add api controllers
 app.use('/api/posts', postApi)
 
 
-function haltOnTimedout (req, res, next) {
-    if (!req.timedout) next()
-}
 
+app.use(haltOnTimedout)
 app.listen(PORT, function () {
     console.log('server running on localhost' + PORT)
 })
+
+function haltOnTimedout (error, req, res, next) {
+    //https://www.npmjs.com/package/connect-timeout
+    if (!req.timedout) {
+        next()
+    } else {
+        res.status(408).send({message: "timeout!"})
+    }
+}   
