@@ -6,7 +6,7 @@
 
 - [ ] Now it's a good time for reviewing
 
-- [ ] Branch should have prefix either "feature/" or "fix/"
+- [ ] Branch should have prefix either "feat/" or "fix/"
 
 ##### Comment
 ```
