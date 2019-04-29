@@ -6,6 +6,7 @@ const PORT = 3000
 const app = express()
 const postApi = require('./routes/postController')
 const database = 'mongodb://yz:qaz98765432@ds155213.mlab.com:55213/db1'
+const timeout = require('connect-timeout'); //express v4
 
 // init connetction to remote database
 mongoose.connect(database, { useNewUrlParser: true }, error => {
@@ -17,9 +18,16 @@ mongoose.connect(database, { useNewUrlParser: true }, error => {
 })
 
 app.use(cors())
+app.use(timeout('5s'))
 app.use(bodyParser.json())
+app.use(haltOnTimedout);
 // add api controllers
 app.use('/api/posts', postApi)
+
+
+function haltOnTimedout (req, res, next) {
+    if (!req.timedout) next()
+}
 
 app.listen(PORT, function () {
     console.log('server running on localhost' + PORT)
