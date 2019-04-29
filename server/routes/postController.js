@@ -28,6 +28,7 @@ postRouter.get('/', (req, res) => {
     let query = pasrseUrlToQuery(req.query)
 
     Post.execute(query, (error, data) => {
+<<<<<<< HEAD
         if (error) {
             throw Error(error);
         } else {
@@ -35,6 +36,14 @@ postRouter.get('/', (req, res) => {
         }
     })
 })
+=======
+        if (error) throw Error(error);
+        if (data) {
+            res.status(200).send({ posts: data, length: data.length, query: "findAllPosts" });
+        }
+    });
+});
+>>>>>>> feat: add urls that deletes and finds post by id
 
 // post api/posts create a new post
 postRouter.post('/', (req, res) => {
@@ -45,10 +54,34 @@ postRouter.post('/', (req, res) => {
             console.log(error)
         } else {
             res.status(200).send({ post: data, query: "createNewPost" })
+<<<<<<< HEAD
         }
     }) 
+=======
+        } 
+    });
+>>>>>>> feat: add urls that deletes and finds post by id
 });
 
+// get posts by post id
+postRouter.get('/:id', (req, res) => {
+    Post.findById(res.params.id, (error, data) => {
+        if (error) throw Error(error);
+        if (data) {
+            res.status(200).send({ post: data, query: "findPostById" })
+        }
+    })
+});
 
+// delete posts by id
+postRouter.delete('/:id', (req, res) => {
+    //TODO: permission check
+    Post.findByIdAndDelete(res.params.id, (error, data) => {
+        if (error) throw Error(error);
+        if (data) {
+            res.status(204).send({ query: "deletePostById" })
+        }
+    })
+});
 
 module.exports = postRouter
