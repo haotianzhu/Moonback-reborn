@@ -27,8 +27,9 @@ function pasrseUrlToQuery(params) {
 postRouter.get('/', (req, res) => {
     let query = pasrseUrlToQuery(req.query)
     Post.execute(query, (error, data) => {
-        if (error) throw Error(error);
-        if (data) {
+        if (error) {
+            res.status(520).send({query: "findAllPosts", error: error})
+        } else {
             res.status(200).send({ posts: data, length: data.length, query: "findAllPosts" });
         }
     });
@@ -40,7 +41,7 @@ postRouter.post('/', (req, res) => {
     let newPost = new Post(data.post);
     newPost.save((error, data) => {
         if (error) {
-            console.log(error)
+            res.status(520).send({query: "createNewPost", error: error})
         } else {
             res.status(200).send({ post: data, query: "createNewPost" })
         } 
@@ -51,7 +52,8 @@ postRouter.post('/', (req, res) => {
 postRouter.get('/:id', (req, res) => {
     Post.findById(req.params.id, (error, data) => {
         if (error) {
-            throw Error(error);
+            console.log(error)
+            res.status(520).send({query: "findPostById", error: error})
         } else {
             res.status(200).send({ post: data, query: "findPostById" })
         }
@@ -59,14 +61,14 @@ postRouter.get('/:id', (req, res) => {
 });
 
 // delete posts by id
-postRouter.delete('/:id', function (req, res) {
+postRouter.delete('/:id',  (req, res) => {
     //TODO: permission check
-    console.log(req.params)
-    Post.findByIdAndRemove(res.params.id, (error) => {
+    Post.findByIdAndDelete(req.params.id, (error, data) => {
         if (error) {
-            throw Error(error);
+            console.log(error);
+            res.status(520).send({query: "deletePostById", error: error})
         } else {
-            res.status(204).send({ query: "deletePostById" })
+            res.status(200).send({ query: "deletePostById" })
         }
     })
 });

@@ -38,6 +38,6 @@ function haltOnTimedout (error, req, res, next) {
     if (!req.timedout) {
         next()
     } else {
-        res.status(408).send({message: "timeout!"})
+        res.status(508).send({message: "timeout!"})
     }
 }   
