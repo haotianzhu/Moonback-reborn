@@ -1,10 +1,7 @@
-
-var bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var SALT_WORK_FACTOR = 11;
-
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    bcrypt = require('bcrypt'),
+    SALT_WORK_FACTOR = 10;
 
 var userSchema = new Schema({
     username: { type: String, required: true, index: { unique: true } },
@@ -17,8 +14,8 @@ userSchema.statics.execute = function (query, callback) {
     return this.find(query.select).skip(query.skip).limit(query.limit).sort(query.sort).exec(callback)
 };
 
-userSchema.method.validatePassword = function (candidatePassword, callback) {
-    bcrypt.compare(candidatePassword, this.password, (error, isMatch) => {
+userSchema.statics.validatePassword = function (userPassword,candidatePassword, callback) {
+    bcrypt.compare(candidatePassword, userPassword, (error, isMatch) => {
         if (error) return callback(error);
         callback(null, isMatch);
     });
