@@ -6,34 +6,42 @@ const User = require('../models/user')
 userRouter.post('/signup', (req, res) => {
     let data = req.body;
     let newUser = new User(data.user);
-    console.log(newUser.username,data.user)
-    console.log(newUser.password)
     newUser.save((error, data) => {
         if (error) {
-            console.log(error)
-            res.status(400).send({ user:data, query: "signUp",status:"unsucessful" })
+            console.log('signup => ', error);
+            res.status(400).send({ error: error, query: "signUp", status: "unsucessful" });
         } else {
-            res.status(200).send({ user:data, query: "signUp",status:"sucessful" })
+            res.status(200).send({ user: data, query: "signUp", status: "sucessful" });
         }
     })
-    
+
 })
 
 // api/authentication/signin
-userRouter.post('/signin', async (req, res) => {
+userRouter.post('/signin', (req, res) => {
     let data = req.body;
     let signinUser = new User(data.user);
-    await User.findOne({ username: signinUser.username}, (error, user) => {
-      if (error) throw error;
+    User.findOne({ username: signinUser.username }, (error, user) => {
+        if (error) {
+            console.log('signin => ', error);
+            res.status(520).send({ error: error, query: "signIn", status: "unsucessful" });
+        }
         // verify password
-      User.validatePassword(user.password, signinUser.password, function(error, isMatch) {
-      if (error) {
-        res.status(403).send({ user:signinUser.username, query: "signIn", status:"unsucessful"})
-      }else {
-        res.status(200).send({ user:signinUser.username, query: "signIn", status:"sucessful"})
-      }
-      })
+        User.validatePassword(user.password, signinUser.password, (error, isMatch) => {
+
+            if (error) {
+                console.log('signin => ', error);
+                res.status(400).send({ error: error, query: "signIn", status: "unsucessful" });
+            }
+            if (isMatch) {
+                // generate Token
+                const usrJson = User.toAuthJSON(signinUser);
+                res.status(200).send({ user: usrJson, query: "signIn", status: "sucessful" });
+            } else {
+                res.status(403).send({ query: "signIn", status: "unsucessful" });
+            }
+        })
     });
 })
 
-  module.exports = userRouter
+module.exports = userRouter
