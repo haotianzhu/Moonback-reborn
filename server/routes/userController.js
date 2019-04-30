@@ -68,9 +68,9 @@ userRouter.delete('/signout', verifyToken, async (req, res) => {
     await User.findByIdAndUpdate(req.userid, { 'token': '' }, { useFindAndModify: false }, (error) => {
         if (error) {
             console.log('signout => ', error);
-            res.status(520).send({ query: "deletePostById", error: error })
+            res.status(520).send({ query: "signOut", error: error })
         } else {
-            res.status(200).send({ query: "deletePostById" })
+            res.status(200).send({ query: "signOut" })
         }
     });
 
