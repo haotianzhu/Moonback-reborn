@@ -10,6 +10,7 @@ const database = 'mongodb://yz:qaz98765432@ds155213.mlab.com:55213/db1';
 const timeout = require('connect-timeout'); //express v4
 const jwt = require('jsonwebtoken');
 var cookieParser = require('cookie-parser');
+mongoose.set('useCreateIndex', true);
 
 // init connetction to remote database
 mongoose.connect(database, { useNewUrlParser: true }, error => {
