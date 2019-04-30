@@ -14,11 +14,11 @@ var userSchema = new Schema({
 userSchema.statics.toAuthJSON = function (user) {
     const today = new Date();
     const expirationDate = new Date(today);
-    expirationDate.setDate(today.getDate() + 300);
+    expirationDate.setDate(today.getDate() + 30);
 
     const token = jwt.sign({
-        email: this.email,
-        id: this._id,
+        username: user.username,
+        id: user._id,
         exp: parseInt(expirationDate.getTime() / 1000, 10),
     }, 'secret');
 
