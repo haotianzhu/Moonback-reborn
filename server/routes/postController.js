@@ -26,15 +26,14 @@ function pasrseUrlToQuery(params) {
 // get api/posts return all posts
 postRouter.get('/', (req, res) => {
     let query = pasrseUrlToQuery(req.query)
-
     Post.execute(query, (error, data) => {
         if (error) {
-            throw Error(error);
+            res.status(520).send({query: "findAllPosts", error: error})
         } else {
-            res.status(200).send({ posts: data, length: data.length, query: "findAllPosts" })
+            res.status(200).send({ posts: data, length: data.length, query: "findAllPosts" });
         }
-    })
-})
+    });
+});
 
 // post api/posts create a new post
 postRouter.post('/', (req, res) => {
@@ -42,13 +41,36 @@ postRouter.post('/', (req, res) => {
     let newPost = new Post(data.post);
     newPost.save((error, data) => {
         if (error) {
-            console.log(error)
+            res.status(520).send({query: "createNewPost", error: error})
         } else {
             res.status(200).send({ post: data, query: "createNewPost" })
-        }
-    }) 
+        } 
+    });
 });
 
+// get posts by post id
+postRouter.get('/:id', (req, res) => {
+    Post.findById(req.params.id, (error, data) => {
+        if (error) {
+            console.log(error)
+            res.status(520).send({query: "findPostById", error: error})
+        } else {
+            res.status(200).send({ post: data, query: "findPostById" })
+        }
+    })
+});
 
+// delete posts by id
+postRouter.delete('/:id',  (req, res) => {
+    //TODO: permission check
+    Post.findByIdAndDelete(req.params.id, (error, data) => {
+        if (error) {
+            console.log(error);
+            res.status(520).send({query: "deletePostById", error: error})
+        } else {
+            res.status(200).send({ query: "deletePostById" })
+        }
+    })
+});
 
 module.exports = postRouter
