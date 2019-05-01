@@ -12,7 +12,12 @@ authRouter.post('/signup', (req, res) => {
             console.log('signup => ', error);
             res.status(400).send({ error: error, query: "signUp", status: "unsucessful" });
         } else {
-            res.status(200).send({ user: data, query: "signUp", status: "sucessful" });
+            let user = {
+                username: data.username,
+                id: data._id,
+                createDate: data.createDate
+            }
+            res.status(200).send({ user: user, query: "signUp", status: "sucessful" });
         }
     })
 
