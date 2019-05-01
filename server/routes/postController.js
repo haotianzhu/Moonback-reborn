@@ -7,17 +7,17 @@ function pasrseUrlToQuery(params) {
     for (var key in params) {
         value = params[key]
         switch (key) {
-        case "limit":
-            query.limit = parseInt(value);
-            break;
-        case "skip":
-            query.skip = parseInt(value);
-            break;
-        case "sort":
-            query.sort = value;
-            break;
-        default:
-            query.select[key] = value;
+            case "limit":
+                query.limit = parseInt(value);
+                break;
+            case "skip":
+                query.skip = parseInt(value);
+                break;
+            case "sort":
+                query.sort = value;
+                break;
+            default:
+                query.select[key] = value;
         }
     }
     return query
@@ -28,7 +28,7 @@ postRouter.get('/', (req, res) => {
     let query = pasrseUrlToQuery(req.query)
     Post.execute(query, (error, data) => {
         if (error) {
-            res.status(520).send({query: "findAllPosts", error: error})
+            res.status(520).send({ query: "findAllPosts", error: error })
         } else {
             res.status(200).send({ posts: data, length: data.length, query: "findAllPosts" });
         }
@@ -41,10 +41,10 @@ postRouter.post('/', (req, res) => {
     let newPost = new Post(data.post);
     newPost.save((error, data) => {
         if (error) {
-            res.status(520).send({query: "createNewPost", error: error})
+            res.status(520).send({ query: "createNewPost", error: error })
         } else {
             res.status(200).send({ post: data, query: "createNewPost" })
-        } 
+        }
     });
 });
 
@@ -52,21 +52,24 @@ postRouter.post('/', (req, res) => {
 postRouter.get('/:id', (req, res) => {
     Post.findById(req.params.id, (error, data) => {
         if (error) {
-            console.log(error)
-            res.status(520).send({query: "findPostById", error: error})
-        } else {
+            console.log('GET /posts/:id => ', error)
+            res.status(520).send({ query: "findPostById", error: error })
+        }
+        if (data) {
             res.status(200).send({ post: data, query: "findPostById" })
+        } else {
+            res.status(404).send({ status: 'unsucessful', query: "findPostById" })
         }
     })
 });
 
 // delete posts by id
-postRouter.delete('/:id',  (req, res) => {
+postRouter.delete('/:id', (req, res) => {
     //TODO: permission check
     Post.findByIdAndDelete(req.params.id, (error, data) => {
         if (error) {
             console.log(error);
-            res.status(520).send({query: "deletePostById", error: error})
+            res.status(520).send({ query: "deletePostById", error: error })
         } else {
             res.status(200).send({ query: "deletePostById" })
         }

@@ -6,6 +6,7 @@ const PORT = 3000;
 const app = express();
 const postApi = require('./routes/postController');
 const authApi = require('./routes/authController');
+const userApi = require('./routes/userController');
 const database = 'mongodb://yz:qaz98765432@ds155213.mlab.com:55213/db1';
 const timeout = require('connect-timeout'); //express v4
 const jwt = require('jsonwebtoken');
@@ -29,6 +30,7 @@ app.use(haltOnTimedout);
 // add api controllers
 app.use('/api/posts', verifyToken, postApi);
 app.use('/api/authentication', authApi);
+app.use('/api/user', verifyToken, userApi);
 app.use(haltOnTimedout);
 
 app.listen(PORT, function () {
