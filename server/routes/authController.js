@@ -1,10 +1,10 @@
 const express = require('express')
-const userRouter = express.Router()
+const authRouter = express.Router()
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
 // api/authentication/signup
-userRouter.post('/signup', (req, res) => {
+authRouter.post('/signup', (req, res) => {
     let data = req.body;
     let newUser = new User(data.user);
     newUser.save((error, data) => {
@@ -19,7 +19,7 @@ userRouter.post('/signup', (req, res) => {
 })
 
 // api/authentication/signin
-userRouter.post('/signin', async (req, res) => {
+authRouter.post('/signin', async (req, res) => {
     let data = req.body;
     let signinUser = new User(data.user);
     await User.findOne({ username: signinUser.username }, (error, user) => {
@@ -64,7 +64,7 @@ userRouter.post('/signin', async (req, res) => {
 })
 
 // api/authentication/signout
-userRouter.delete('/signout', verifyToken, async (req, res) => {
+authRouter.delete('/signout', verifyToken, async (req, res) => {
     await User.findByIdAndUpdate(req.userid, { 'token': '' }, { useFindAndModify: false }, (error) => {
         if (error) {
             console.log('signout => ', error);
