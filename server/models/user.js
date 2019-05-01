@@ -9,7 +9,7 @@ var userSchema = new Schema({
     password: { type: String, required: true },
     createDate: { type: Date, default: Date.now },
     modifyDate: { type: Date, default: Date.now },
-    token: { type: String, required: true },
+    token: { type: String, default: ""},
 });
 
 userSchema.statics.toAuthJSON = function (user) {
