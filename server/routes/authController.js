@@ -97,4 +97,4 @@ function verifyToken(req, res, next) {
     next();
 }
 
-module.exports = userRouter
+module.exports = authRouter
