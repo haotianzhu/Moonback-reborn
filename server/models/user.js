@@ -43,6 +43,18 @@ userSchema.statics.validatePassword = function (userPassword, candidatePassword,
     });
 }
 
+userSchema.statics.generateHashPassword = function (password, callback) {
+    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+        if (err) return callback(err);
+        // hash the password along with our new salt
+        bcrypt.hash(password, salt, function (err, hash) {
+            if (err) return callback(err);
+            // override the cleartext password with the hashed one
+            return callback(null, hash);
+        });
+    });
+}
+
 //https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
 userSchema.pre('save', function (next) {
     var user = this;

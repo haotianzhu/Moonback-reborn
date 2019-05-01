@@ -10,7 +10,7 @@ authRouter.post('/signup', (req, res) => {
     newUser.save((error, data) => {
         if (error) {
             console.log('signup => ', error);
-            res.status(400).send({ error: error, query: "signUp", status: "unsucessful" });
+            res.status(400).send({ message: error, query: "signUp", status: "unsucessful" });
         } else {
             let user = {
                 username: data.username,
@@ -30,13 +30,13 @@ authRouter.post('/signin', async (req, res) => {
     await User.findOne({ username: signinUser.username }, (error, user) => {
         if (error) {
             console.log('signin => ', error);
-            res.status(520).send({ error: error, query: "signIn", status: "unsucessful" });
+            res.status(520).send({ message: error, query: "signIn", status: "unsucessful" });
         }
         // verify password
         User.validatePassword(user.password, signinUser.password, async (error, isMatch) => {
             if (error) {
                 console.log('signin => ', error);
-                res.status(400).send({ error: error, query: "signIn", status: "unsucessful" });
+                res.status(400).send({ message: error, query: "signIn", status: "unsucessful" });
             }
             if (isMatch) {
                 try {
@@ -58,11 +58,15 @@ authRouter.post('/signin', async (req, res) => {
                         res.status(200).send({ user: usrJson, query: "signIn", status: "sucessful" });
                     } else {
                         console.log('signin => ', error);
-                        res.status(400).send({ error: error, query: "signIn", status: "unsucessful" });
+                        res.status(400).send({ message: error, query: "signIn", status: "unsucessful" });
                     }
                 }
             } else {
-                res.status(403).send({ query: "signIn", status: "unsucessful" });
+                res.status(403).send({
+                    query: "signIn",
+                    status: "unsucessful",
+                    message: "username/password is not correct"
+                });
             }
         })
     });
@@ -73,7 +77,7 @@ authRouter.delete('/signout', verifyToken, async (req, res) => {
     await User.findByIdAndUpdate(req.userid, { 'token': '' }, { useFindAndModify: false }, (error) => {
         if (error) {
             console.log('signout => ', error);
-            res.status(520).send({ query: "signOut", error: error })
+            res.status(520).send({ query: "signOut", message: error })
         } else {
             res.status(200).send({ query: "signOut" })
         }
