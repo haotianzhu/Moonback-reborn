@@ -6,7 +6,7 @@
 - npm install
 - ng build --prod
 - cd ./server  
-npm install
+- npm install
 
 
 ### how to run our project at local server
