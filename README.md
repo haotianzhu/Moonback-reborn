@@ -1,7 +1,7 @@
 # Moonback-reborn
  
  ### how to install environment
- ```sh bash
+ ```bash
 npm install -g @angular/cli
 ```
 
