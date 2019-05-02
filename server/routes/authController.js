@@ -14,7 +14,7 @@ authRouter.post('/signup', (req, res) => {
         } else {
             let user = {
                 username: data.username,
-                id: data._id,
+                id: data.id,
                 createDate: data.createDate
             }
             res.status(200).send({ user: user, query: "signUp", status: "sucessful" });
@@ -44,7 +44,7 @@ authRouter.post('/signin', async (req, res) => {
                     // check if token is expired
                     jwt.verify(user.token, 'secret');
                     const usrJson = {
-                        id: user._id,
+                        id: user.id,
                         username: user.username,
                         token: user.token,
                     };
