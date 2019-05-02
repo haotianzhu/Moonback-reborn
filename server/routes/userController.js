@@ -18,12 +18,7 @@ userRouter.get('/:id', (req, res) => {
                 res.status(520).send({ query: "findUserById", message: error });
             }
             if (data) {
-                let user = {
-                    id: data._id,
-                    username: data.username,
-                    createDate: data.createDate,
-                }
-                res.status(200).send({ query: "findUserById", user: user })
+                res.status(200).send({ query: "findUserById", user: data })
             } else {
                 res.status(404).send({ query: "findUserById", status: 'unsucessful' })
             }

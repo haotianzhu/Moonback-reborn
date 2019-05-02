@@ -12,6 +12,12 @@ var userSchema = new Schema({
     token: { type: String, default: ""},
 });
 
+userSchema.set('toJSON', {
+    virtuals: true,
+    versionKey:false,
+    transform: function (doc, ret) {   delete ret._id  }
+});
+
 userSchema.statics.toAuthJSON = function (user) {
     const today = new Date();
     const expirationDate = new Date(today);
@@ -19,12 +25,12 @@ userSchema.statics.toAuthJSON = function (user) {
 
     const token = jwt.sign({
         username: user.username,
-        id: user._id,
+        id: user.id,
         exp: parseInt(expirationDate.getTime() / 1000, 10),
     }, 'secret');
 
     const userJson = {
-        id: user._id,
+        id: user.id,
         username: user.username,
         token: token,
     };

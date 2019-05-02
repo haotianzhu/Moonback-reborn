@@ -37,8 +37,11 @@ postRouter.get('/', (req, res) => {
 
 // post api/posts create a new post
 postRouter.post('/', (req, res) => {
-    let data = req.body;
-    let newPost = new Post(data.post);
+    let reqData = req.body;
+    const authUserid = req.userid;
+    reqData.post.author = authUserid;
+    console.log(reqData)
+    let newPost = new Post(reqData.post);
     newPost.save((error, data) => {
         if (error) {
             res.status(520).send({ query: "createNewPost", message: error })
