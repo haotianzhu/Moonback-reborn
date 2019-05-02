@@ -12,8 +12,15 @@ var postSchema = new Schema({
 //https://stackoverflow.com/questions/7034848/mongodb-output-id-instead-of-id
 postSchema.set('toJSON', {
   virtuals: true,
-  versionKey:false,
-  transform: function (doc, ret) {   delete ret._id  }
+  versionKey: false,
+  transform: function (doc, ret) { delete ret._id }
+});
+
+//https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
+postSchema.pre('save', function (next) {
+  var post = this;
+  post.modifyDate = Date.now();
+  next();
 });
 
 postSchema.statics.execute = function (query, callback) {

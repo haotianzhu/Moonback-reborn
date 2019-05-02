@@ -64,6 +64,7 @@ userSchema.statics.generateHashPassword = function (password, callback) {
 //https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
 userSchema.pre('save', function (next) {
     var user = this;
+    user.modifyDate = Date.now();
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) return next();
     // hash the password along with our new salt

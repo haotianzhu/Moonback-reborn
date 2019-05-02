@@ -59,7 +59,6 @@ function verifyToken(req, res, next) {
 
 function haltOnTimedout(error, req, res, next) {
     //https://www.npmjs.com/package/connect-timeout
-
     if (!req.timedout) {
         next();
     } else {
