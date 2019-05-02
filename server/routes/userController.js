@@ -15,7 +15,7 @@ userRouter.get('/:id', (req, res) => {
         User.findById(req.params.id, '-password -token', (error, data) => {
             if (error) {
                 console.log('GET user/:id => ', error);
-                res.status(520).send({ query: "findUserById", error: error });
+                res.status(520).send({ query: "findUserById", message: error });
             }
             if (data) {
                 let user = {
