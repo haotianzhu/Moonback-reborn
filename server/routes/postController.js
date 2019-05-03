@@ -165,7 +165,7 @@ postRouter.get('/user/:id', (req, res) => {
     Post.find({ author: req.params.id }, (error, data) => {
         if (error) {
             console.log('GET api/posts/user/:id => ', error);
-            res.status(520).send({ query: "findPostsByUserId", message: error })
+            res.status(404).send({ query: "findPostsByUserId", message: error })
             return;
         } else {
             res.status(200).send({ query: "findPostsByUserId", status: 'sucessful', posts: data, length: data.length })
