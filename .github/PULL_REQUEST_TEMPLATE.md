@@ -9,8 +9,8 @@
 - [ ] Branch should have prefix either "feature/" or "fix/"
 
 ##### Comment
-```
 
-```
+
+
 Put 'closes #.' in your comment to auto-close the issue that your PR fixes (if such).
 
