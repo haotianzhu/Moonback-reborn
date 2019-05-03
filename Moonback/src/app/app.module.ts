@@ -8,6 +8,10 @@ import { PostComponent } from './post/post.component';
 import { HomeComponent } from './home/home.component';
 import { SigninComponent } from './authentication/signin/signin.component';
 import { SignupComponent } from './authentication/signup/signup.component';
+import { AuthTokenInterceptor } from './authentication/token.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { SignoutComponent } from './authentication/signout/signout.component';
 
 @NgModule({
   declarations: [
@@ -15,14 +19,19 @@ import { SignupComponent } from './authentication/signup/signup.component';
     PostComponent,
     HomeComponent,
     SigninComponent,
-    SignupComponent
+    SignupComponent,
+    SignoutComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
     NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    [{ provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true }]
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
