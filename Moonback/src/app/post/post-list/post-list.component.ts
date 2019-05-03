@@ -21,7 +21,7 @@ export class PostListComponent implements OnInit {
     });
 
     this.http.get<any>(
-      `${environment.baseUrl + '/posts/user/' + '5cc9018e46bf64239fae8712'}`,
+      `${environment.baseUrl + 'posts/user/' + '5cc9018e46bf64239fae8712'}`,
       { headers: secondHeaders }
     ).subscribe( (res) => {
       if ( res.length > 0 ) {
