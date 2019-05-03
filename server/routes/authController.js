@@ -22,15 +22,33 @@ authRouter.post('/signup', (req, res) => {
     })
 
 })
-
+const awaitHandlerFactory = (middleware) => {
+    return async (req, res, next) => {
+        try {
+            await middleware(req, res, next)
+        } catch (err) {
+            next(err)
+        }
+    }
+}
 // api/authentication/signin
-authRouter.post('/signin', async (req, res) => {
+authRouter.post('/signin', awaitHandlerFactory(async (req, res) => {
     let data = req.body;
     let signinUser = new User(data.user);
     await User.findOne({ username: signinUser.username }, (error, user) => {
         if (error) {
             console.log('signin => ', error);
             res.status(520).send({ message: error, query: "signIn", status: "unsucessful" });
+            return;
+        }
+        if (!user || user == undefined) {
+            console.log('signin => password or username is not correct ');
+            res.status(400).send({
+                message: 'password/username is not correct',
+                query: "signIn",
+                status: "unsucessful"
+            });
+            return
         }
         // verify password
         User.validatePassword(user.password, signinUser.password, async (error, isMatch) => {
@@ -49,6 +67,7 @@ authRouter.post('/signin', async (req, res) => {
                         token: user.token,
                     };
                     res.status(200).send({ user: usrJson, query: "signIn", status: "sucessful" });
+                    return;
                 } catch (error) {
                     // token is expire
                     // generate token
@@ -56,9 +75,11 @@ authRouter.post('/signin', async (req, res) => {
                         const usrJson = User.toAuthJSON(user);
                         await User.updateOne(user, { token: usrJson.token })
                         res.status(200).send({ user: usrJson, query: "signIn", status: "sucessful" });
+                        return;
                     } else {
                         console.log('signin => ', error);
                         res.status(400).send({ message: error, query: "signIn", status: "unsucessful" });
+                        return;
                     }
                 }
             } else {
@@ -67,14 +88,15 @@ authRouter.post('/signin', async (req, res) => {
                     status: "unsucessful",
                     message: "username/password is not correct"
                 });
+                return;
             }
         })
     });
-})
+}));
 
 // api/authentication/signout
-authRouter.delete('/signout', verifyToken, async (req, res) => {
-    await User.findByIdAndUpdate(req.userid, { 'token': '' }, { useFindAndModify: false }, (error) => {
+authRouter.delete('/signout', verifyToken, (req, res) => {
+    User.findByIdAndUpdate(req.userid, { 'token': '' }, { useFindAndModify: false }, (error) => {
         if (error) {
             console.log('signout => ', error);
             res.status(520).send({ query: "signOut", message: error })
