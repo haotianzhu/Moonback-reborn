@@ -158,4 +158,20 @@ postRouter.delete('/:id', (req, res) => {
     })
 });
 
+
+//GET api/posts/user/:id
+postRouter.get('/user/:id', (req, res) => {
+    // get posts of user with id
+    Post.find({ author: req.params.id }, (error, data) => {
+        if (error) {
+            console.log('GET api/posts/user/:id => ', error);
+            res.status(520).send({ query: "findPostsByUserId", message: error })
+            return;
+        } else {
+            res.status(200).send({ query: "findPostsByUserId", status: 'sucessful', posts: data, length: data.length })
+        } 
+    });
+})
+
+
 module.exports = postRouter
