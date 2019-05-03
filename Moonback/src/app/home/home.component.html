@@ -12,11 +12,12 @@
                 <img src="../../assets/img/main/login_icon.png" class="nav-icon-image" alt="brand">
                 Moonback
               </span>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" 
-                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <button class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse" 
+                  data-target="#navbarTogglerDemo02"  aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed = !isCollapsed" 
+                  [attr.aria-expanded]="!isCollapsed" aria-controls="navbarTogglerDemo02">
                 <span class="navbar-toggler-icon"></span>
               </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                   <a class="nav-link" routerLink="/">Home</a>
@@ -35,10 +36,10 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-danger my-2 my-sm-0" type="submit">Search</button>
               </form>
-            </div>
-          </nav>
-        </div>
+          </div>
+        </nav>
       </div>
+    </div>
     <!-- content  -->
       <div class="row">
         <div class="col"> 
@@ -46,14 +47,12 @@
         </div>
       </div>
     <div class="row fixed-bottom"> 
-        <div class="ccol-md-auto">
-            <img class='float-left'  height="50vh" src="../../assets/img/main/animation_girl_dancing_left.gif" > 
-        </div>
-        <div class="col"></div>
-        <div class="col-md-auto">
-            <img class='float-right'  height="50vh" src="../../assets/img/main/animation_girl_dancing_left.gif" > 
-    </div>
+      <div class="col">
+          <img class='float-left' src="../../assets/img/main/animation_girl_dancing_left.gif" > 
+      </div>
+      <div class="col"></div>
+      <div class="col">
+          <img class='float-right' src="../../assets/img/main/animation_girl_dancing_right.gif" > 
+      </div>
   </div>
 </div>
-
-
