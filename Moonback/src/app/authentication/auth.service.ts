@@ -8,6 +8,36 @@ export class AuthService {
   constructor() { }
 
   getToken() {
-    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imhhb3RpYW56aHVAcXEuY29tIiwiaWQiOiI1Y2M5MDE4ZTQ2YmY2NDIzOWZhZTg3MTIiLCJleHAiOjE1NTkyNjkwMjYsImlhdCI6MTU1NjY3NzAyNn0.uwtbg3ZanFRNe0Rk7zNVD5BJJ5vyvt2gCdzXgHel6TE';
+    let token = localStorage.getItem('token');
+    if (token) return token
+    return ''
+  }
+  setToken(token) {
+    localStorage.setItem('token', token);
+  }
+  isAuth() {
+    return !!localStorage.getItem('token');
+  }
+
+  setAuth(user) {
+    this.setToken(user.token);
+    localStorage.setItem('authUsername', user.username);
+    localStorage.setItem('authId', user.id);
+  }
+
+  getAuth() {
+    if (this.isAuth()) {
+      return {
+        id: localStorage.getItem('authId'),
+        username: localStorage.getItem('authUsername'),
+      }
+    }
+    return null
+  }
+
+  clearAuth() {
+    localStorage.removeItem('authUsername');
+    localStorage.removeItem('authId');
+    localStorage.removeItem('token');
   }
 }

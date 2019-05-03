@@ -9,8 +9,9 @@ import { HomeComponent } from './home/home.component';
 import { SigninComponent } from './authentication/signin/signin.component';
 import { SignupComponent } from './authentication/signup/signup.component';
 import { AuthTokenInterceptor } from './authentication/token.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { SignoutComponent } from './authentication/signout/signout.component';
 
 @NgModule({
   declarations: [
@@ -19,11 +20,13 @@ import { FormsModule } from '@angular/forms';
     HomeComponent,
     SigninComponent,
     SignupComponent,
+    SignoutComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     NgbModule.forRoot()
   ],
   providers: [
