@@ -1,21 +1,31 @@
-<form class="form-auth " ngNativeValidate>
+<form class="form-auth " [formGroup]='signinForm'>
   <img class="rounded mx-auto d-block" src="../../../assets/img/login/signup_icon.png" alt="signin">
   <h1 class="h3 mb-3 font-weight-normal ">Please sign in</h1>
+  <div *ngIf="!isCorrect"
+    class="alert alert-danger">
+    username or password is not correct
+  </div>
   <div class="form-group ">
     <label for="inputUsername">Username</label>
-    <input [(ngModel)]='username' name='username' 
-      type="text" class="form-control" id="inputUsername" placeholder="Username"
+    <input formControlName='username' type="text" class="form-control" id="inputUsername" placeholder="Username"
     required>
+    <div [hidden]="signinForm.controls.username.valid || signinForm.controls.username.pristine" 
+      class="alert alert-warning">
+        username is required
+    </div>
   </div>
   <div class="form-group">
     <label for="inputPassword">Password</label>
-    <input [(ngModel)]='password' name='password'
-      type="password" class="form-control" id="inputPassword" placeholder="Password" 
+    <input formControlName='password' type="password" class="form-control" id="inputPassword" placeholder="Password" 
     required>
+    <div [hidden]="signinForm.controls.password.valid || signinForm.controls.password.pristine" 
+      class="alert alert-warning">
+      password is required
+    </div>
   </div>
   
   <div>
-    <button type="button" (click)="onSignIn()"class="btn btn-primary mr-4">Sign In</button>
+    <button (click)="onSignIn()"class="btn btn-primary mr-4">Sign In</button>
   </div>
   <div class="form-check form-check-inline">
     <input type="checkbox" class="form-check-input" id="rememberCheck">
