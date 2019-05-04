@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input, HostListener, Renderer2, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/authentication/auth.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -23,7 +23,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 export class PostModalContent {
   @Input() post;
 
-  constructor(public activeModal: NgbActiveModal) {}
+  constructor(public activeModal: NgbActiveModal) { }
 }
 
 
@@ -34,14 +34,19 @@ export class PostModalContent {
 })
 export class PostComponent implements OnInit {
 
-  post : any;
+  post: any;
 
   @Input('post')
-  set setPost(val: object){
+  set setPost(val: object) {
     this.post = val;
   }
 
-  constructor(private router: Router, private auth: AuthService, private modalService: NgbModal) { }
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+    private modalService: NgbModal,
+    private rd: Renderer2,
+    private element: ElementRef) { }
 
   ngOnInit() {
     if (!this.auth.isAuth()) {
@@ -49,7 +54,7 @@ export class PostComponent implements OnInit {
     }
     if (!this.post) {
       this.post = {
-        title : "fake",
+        title: "fake",
         content: "no"
       }
     }
@@ -57,10 +62,13 @@ export class PostComponent implements OnInit {
   }
 
 
-  @HostListener("click") 
-  onClick(){
+  @HostListener("click", ['$event'])
+  onClick(event: Event) {
+    let targetElemnt = event.target as Element
+    if (targetElemnt.className != 'col' && targetElemnt.className != 'row') {
+      this.popUpWindow()
+    }
     // this.router.navigate(['/posts/'+this.post.id])
-    this.popUpWindow()
   }
 
   popUpWindow() {
