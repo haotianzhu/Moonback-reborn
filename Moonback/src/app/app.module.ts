@@ -14,6 +14,7 @@ import { SignoutComponent } from './authentication/signout/signout.component';
 import { PostListComponent } from './post/post-list/post-list.component';
 import { PostComponent, PostModalContent } from './post/post/post.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,6 +25,7 @@ import { PostComponent, PostModalContent } from './post/post/post.component';
     PostListComponent,
     PostComponent,
     PostModalContent,
+
   ],
   imports: [
     BrowserModule,

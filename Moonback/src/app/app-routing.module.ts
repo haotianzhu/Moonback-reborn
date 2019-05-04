@@ -6,6 +6,7 @@ import { SignupComponent } from './authentication/signup/signup.component';
 import { PostListComponent } from './post/post-list/post-list.component';
 import { PostComponent } from './post/post/post.component';
 
+
 const routes: Routes = [
   { path: '', component: PostListComponent},
   { path: 'signin', component: SigninComponent},
