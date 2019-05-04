@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ElementRef, } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from "@angular/common/http";
 import { concatMap, switchMap, map, mapTo, combineLatest, mergeMap, debounceTime, filter } from 'rxjs/operators';
@@ -87,5 +87,4 @@ export class PostListComponent implements OnInit {
         return true
       });
   }
-
 }

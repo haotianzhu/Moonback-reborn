@@ -1,0 +1,14 @@
+
+<div class="row">
+  <div class="col"></div>
+  <div class="single-post col-10 mt-2">
+    <div class="card border-primary">
+        <div class="card-header">{{post.title}}</div>
+        <div class="card-body text-dark" id="post-{{post.id}}">
+            <div [innerHTML]="post.content"></div>
+            <p class="card-text"><small class="text-muted">Last updated {{post.modifyDate}}</small></p>
+        </div>
+    </div>
+  </div>
+  <div class="col"></div>
+</div>
