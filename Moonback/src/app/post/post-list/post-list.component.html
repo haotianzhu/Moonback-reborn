@@ -1,24 +1,14 @@
 
-<div>
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
-{{postArray | json}}
+<div class="card mb-3 border-primary" *ngFor="let post of postArray; index as i">
+    
+        <div class="card-header">{{post.title}}</div>
+    <div class="card-body text-dark" id="{{card-i}}">
+        <div [innerHTML]="post.content"></div>
+        <p class="card-text"><small class="text-muted">Last updated {{post.modifyDate}}</small></p>
+    </div>
 </div>
+
+
 <div class="row align-items-center justify-content-center">
     <div *ngIf="isLoading" class="spinner-border" role="status">
         <span class="sr-only">Loading...</span>

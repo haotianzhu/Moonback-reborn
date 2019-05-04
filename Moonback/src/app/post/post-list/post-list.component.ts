@@ -15,7 +15,8 @@ import { of, Observable, fromEvent, concat } from 'rxjs';
 export class PostListComponent implements OnInit {
   postArray = [];
   isLoading = true;
-  userid = null;
+  url = null;
+  pullable = true;
   postsRoute$: Observable<any>;
   scroll$: Observable<any>;
 
@@ -41,37 +42,42 @@ export class PostListComponent implements OnInit {
     this.postsRoute$.subscribe(
       (id) => {
         if (id) { // with id
-          this.userid = id;
-          this.loadingPost(this.userid);
+          this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=100'}`
+          this.loadingPost(this.url + '&skip=' + this.postArray.length);
         } else {
           // home page
-          this.userid = this.auth.getAuth().id;
-          this.loadingPost(this.userid);
+          this.url = `${environment.baseUrl + 'posts?limit=100'}`;
+          this.loadingPost(this.url + '&skip=' + this.postArray.length);
         }
       }
     )
 
     this.scroll$ = fromEvent(document, 'scroll')
       .pipe(
-        debounceTime(1000),
         map(() => {
           return (window.scrollY + window.innerHeight == document.body.scrollHeight);
         })
       )
     this.scroll$.subscribe(
-      (fetchMore) => {
-        if (fetchMore) { // with id
+       (fetchMore) => {
+        if (fetchMore && this.pullable) { // with id
           this.isLoading = true;
-          this.loadingPost(this.userid);
+          this.loadingPost(this.url + '&skip=' + this.postArray.length);
+          return;
         }
       }
     )
   }
 
-  async loadingPost(id) {
-    this.isLoading = await this.http.get<any>(`${environment.baseUrl + 'posts/user/' + id}`, { observe: 'response' })
+  async loadingPost(url) {
+    this.isLoading = await this.http.get<any>(url, { observe: 'response' })
       .toPromise()
       .then(async (res) => {
+        await delay(500)
+        if (res.body.length == 0) {
+          this.pullable = false;
+          return;
+        }
         if (res.body.length > 0) {
           // this.postArray = this.postArray.concat(res.body.posts);
           this.postArray = res.body.posts;
