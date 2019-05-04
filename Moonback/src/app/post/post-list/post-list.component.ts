@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2, ElementRef, } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from "@angular/common/http";
-import { concatMap, switchMap, map, mapTo, combineLatest, mergeMap, debounceTime } from 'rxjs/operators';
+import { concatMap, switchMap, map, mapTo, combineLatest, mergeMap, debounceTime, filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/authentication/auth.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { delay, async } from 'q';
@@ -56,15 +56,14 @@ export class PostListComponent implements OnInit {
       .pipe(
         map(() => {
           return (window.scrollY + window.innerHeight == document.body.scrollHeight);
-        })
+        }),
+        filter(needFetch => needFetch && this.pullable)
       )
     this.scroll$.subscribe(
-       (fetchMore) => {
-        if (fetchMore && this.pullable) { // with id
-          this.isLoading = true;
-          this.loadingPost(this.url + '&skip=' + this.postArray.length);
-          return;
-        }
+      () => {
+        this.isLoading = true;
+        this.loadingPost(this.url + '&skip=' + this.postArray.length);
+        return;
       }
     )
   }
