@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { PostComponent } from './post/post.component';
 import { HomeComponent } from './home/home.component';
 import { SigninComponent } from './authentication/signin/signin.component';
 import { SignupComponent } from './authentication/signup/signup.component';
@@ -12,15 +11,16 @@ import { AuthTokenInterceptor } from './authentication/token.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignoutComponent } from './authentication/signout/signout.component';
+import { PostListComponent } from './post/post-list/post-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostComponent,
     HomeComponent,
     SigninComponent,
     SignupComponent,
     SignoutComponent,
+    PostListComponent,
   ],
   imports: [
     BrowserModule,
