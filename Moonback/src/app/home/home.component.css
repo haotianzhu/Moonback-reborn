@@ -10,3 +10,12 @@
 .float-right{
     height: 4rem;
 }
+
+.headerbg {
+    text-align: center;
+}
+
+.headerbar {
+    width: 100%;
+    height: 3rem;
+}

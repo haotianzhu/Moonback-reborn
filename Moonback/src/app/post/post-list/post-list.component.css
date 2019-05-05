@@ -1,6 +1,8 @@
-div.post {
-    width: 50%;
-    align-self: center;
-    align-content: center;
-    margin: 0.2rem;
-} 
+
+.loading {
+    text-align: center;
+    margin: 0.3rem;
+}
+.single-post {
+    max-width: 50rem;
+}

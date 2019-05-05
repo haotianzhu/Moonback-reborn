@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Renderer2, ElementRef, } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -90,5 +91,4 @@ export class PostListComponent implements OnInit {
         return true;
       });
   }
-
 }
