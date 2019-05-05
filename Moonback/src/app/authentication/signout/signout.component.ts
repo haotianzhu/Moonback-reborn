@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { environment } from 'src/environments/environment';
-import { AuthService } from '../auth.service';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+
+import { environment } from 'src/environments/environment';
+import { AuthService } from '../shared/auth.service';
+
 
 @Component({
   selector: 'app-signout',
@@ -22,13 +24,13 @@ export class SignoutComponent implements OnInit {
         `${environment.baseUrl + 'authentication/signout'}`,
         { observe: 'response' }
       ).subscribe((res) => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           this.auth.clearAuth();
           this.router.navigate(['/signin']);
-          return
+          return;
         }
         this.router.navigate(['/']);
-        return
+        return;
       })
     }
   }

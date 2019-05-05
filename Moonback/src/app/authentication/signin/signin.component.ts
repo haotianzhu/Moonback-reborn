@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { environment } from 'src/environments/environment';
-import { AuthService } from '../auth.service';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { environment } from 'src/environments/environment';
+import { AuthService } from '../shared/auth.service';
+
+
 
 @Component({
   selector: 'app-signin',
@@ -16,7 +19,7 @@ export class SigninComponent implements OnInit {
   constructor(private http: HttpClient, private auth: AuthService, private router: Router) { }
 
   ngOnInit() {
-    if (this.auth.isAuth()) this.router.navigate(['/']);
+    if (this.auth.isAuth()) { this.router.navigate(['/']); }
     this.signinForm = new FormGroup({
       username: new FormControl('', [
         Validators.required,
@@ -33,7 +36,7 @@ export class SigninComponent implements OnInit {
         { observe: 'response' }
       ).subscribe(
         res => {
-          if (res.status == 200) {
+          if (res.status === 200) {
             this.auth.setAuth(res.body.user);
             if (this.auth.isAuth()) {
               this.router.navigate(['/']);
@@ -43,9 +46,8 @@ export class SigninComponent implements OnInit {
         error => {
           this.isCorrect = false;
         }
-        
-      )
 
+      );
     }
   }
 
