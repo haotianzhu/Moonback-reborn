@@ -1,4 +1,4 @@
-<form class="form-auth " [formGroup]='signinForm'>
+<form class="form-auth " [formGroup]='signinForm' novalidate>
   <img class="rounded mx-auto d-block" src="../../../assets/img/login/signup_icon.png" alt="signin">
   <h1 class="h3 mb-3 font-weight-normal text-center">
     Please sign in
@@ -36,7 +36,7 @@
     </label>
   </div>
   <div>
-    <button (click)="onSignIn()"class="btn btn-primary btn-block mt-2">
+    <button (click)="onSignIn()" class="btn btn-primary btn-block mt-3">
         Sign In
     </button>
   </div>
