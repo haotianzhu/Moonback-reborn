@@ -3,30 +3,46 @@
   <h1 class="h3 mb-3 font-weight-normal text-center">
     Please sign in
   </h1>
-  <div *ngIf="!isCorrect"
-    class="alert alert-danger">
+  <div *ngIf="!isCorrect" class="alert alert-danger">
     username or password is not correct
   </div>
+
   <div class="form-group ">
     <label for="inputUsername">
       Username
     </label>
-    <input formControlName='username' type="text" class="form-control" id="inputUsername" placeholder="Username"
-    required>
-    <div [hidden]="signinForm.controls.username.valid || signinForm.controls.username.pristine" 
-      class="alert alert-warning">
+    <input formControlName='username' [class.control-warm]="signinForm.controls.username.invalid && 
+    (signinForm.controls.username.dirty || 
+    signinForm.controls.username.touched )" [class.control-danger]="
+    !isCorrect &&
+    signinForm.controls.username.pristine " type="text" class="form-control" id="inputUsername" placeholder="Username"
+      required>
+    <div *ngIf="
+    signinForm.controls.username.invalid && 
+    (signinForm.controls.username.dirty || 
+    signinForm.controls.username.touched );" class="alert alert-warning">
+      <small *ngIf="signinForm.controls.username.errors.required">
         username is required
+      </small>
     </div>
   </div>
   <div class="form-group">
     <label for="inputPassword">
       Password
     </label>
-    <input formControlName='password' type="password" class="form-control" id="inputPassword" placeholder="Password" 
-    required>
-    <div [hidden]="signinForm.controls.password.valid || signinForm.controls.password.pristine" 
-      class="alert alert-warning">
-      password is required
+
+    <input [class.control-warm]="signinForm.controls.password.invalid && 
+      (signinForm.controls.password.dirty || 
+      signinForm.controls.password.touched )" [class.control-danger]="!isCorrect &&
+      signinForm.controls.password.pristine " formControlName='password' type="password" class="form-control"
+      id="inputPassword" placeholder="Password" required>
+    <div *ngIf="
+      signinForm.controls.password.invalid && 
+      (signinForm.controls.password.dirty || 
+      signinForm.controls.password.touched );" class="alert alert-warning">
+      <small *ngIf="signinForm.controls.password.errors.required">
+        password is required
+      </small>
     </div>
   </div>
   <div class="form-check form-check-inline">
@@ -37,12 +53,12 @@
   </div>
   <div>
     <button (click)="onSignIn()" class="btn btn-primary btn-block mt-3">
-        Sign In
+      Sign In
     </button>
   </div>
   <div class="mt-2 text-center">
     <p>Do not have a account? <a routerLink="/signup">Sign Up</a> </p>
-    <p>ALready had a account? <a routerLink="/" >Forget the password?</a></p>
+    <p>ALready had a account? <a routerLink="/">Forget the password?</a></p>
   </div>
 
 </form>
