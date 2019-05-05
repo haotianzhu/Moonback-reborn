@@ -1,0 +1,19 @@
+.img-left{
+    height: 4rem;
+}
+
+.img-right{
+    height: 4rem;
+}
+.fix-div-left{
+    height: 4rem;
+    position: fixed;
+    bottom: 0rem;
+    right: 0;
+}
+.fix-div-right{
+    height: 4rem;
+    position: fixed;
+    bottom: 0rem;
+    left: 0rem;
+}

@@ -21,9 +21,9 @@
     signinForm.controls.username.invalid && 
     (signinForm.controls.username.dirty || 
     signinForm.controls.username.touched );" class="alert alert-warning">
-      <div *ngIf="signinForm.controls.username.errors.required">
+      <small *ngIf="signinForm.controls.username.errors.required">
         username is required
-      </div>
+      </small>
     </div>
   </div>
   <div class="form-group">
@@ -40,9 +40,9 @@
       signinForm.controls.password.invalid && 
       (signinForm.controls.password.dirty || 
       signinForm.controls.password.touched );" class="alert alert-warning">
-      <div *ngIf="signinForm.controls.password.errors.required">
+      <small *ngIf="signinForm.controls.password.errors.required">
         password is required
-      </div>
+      </small>
     </div>
   </div>
   <div class="form-check form-check-inline">
