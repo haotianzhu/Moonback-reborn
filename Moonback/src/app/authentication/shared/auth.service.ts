@@ -8,9 +8,11 @@ export class AuthService {
   constructor() { }
 
   getToken() {
-    let token = localStorage.getItem('token');
-    if (token) return token
-    return ''
+    const token = localStorage.getItem('token');
+    if (token) {
+        return token;
+    }
+    return '';
   }
   setToken(token) {
     localStorage.setItem('token', token);
@@ -30,9 +32,9 @@ export class AuthService {
       return {
         id: localStorage.getItem('authId'),
         username: localStorage.getItem('authUsername'),
-      }
+      };
     }
-    return null
+    return null;
   }
 
   clearAuth() {

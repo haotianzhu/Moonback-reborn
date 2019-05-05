@@ -1,11 +1,14 @@
 
 import { Component, OnInit, Renderer2, ElementRef, } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { HttpClient } from "@angular/common/http";
-import { concatMap, switchMap, map, mapTo, combineLatest, mergeMap, debounceTime, filter } from 'rxjs/operators';
-import { AuthService } from 'src/app/authentication/auth.service';
+import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { delay, async } from 'q';
+import { concatMap, switchMap, map, mapTo, combineLatest, mergeMap, debounceTime, filter } from 'rxjs/operators';
+
+import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/authentication/shared/auth.service';
+
+
 import { of, Observable, fromEvent, concat } from 'rxjs';
 
 @Component({
@@ -36,7 +39,7 @@ export class PostListComponent implements OnInit {
       this.router.navigate(['/signin']);
     }
 
-    //https://angular.io/guide/router
+    // https://angular.io/guide/router
     this.postsRoute$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) => of(params.get('id')))
     )
@@ -56,7 +59,7 @@ export class PostListComponent implements OnInit {
     this.scroll$ = fromEvent(document, 'scroll')
       .pipe(
         map(() => {
-          return (window.scrollY + window.innerHeight == document.body.scrollHeight);
+          return (window.scrollY + window.innerHeight === document.body.scrollHeight);
         }),
         filter(needFetch => needFetch && this.pullable)
       )
@@ -66,7 +69,7 @@ export class PostListComponent implements OnInit {
         this.loadingPost(this.url + '&skip=' + this.postArray.length);
         return;
       }
-    )
+    );
   }
 
   async loadingPost(url) {
@@ -74,18 +77,18 @@ export class PostListComponent implements OnInit {
       .toPromise()
       .then(async (res) => {
         await delay(500)
-        if (res.body.length == 0) {
+        if (res.body.length === 0) {
           this.pullable = false;
           return;
         }
         if (res.body.length > 0) {
           // this.postArray = this.postArray.concat(res.body.posts);
           this.postArray = res.body.posts;
-          return false
+          return false;
         }
       })
       .catch((error) => {
-        return true
+        return true;
       });
   }
 }
