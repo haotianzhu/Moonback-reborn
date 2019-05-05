@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, HostListener, Renderer2, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/authentication/auth.service';
+import { AuthService } from '../../authentication/shared/auth.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
@@ -20,6 +20,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
     </div>
   `
 })
+
 export class PostModalContent {
   @Input() post;
 

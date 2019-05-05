@@ -25,7 +25,6 @@ import { PostComponent, PostModalContent } from './post/post/post.component';
     PostListComponent,
     PostComponent,
     PostModalContent,
-
   ],
   imports: [
     BrowserModule,
