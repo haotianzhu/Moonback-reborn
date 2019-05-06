@@ -21,7 +21,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
   `
 })
 
-export class PostModalContent {  // tslint:disable-line:component-class-suffix
+export class PostModalContent {  
   @Input() post;
 
   constructor(public activeModal: NgbActiveModal) { }
