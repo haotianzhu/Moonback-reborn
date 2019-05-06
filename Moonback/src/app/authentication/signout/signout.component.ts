@@ -31,7 +31,7 @@ export class SignoutComponent implements OnInit {
         }
         this.router.navigate(['/']);
         return;
-      })
+      });
     }
   }
 
