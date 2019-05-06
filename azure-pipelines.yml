@@ -26,6 +26,7 @@ steps:
     cd ./Moonback  
     npm test
     ng lint
+    npm run lint
   displayName: 'npm front-end test'
 
 - script: 
@@ -33,6 +34,3 @@ steps:
     npm test
   displayName: 'npm back-end test'
 
-- script:
-    ./Moonback/node_modules/tslint/bin/tslint  -p Moonback 
-  displayName: 'tslint test'
