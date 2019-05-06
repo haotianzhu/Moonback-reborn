@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, HostListener, Renderer2, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, HostListener, Renderer2, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../authentication/shared/auth.service';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'post-modal-content',
+  selector: 'app-post-modal-content',
   template: `
     <div class='d-flex flex-column bd-highlight mb-3 justify-content-center'>
     <div class="mb-3 border-primary">
@@ -21,7 +21,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
   `
 })
 
-export class PostModalContent {
+export class PostModalContent {  // tslint:disable-line:component-class-suffix
   @Input() post;
 
   constructor(public activeModal: NgbActiveModal) { }
@@ -33,7 +33,7 @@ export class PostModalContent {
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, AfterViewInit {
 
   post: any;
 
@@ -51,25 +51,33 @@ export class PostComponent implements OnInit {
 
   ngOnInit() {
     if (!this.auth.isAuth()) {
-      this.router.navigate(['/signin'])
+      this.router.navigate(['/signin']);
     }
+
     if (!this.post) {
       this.post = {
-        title: "fake",
-        content: "no"
-      }
+        title: 'fake',
+        content: 'no'
+      };
     }
-    // console.log(this.router.url)
   }
 
-
-  @HostListener("click", ['$event'])
-  onClick(event: Event) {
-    let targetElemnt = event.target as Element
-    if (targetElemnt.className != 'col' && targetElemnt.className != 'row') {
-      this.popUpWindow()
+  ngAfterViewInit(): void {
+    // add img class card-img
+    const imgNodeList = this.element.nativeElement.querySelectorAll('div[name=post-content] img') as NodeList;
+    if (imgNodeList.length > 0) {
+      imgNodeList.forEach((element: Element) => {
+        element.classList.add('card-img');
+      });
     }
-    // this.router.navigate(['/posts/'+this.post.id])
+  }
+
+  @HostListener('click', ['$event'])
+  onClick(event: Event) {
+    const targetElemnt = event.target as Element;
+    if (targetElemnt.className !== 'col' && targetElemnt.className !== 'row') {
+      this.popUpWindow();
+    }
   }
 
   popUpWindow() {
