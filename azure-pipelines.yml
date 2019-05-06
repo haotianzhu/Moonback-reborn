@@ -19,15 +19,18 @@ steps:
     cd ./Moonback
     npm install -g @angular/cli
     npm install
-    ng build --prod
+    ng build
   displayName: 'npm install and build'
 
 - script: 
     cd ./Moonback  
     npm test
+    ng lint
+    npm run lint
   displayName: 'npm front-end test'
 
 - script: 
     cd ./server  
     npm test
   displayName: 'npm back-end test'
+
