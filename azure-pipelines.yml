@@ -25,6 +25,7 @@ steps:
 - script: 
     cd ./Moonback  
     npm test
+    ng lint
   displayName: 'npm front-end test'
 
 - script: 
