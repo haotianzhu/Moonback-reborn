@@ -27,9 +27,7 @@ export class SigninComponent implements OnInit {
   ngOnInit() {
     if (this.auth.isAuth()) { this.router.navigate(['/']); }
     this.signinForm = new FormGroup({
-      username: new FormControl('', [
-        Validators.required,
-      ]),
+      username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
   }
@@ -52,6 +50,7 @@ export class SigninComponent implements OnInit {
         res => {
           if (res.status === 200) {
             this.auth.setAuth(res.body.user);
+            console.log(this.auth.isAuth()) 
             if (this.auth.isAuth()) {
               this.router.navigate(['/']);
             }
