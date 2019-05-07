@@ -13,6 +13,7 @@ import { SignoutComponent } from './authentication/signout/signout.component';
 import { AuthTokenInterceptor } from './authentication/shared/token.service';
 import { PostListComponent } from './post/post-list/post-list.component';
 import { PostComponent, PostModalContent } from './post/post/post.component';
+import { UserComponent } from './user/user.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { PostComponent, PostModalContent } from './post/post/post.component';
     PostListComponent,
     PostComponent,
     PostModalContent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,
