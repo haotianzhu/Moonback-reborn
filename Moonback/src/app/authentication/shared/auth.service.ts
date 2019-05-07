@@ -4,13 +4,17 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-
-  constructor() { }
+  username = "you are not signin"
+  constructor() {
+    if (this.isAuth()) {
+      this.username = this.getAuth().username;
+    }
+  }
 
   getToken() {
     const token = localStorage.getItem('token');
     if (token) {
-        return token;
+      return token;
     }
     return '';
   }
