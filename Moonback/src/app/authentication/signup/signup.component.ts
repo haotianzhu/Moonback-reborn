@@ -39,10 +39,7 @@ export class SignupComponent implements OnInit {
       ).subscribe(
         res => {
           if (res.status === 200) {
-            this.auth.setAuth(res.body.user);
-            if (this.auth.isAuth()) {
-              this.router.navigate(['/signin']);
-            }
+            this.router.navigate(['/signin']);
           }
         },
         error => {
@@ -50,7 +47,7 @@ export class SignupComponent implements OnInit {
           this.signupForm.controls.password.markAsPristine();
         });
     } else {
-      console.log('invalid signup form')
+      console.log('invalid signup form');
     }
   }
 }
