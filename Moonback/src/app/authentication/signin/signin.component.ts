@@ -27,9 +27,7 @@ export class SigninComponent implements OnInit {
   ngOnInit() {
     if (this.auth.isAuth()) { this.router.navigate(['/']); }
     this.signinForm = new FormGroup({
-      username: new FormControl('', [
-        Validators.required,
-      ]),
+      username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
   }

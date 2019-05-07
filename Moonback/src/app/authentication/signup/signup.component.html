@@ -1,4 +1,4 @@
-<form class="form-auth" ngNativeValidate>
+<form class="form-auth" [formGroup]='signupForm' ngNativeValidate>
     <img class="rounded mx-auto d-block" src="../../../assets/img/login/login_icon.png" alt="signup" width="40%" height="40%">
     <h1 class="h3 mb-3 font-weight-normal text-center">
       Please sign up
@@ -6,12 +6,12 @@
     <div class="form-group">
         <label for="inputEmail">Email</label>
         <input type="email" class="form-control" id="inputUsername" placeholder="Email" 
-        required >
+        required formControlName='email' >
     </div>
     <div class="form-group">
       <label for="inputUsername">Username</label>
       <input type="text" class="form-control" id="inputUsername" aria-describedby="usernamelHelp" placeholder="Username" 
-      required minlength="8" maxlength="20" pattern="[a-zA-Z0-9]*">
+      required minlength="8" maxlength="20" pattern="[a-zA-Z0-9]*" formControlName='username'>
       <small id="usernamelHelp" class="form-text text-muted">
         Your username must be 8-20 characters long, and must not contain spaces, special characters.
       </small>
@@ -19,12 +19,12 @@
     <div class="form-group">
       <label for="inputPassword">Password</label>
       <input type="password" class="form-control" id="inputPassword" aria-describedby="passwordlHelp" placeholder="Password" 
-      required minlength="8" maxlength="20" pattern="[a-zA-Z0-9]*">
+      required minlength="8" maxlength="20" pattern="[a-zA-Z0-9]*" formControlName='password'>
       <small id="passwordlHelp" class="form-text text-muted ">
         Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters.
       </small>
     </div>
-      <button type="submit" class="btn btn-primary btn-block mb-3">Sign Up</button>
+      <button (click)="onSignUp()" class="btn btn-primary btn-block mb-3">Sign Up</button>
       <div class="form-check form-check-inline">
           <input type="checkbox" class="form-check-input" id="termsCheck" required>
           <label class="form-check-label" for="termsCheck">I Accept terms of services</label>

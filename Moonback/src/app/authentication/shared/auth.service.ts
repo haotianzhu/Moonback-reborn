@@ -18,7 +18,12 @@ export class AuthService {
     localStorage.setItem('token', token);
   }
   isAuth() {
-    return !!localStorage.getItem('token');
+    const token = !!localStorage.getItem('token');
+    if (token !== undefined) {
+      return token ;
+    } else {
+      return false;
+    }
   }
 
   setAuth(user) {

@@ -14,6 +14,7 @@ authRouter.post('/signup', (req, res) => {
         } else {
             let user = {
                 username: data.username,
+                email: data.email,
                 id: data.id,
                 createDate: data.createDate
             }
