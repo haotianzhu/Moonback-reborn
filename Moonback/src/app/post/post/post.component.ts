@@ -2,33 +2,31 @@ import { Component, OnInit, Input, HostListener, Renderer2, ElementRef, AfterVie
 import { Router } from '@angular/router';
 import { AuthService } from '../../authentication/shared/auth.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-post-modal-content',
-  template: `
-    <div class='d-flex flex-column bd-highlight mb-3 justify-content-center'>
-    <div class="mb-3 border-primary">
-      <div class="modal-header">{{post.title}}</div>
-      <div class="modal-body text-dark ">
-          <div *ngIf="isEditable">
-          <textarea class="form-control" [innerHTML]="post.content" ></textarea>
-          </div>
-          <div *ngIf="!isEditable" [innerHTML]="post.content"></div>
-          <p class="card-text"><small class="text-muted">Last updated {{post.modifyDate}}</small></p>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
-    </div>
-    </div>
-  `
+  templateUrl: './post.content.html',
 })
 
 export class PostModalContent {  // tslint:disable-line:component-class-suffix
   @Input() post;
   @Input() isEditable;
+  isEditMode = false;
 
   constructor(public activeModal: NgbActiveModal) {
+  }
+  onSave() {
+    this.activeModal.close({ done: false, post: this.post });
+  }
+
+  onEdit() {
+    this.isEditMode = this.isEditable;
+  }
+
+  onClose() {
+    this.activeModal.close({ done: true });
   }
 }
 
@@ -51,6 +49,7 @@ export class PostComponent implements OnInit, AfterViewInit {
     private router: Router,
     private auth: AuthService,
     private modalService: NgbModal,
+    private http: HttpClient,
     private rd: Renderer2,
     private element: ElementRef) { }
 
@@ -86,9 +85,39 @@ export class PostComponent implements OnInit, AfterViewInit {
   }
 
   popUpWindow() {
-    const modalRef = this.modalService.open(PostModalContent, { size: 'lg', centered: true });
+    const modalRef = this.modalService.open(PostModalContent, { backdrop: 'static', size: 'lg', centered: true });
     modalRef.componentInstance.post = this.post;
     modalRef.componentInstance.isEditable = (this.post.author === this.auth.getAuth().id);
+    modalRef.result.then(async (result) => {
+      if (result && result.done) {
+        return;
+      } else if (result && !result.done) {
+        if (result.post) {
+          await this.http.patch<any>(
+            `${environment.baseUrl + 'posts/' + this.post.id}`, { post: result.post },
+            { observe: 'response' }
+          ).subscribe((res) => {
+            if (res.status === 200) {
+              const data = res.body;
+              if (data && data) {
+                this.post = data.post;
+              } else {
+                throw Error('http error no new post data return');
+              }
+            } else {
+              Error(`${'http error' + res.status}`);
+            }
+          });
+        } else {
+          throw Error('no new post data');
+        }
+      } else {
+        throw Error('unknow result');
+      }
+    }).catch((error) => {
+      console.log(error);
+    }
+    );
   }
 
 }
