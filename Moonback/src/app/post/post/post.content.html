@@ -1,4 +1,4 @@
-<div class='d-flex flex-column bd-highlight mb-3 justify-content-center'>
+<div ngbAutofocus class='d-flex flex-column bd-highlight mb-3 justify-content-center'>
     <div class="mb-3 border-primary">
 
         <div *ngIf="!isEditMode">
@@ -9,7 +9,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-dark"
-                    (click)="activeModal.close('Close click')">Close</button>
+                    (click)="onClose()">Close</button>
                 <div *ngIf="isEditable">
                     <button type="button" class="btn btn-outline-primary" (click)="onEdit()">Edit</button>
                 </div>

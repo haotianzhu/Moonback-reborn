@@ -15,8 +15,7 @@ export class PostModalContent {  // tslint:disable-line:component-class-suffix
   @Input() isEditable;
   isEditMode = false;
 
-  constructor(public activeModal: NgbActiveModal) {
-  }
+  constructor(public activeModal: NgbActiveModal) { }
   onSave() {
     this.activeModal.close({ done: false, post: this.post });
   }
@@ -114,7 +113,9 @@ export class PostComponent implements OnInit, AfterViewInit {
       } else {
         throw Error('unknow result');
       }
-    }).catch((error) => {
+    },
+    (reason) => { console.log(reason); }
+    ).catch((error) => {
       console.log(error);
     }
     );
