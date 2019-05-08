@@ -50,7 +50,6 @@ export class SigninComponent implements OnInit {
         res => {
           if (res.status === 200) {
             this.auth.setAuth(res.body.user);
-            console.log(this.auth.isAuth()) 
             if (this.auth.isAuth()) {
               this.router.navigate(['/']);
             }

@@ -10,7 +10,10 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
     <div class="mb-3 border-primary">
       <div class="modal-header">{{post.title}}</div>
       <div class="modal-body text-dark ">
-          <div [innerHTML]="post.content"></div>
+          <div *ngIf="isEditable">
+          <textarea class="form-control" [innerHTML]="post.content" ></textarea>
+          </div>
+          <div *ngIf="!isEditable" [innerHTML]="post.content"></div>
           <p class="card-text"><small class="text-muted">Last updated {{post.modifyDate}}</small></p>
       </div>
     </div>
@@ -23,8 +26,10 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export class PostModalContent {  // tslint:disable-line:component-class-suffix
   @Input() post;
+  @Input() isEditable;
 
-  constructor(public activeModal: NgbActiveModal) { }
+  constructor(public activeModal: NgbActiveModal) {
+  }
 }
 
 
@@ -53,11 +58,11 @@ export class PostComponent implements OnInit, AfterViewInit {
     if (!this.auth.isAuth()) {
       this.router.navigate(['/signin']);
     }
-
     if (!this.post) {
       this.post = {
-        title: 'fake',
-        content: 'no'
+        title: 'no such post',
+        content: 'no such pos',
+        author: '',
       };
     }
   }
@@ -83,6 +88,7 @@ export class PostComponent implements OnInit, AfterViewInit {
   popUpWindow() {
     const modalRef = this.modalService.open(PostModalContent, { size: 'lg', centered: true });
     modalRef.componentInstance.post = this.post;
+    modalRef.componentInstance.isEditable = (this.post.author === this.auth.getAuth().id);
   }
 
 }
