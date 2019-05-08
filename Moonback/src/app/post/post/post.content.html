@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div *ngIf="isEditMode" class="form-group">
+        <div *ngIf="isEditMode" class="form-group" >
             <div *ngIf="isEditMode" class="form-group modal-header">
                 <input type="text" class="form-control " name="title" required #title="ngModel"
                     [class.is-invalid]="title.invalid && title.touched" maxlength="30" placeholder="Title"
@@ -25,7 +25,7 @@
                     post.</small>
             </div>
             <div class="modal-body text-dark ">
-                <quill-editor #content="ngModel" [(ngModel)]="post.content"
+                <quill-editor id='contentEditor' #content="ngModel" [(ngModel)]="post.content"
                     [class.is-invalid]="content.invalid && content.touched">
                 </quill-editor>
                 <small class="text-danger" [class.d-none]="content.valid || content.untouched">

@@ -1,9 +1,17 @@
-import { Component, OnInit, Input, HostListener, Renderer2, ElementRef, AfterViewInit } from '@angular/core';
+import {
+  EventEmitter, Component,
+  OnInit, Input,
+  HostListener, Renderer2,
+  ElementRef, AfterViewInit,
+  Output
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../authentication/shared/auth.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+
+
 
 @Component({
   selector: 'app-post-modal-content',
@@ -15,7 +23,9 @@ export class PostModalContent {  // tslint:disable-line:component-class-suffix
   @Input() isEditable;
   isEditMode = false;
 
-  constructor(public activeModal: NgbActiveModal) { }
+  constructor(public activeModal: NgbActiveModal) {
+  }
+
   onSave() {
     this.activeModal.close({ done: false, post: this.post });
   }
@@ -67,8 +77,13 @@ export class PostComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // add img class card-img
+    this.settingImg();
+  }
+
+  settingImg() {
     const imgNodeList = this.element.nativeElement.querySelectorAll('div[name=post-content] img') as NodeList;
     if (imgNodeList.length > 0) {
+      console.log(imgNodeList);
       imgNodeList.forEach((element: Element) => {
         element.classList.add('card-img');
       });
@@ -85,7 +100,7 @@ export class PostComponent implements OnInit, AfterViewInit {
 
   popUpWindow() {
     const modalRef = this.modalService.open(PostModalContent, { backdrop: 'static', size: 'lg', centered: true });
-    modalRef.componentInstance.post = this.post;
+    modalRef.componentInstance.post = Object.assign({}, this.post);
     modalRef.componentInstance.isEditable = (this.post.author === this.auth.getAuth().id);
     modalRef.result.then(async (result) => {
       if (result && result.done) {
@@ -107,6 +122,7 @@ export class PostComponent implements OnInit, AfterViewInit {
               Error(`${'http error' + res.status}`);
             }
           });
+          await this.settingImg();
         } else {
           throw Error('no new post data');
         }
@@ -114,7 +130,7 @@ export class PostComponent implements OnInit, AfterViewInit {
         throw Error('unknow result');
       }
     },
-    (reason) => { console.log(reason); }
+      (reason) => { console.log(reason); }
     ).catch((error) => {
       console.log(error);
     }
