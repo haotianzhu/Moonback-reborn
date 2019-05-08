@@ -8,7 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { AuthService } from '../../authentication/shared/auth.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 
@@ -105,14 +105,7 @@ export class PostComponent implements OnInit {
                 throw Error('http error no new post data return');
               }
             }
-          },
-            (errevent) => {
-              if (errevent.status === 400) {
-                throw Error('img is to big');
-              } else {
-                throw Error(`${'http error' + errevent.status}`);
-              }
-            });
+          });
         } else {
           throw Error('no new post data');
         }
