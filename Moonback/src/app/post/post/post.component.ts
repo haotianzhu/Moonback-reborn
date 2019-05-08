@@ -45,7 +45,7 @@ export class PostModalContent {  // tslint:disable-line:component-class-suffix
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css']
 })
-export class PostComponent implements OnInit, AfterViewInit {
+export class PostComponent implements OnInit {
 
   post: any;
 
@@ -75,20 +75,6 @@ export class PostComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
-    // add img class card-img
-    this.settingImg();
-  }
-
-  settingImg() {
-    const imgNodeList = this.element.nativeElement.querySelectorAll('div[name=post-content] img') as NodeList;
-    if (imgNodeList.length > 0) {
-      console.log(imgNodeList);
-      imgNodeList.forEach((element: Element) => {
-        element.classList.add('card-img');
-      });
-    }
-  }
 
   @HostListener('click', ['$event'])
   onClick(event: Event) {
@@ -118,11 +104,15 @@ export class PostComponent implements OnInit, AfterViewInit {
               } else {
                 throw Error('http error no new post data return');
               }
-            } else {
-              Error(`${'http error' + res.status}`);
             }
-          });
-          await this.settingImg();
+          },
+            (errevent) => {
+              if (errevent.status === 400) {
+                throw Error('img is to big');
+              } else {
+                throw Error(`${'http error' + errevent.status}`);
+              }
+            });
         } else {
           throw Error('no new post data');
         }
