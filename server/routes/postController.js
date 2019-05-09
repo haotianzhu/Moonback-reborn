@@ -133,7 +133,11 @@ postRouter.patch('/:id', awaitHandlerFactory(async (req, res) => {
                 console.log("PATCH api/posts/:id => ", error)
                 res.status(403).send({ query: "updatePostById", status: 'unsucessful', message: error })
             } else {
-                res.status(200).send({ query: "updatePostById", status: 'sucessful', post: newPost })
+                try {
+                    res.status(200).send({ query: "updatePostById", status: 'sucessful', post: newPost })
+                } catch (err) {
+                    return;
+                }
             }
         })
     } else if (!hasPermission) {
@@ -172,7 +176,7 @@ postRouter.get('/user/:id', (req, res) => {
         } else {
             res.status(200).send({ query: "findPostsByUserId", status: 'sucessful', posts: data, length: data.length });
             return;
-        } 
+        }
     });
 })
 
