@@ -1,0 +1,47 @@
+<div ngbAutofocus class='d-flex flex-column bd-highlight mb-3 justify-content-center'>
+    <div class="mb-3 border-primary">
+
+        <div *ngIf="!isEditMode">
+            <div class="modal-header">{{post.title}}</div>
+            <div class="modal-body text-dark ">
+                <quill-editor [readOnly]="true" [(ngModel)]="post.content" [styles]="{border: 'none'}"
+                [modules]="{ toolbar: false}">
+                </quill-editor>
+                <p class="card-text"><small class="text-muted">Last updated {{post.modifyDate}}</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark"
+                    (click)="onClose()">Close</button>
+                <div *ngIf="isEditable">
+                    <button type="button" class="btn btn-outline-primary" (click)="onEdit()">Edit</button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="isEditMode" class="form-group" >
+            <div *ngIf="isEditMode" class="form-group modal-header">
+                <input type="text" class="form-control " name="title" required #title="ngModel"
+                    [class.is-invalid]="title.invalid && title.touched" maxlength="30" placeholder="Title"
+                    [(ngModel)]="post.title">
+                <small class="text-danger" [class.d-none]="title.valid || title.untouched">Title is required for a new
+                    post.</small>
+            </div>
+            <div class="modal-body text-dark ">
+                <quill-editor id='contentEditor' #content="ngModel" [(ngModel)]="post.content"
+                    [class.is-invalid]="content.invalid && content.touched">
+                </quill-editor>
+                <small class="text-danger" [class.d-none]="content.valid || content.untouched">
+                    Content is required for a post.
+                </small>
+                <p class="card-text"><small class="text-muted">Last updated {{post.modifyDate}}</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="onClose()">
+                    Close
+                </button>
+                <div>
+                    <button type="button" class="btn btn-outline-primary" (click)="onSave()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>

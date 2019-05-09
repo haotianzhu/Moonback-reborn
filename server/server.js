@@ -10,7 +10,8 @@ const userApi = require('./routes/userController');
 const database = 'mongodb://yz:qaz98765432@ds155213.mlab.com:55213/db1';
 const timeout = require('connect-timeout'); //express v4
 const jwt = require('jsonwebtoken');
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
+const fs = require('fs');
 mongoose.set('useCreateIndex', true);
 
 // init connetction to remote database
@@ -24,8 +25,8 @@ mongoose.connect(database, { useNewUrlParser: true }, error => {
 
 app.use(cors());
 app.use(timeout('5s'));
-app.use(cookieParser());
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: "5mb" }));
+app.use(bodyParser.json({ limit: '5mb' }));
 app.use(haltOnTimedout);
 // add api controllers
 app.use('/api/posts', verifyToken, postApi);
@@ -58,10 +59,17 @@ function verifyToken(req, res, next) {
 }
 
 function haltOnTimedout(error, req, res, next) {
+    if (error) {
+        if (error.status) {
+            console.log(error)
+            res.status(error.status).send({ message: error.message });
+            return;
+        }
+    }
     //https://www.npmjs.com/package/connect-timeout
     if (!req.timedout) {
         next();
     } else {
         res.status(508).send({ message: "timeout!" });
     }
-}   
+}

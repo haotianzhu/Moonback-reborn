@@ -2,7 +2,6 @@ import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../shared/auth.service';
 
@@ -32,14 +31,6 @@ export class SigninComponent implements OnInit {
     });
   }
 
-  setRed(el, isAdd: boolean) {
-    if (isAdd) {
-      this.rd.addClass(el, 'control-warm');
-    } else {
-      this.rd.removeClass(el, 'control-warm');
-    }
-  }
-
   onSignIn() {
     if (this.signinForm.valid) {
       this.http.post<any>(
@@ -50,7 +41,6 @@ export class SigninComponent implements OnInit {
         res => {
           if (res.status === 200) {
             this.auth.setAuth(res.body.user);
-            console.log(this.auth.isAuth()) 
             if (this.auth.isAuth()) {
               this.router.navigate(['/']);
             }

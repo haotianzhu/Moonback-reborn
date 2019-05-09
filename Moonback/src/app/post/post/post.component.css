@@ -3,3 +3,7 @@
 .single-post {
     max-width: 40rem;
 }
+
+.no-border {
+    border-style: none;
+}
