@@ -9,6 +9,8 @@
 }
 
 
-.postContentClass .modal-dialog {
-    max-width: 83%; 
+.fonter {
+    position: absolute;
+    margin-top: auto;
+    margin-bottom: auto;
 }

@@ -5,67 +5,69 @@ import {
   ElementRef, AfterViewInit,
   Output
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from '../../authentication/shared/auth.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { interval, merge, concat } from 'rxjs';
-import { mergeMapTo, takeUntil, mergeMap, map, mapTo, take, tap } from 'rxjs/operators';
+import { interval, merge, concat, of } from 'rxjs';
+import { mergeMapTo, takeUntil, mergeMap, map, mapTo, take, tap, switchMap, takeWhile } from 'rxjs/operators';
 import { async } from 'q';
+import { post } from 'selenium-webdriver/http';
+import { Location } from '@angular/common';
 
 
 
-@Component({
-  selector: 'app-post-modal-content',
-  templateUrl: './post.content.html'
-})
+// @Component({
+//   selector: 'app-post-modal-content',
+//   templateUrl: './post.content.html'
+// })
 
-export class PostModalContent {  // tslint:disable-line:component-class-suffix
-  @Input() post;
-  @Input() isEditable;
-  isEditMode = false;
-  isPending = false;
-  sideBarvalue = '0';
+// export class PostModalContent {  // tslint:disable-line:component-class-suffix
+//   @Input() post;
+//   @Input() isEditable;
+//   isEditMode = false;
+//   isPending = false;
+//   sideBarvalue = '0';
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private http: HttpClient,
-    private rd: Renderer2,
-    private element: ElementRef) {
-  }
+//   constructor(
+//     public activeModal: NgbActiveModal,
+//     private http: HttpClient,
+//     private rd: Renderer2,
+//     private element: ElementRef) {
+//   }
 
-  async onSave() {
-    this.isPending = true;
+//   async onSave() {
+//     this.isPending = true;
 
-    const update$ = this.http.patch<any>(
-      `${environment.baseUrl + 'posts/' + this.post.id}`, { post: this.post },
-      { observe: 'response' }
-    ).pipe(
-      map(res => res.status === 200)
-    );
-    const timer$ = interval(1000).pipe(take(5), map(x => 10 + x * 18));
-    const result$ = merge(timer$, update$);
-    await result$.subscribe(async (success) => {
-      if (success === true) {
-        return this.activeModal.close({ done: false, post: this.post });
-      } else if (success === false) {
-        return this.activeModal.close({ done: true });
-      } else {
-        this.sideBarvalue = success.toString();
-      }
-    });
-    this.isPending = false;
-  }
+//     const update$ = this.http.patch<any>(
+//       `${environment.baseUrl + 'posts/' + this.post.id}`, { post: this.post },
+//       { observe: 'response' }
+//     ).pipe(
+//       map(res => res.status === 200)
+//     );
+//     const timer$ = interval(1000).pipe(take(5), map(x => 10 + x * 18));
+//     const result$ = merge(timer$, update$);
+//     await result$.subscribe(async (success) => {
+//       if (success === true) {
+//         return this.activeModal.close({ done: false, post: this.post });
+//       } else if (success === false) {
+//         return this.activeModal.close({ done: true });
+//       } else {
+//         this.sideBarvalue = success.toString();
+//       }
+//     });
+//     this.isPending = false;
+//   }
 
-  onEdit() {
-    this.isEditMode = this.isEditable;
-  }
+//   onEdit() {
+//     this.isEditMode = this.isEditable;
+//   }
 
-  onClose() {
-    this.activeModal.close({ done: true });
-  }
-}
+//   onClose() {
+//     this.activeModal.close({ done: true });
+//   }
+// }
 
 
 @Component({
@@ -76,6 +78,12 @@ export class PostModalContent {  // tslint:disable-line:component-class-suffix
 export class PostComponent implements OnInit {
 
   post: any;
+  tmpPost: any;
+  @Input() isView = true;
+  @Input() isSingle = true;
+  isEditable = false;
+  isPending = false;
+  sideBarvalue = '0';
 
   @Input('post')
   set setPost(val: object) {
@@ -85,46 +93,76 @@ export class PostComponent implements OnInit {
   constructor(
     private router: Router,
     private auth: AuthService,
-    private modalService: NgbModal,
     private http: HttpClient,
     private rd: Renderer2,
-    private element: ElementRef) { }
+    private route: ActivatedRoute,
+    private element: ElementRef,
+    private location: Location) { }
 
   ngOnInit() {
     if (!this.auth.isAuth()) {
       this.router.navigate(['/signin']);
     }
     if (!this.post) {
-      this.post = {
-        title: 'no such post',
-        content: 'no such pos',
-        author: '',
-      };
+      // fetch post
+      this.route.paramMap.pipe(
+        switchMap((params: ParamMap) => of(params.get('id')))
+      ).subscribe(async (id) => {
+        await this.loadingPost(id);
+        this.isEditable = await this.checkIsEditable();
+      });
     }
   }
-
-
-  @HostListener('click', ['$event'])
-  onClick(event: Event) {
-    const targetElemnt = event.target as Element;
-    if (targetElemnt.className !== 'col' && targetElemnt.className !== 'row') {
-      this.popUpWindow();
+  onBack() {
+    this.location.back();
+  }
+  onEdit() {
+    if (this.checkIsEditable()) {
+      this.isView = false;
+      this.tmpPost = Object.assign({}, this.post);
     }
   }
+  onCancel() {
+    this.isView = true;
+  }
+  checkIsEditable() {
+    return (this.post.author === this.auth.getAuth().id);
+  }
 
-  popUpWindow() {
-    const modalRef = this.modalService.open(
-      PostModalContent, { backdrop: 'static', windowClass: 'postContentClass', centered: true });
-    modalRef.componentInstance.post = Object.assign({}, this.post);
-    modalRef.componentInstance.isEditable = (this.post.author === this.auth.getAuth().id);
-    modalRef.result.then((result) => {
-      if (!result.done) {
-        this.post = result.post;
-      }
-    }).catch((error) => {
-      console.log(error);
-    }
+  async onSave() {
+    this.isPending = true;
+    const update$ = this.http.patch<any>(
+      `${environment.baseUrl + 'posts/' + this.post.id}`, { post: this.tmpPost },
+      { observe: 'response' }
+    ).pipe(
+      map(res => res.status === 200)
     );
+    const timer$ = interval(1000).pipe(take(5), map(x => 10 + x * 18));
+    const result$ = merge(timer$, update$);
+    result$.subscribe(async (success) => {
+      if (success === true) {
+        this.post = await Object.assign(this.tmpPost, this.post);
+        this.isPending = false;
+        await this.onCancel();
+      } else if (success === false) {
+        this.isPending = false;
+      } else {
+        this.sideBarvalue = success.toString();
+      }
+    });
   }
 
+  async loadingPost(id) {
+    this.isPending = await this.http.get<any>(`${environment.baseUrl + 'posts/' + id}`)
+      .toPromise()
+      .then(async (res) => {
+        if (res && res.post) {
+          this.post = res.post;
+          return false;
+        }
+      })
+      .catch((error) => {
+        return true;
+      });
+  }
 }
