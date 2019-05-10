@@ -1,10 +1,6 @@
 <div *ngIf="post" class="row">
   <div class="col mt-1 mb-1">
     <div class="card border-primary">
-      <div *ngIf="isPending">
-        <ngb-progressbar type="info" [value]="sideBarvalue" height=".3rem"></ngb-progressbar>
-      </div>
-
       <div *ngIf="isView">
         <div class="card-header">{{post.title}}</div>
         <div class="card-body">
@@ -44,35 +40,35 @@
 
 
 <div *ngIf="post&&(isSingle||!isView)" class="mt-4 mb-2">
-
   <div class="row">
     <div class="col"></div>
     <div class="col"></div>
-    <div *ngIf="isView&&isSingle" class="col mx-4 btn btn-outline-secondary " (click)="onBack()">
-      &nbsp;Back&nbsp;
-    </div>
-  </div>
-  <div class="row">
-    <div class="col"></div>
-    <div class="col"></div>
-    <div *ngIf="isView&&isEditable" class="col mx-4 btn btn-outline-primary" (click)="onEdit()">
+    <div *ngIf="isView&&isEditable" class="col mx-4 mb-1 btn btn-outline-primary" (click)="onEdit()">
       &nbsp;Edit&nbsp;
     </div>
   </div>
   <div class="row">
     <div class="col"></div>
     <div class="col"></div>
-    <button *ngIf="!isView" [disabled]='isPending' class="col mx-4 btn btn-outline-secondary" (click)="onCancel()">
-      Cancel
+    <div *ngIf="isView&&isSingle" class="col mx-4 mb-1 btn btn-outline-secondary " (click)="onBack()">
+      &nbsp;Back&nbsp;
+    </div>
+  </div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col"></div>
+    <button *ngIf="!isView" [disabled]='isPending' class="col mx-4 mb-1 btn btn-outline-primary" (click)="onSave()">
+      &nbsp;Save&nbsp;
     </button>
   </div>
   <div class="row">
     <div class="col"></div>
     <div class="col"></div>
-    <button *ngIf="!isView" [disabled]='isPending' class="col mx-4 btn btn-outline-primary" (click)="onSave()">
-      &nbsp;Save&nbsp;
+    <button *ngIf="!isView" [disabled]='isPending' class="col mx-4 mb-1 btn btn-outline-secondary" (click)="onCancel()">
+      Cancel
     </button>
   </div>
+
 
 </div>
 
@@ -85,4 +81,10 @@
     </div>
   </div>
   <div class="col"></div>
+</div>
+
+<div *ngIf="isPending"  style="bottom: 0rem; position: sticky">
+  <ngb-progressbar type="success" [striped]='true' [max]='100' [animated]='true' [value]="sideBarvalue" height="0.7rem">
+  {{sideBarvalue}}%
+  </ngb-progressbar>
 </div>
