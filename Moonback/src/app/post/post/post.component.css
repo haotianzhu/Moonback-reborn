@@ -1,9 +1,14 @@
 
 
 .single-post {
-    max-width: 40rem;
+    max-width: 80%;
 }
 
 .no-border {
     border-style: none;
+}
+
+
+.postContentClass .modal-dialog {
+    max-width: 83%; 
 }

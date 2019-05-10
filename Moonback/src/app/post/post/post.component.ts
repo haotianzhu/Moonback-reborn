@@ -10,24 +10,52 @@ import { AuthService } from '../../authentication/shared/auth.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { interval, merge, concat } from 'rxjs';
+import { mergeMapTo, takeUntil, mergeMap, map, mapTo, take, tap } from 'rxjs/operators';
+import { async } from 'q';
 
 
 
 @Component({
   selector: 'app-post-modal-content',
-  templateUrl: './post.content.html',
+  templateUrl: './post.content.html'
 })
 
 export class PostModalContent {  // tslint:disable-line:component-class-suffix
   @Input() post;
   @Input() isEditable;
   isEditMode = false;
+  isPending = false;
+  sideBarvalue = '0';
 
-  constructor(public activeModal: NgbActiveModal) {
+  constructor(
+    public activeModal: NgbActiveModal,
+    private http: HttpClient,
+    private rd: Renderer2,
+    private element: ElementRef) {
   }
 
-  onSave() {
-    this.activeModal.close({ done: false, post: this.post });
+  async onSave() {
+    this.isPending = true;
+
+    const update$ = this.http.patch<any>(
+      `${environment.baseUrl + 'posts/' + this.post.id}`, { post: this.post },
+      { observe: 'response' }
+    ).pipe(
+      map(res => res.status === 200)
+    );
+    const timer$ = interval(1000).pipe(take(5), map(x => 10 + x * 18));
+    const result$ = merge(timer$, update$);
+    await result$.subscribe(async (success) => {
+      if (success === true) {
+        return this.activeModal.close({ done: false, post: this.post });
+      } else if (success === false) {
+        return this.activeModal.close({ done: true });
+      } else {
+        this.sideBarvalue = success.toString();
+      }
+    });
+    this.isPending = false;
   }
 
   onEdit() {
@@ -85,36 +113,15 @@ export class PostComponent implements OnInit {
   }
 
   popUpWindow() {
-    const modalRef = this.modalService.open(PostModalContent, { backdrop: 'static', size: 'lg', centered: true });
+    const modalRef = this.modalService.open(
+      PostModalContent, { backdrop: 'static', windowClass: 'postContentClass', centered: true });
     modalRef.componentInstance.post = Object.assign({}, this.post);
     modalRef.componentInstance.isEditable = (this.post.author === this.auth.getAuth().id);
-    modalRef.result.then(async (result) => {
-      if (result && result.done) {
-        return;
-      } else if (result && !result.done) {
-        if (result.post) {
-          await this.http.patch<any>(
-            `${environment.baseUrl + 'posts/' + this.post.id}`, { post: result.post },
-            { observe: 'response' }
-          ).subscribe((res) => {
-            if (res.status === 200) {
-              const data = res.body;
-              if (data && data) {
-                this.post = data.post;
-              } else {
-                throw Error('http error no new post data return');
-              }
-            }
-          });
-        } else {
-          throw Error('no new post data');
-        }
-      } else {
-        throw Error('unknow result');
+    modalRef.result.then((result) => {
+      if (!result.done) {
+        this.post = result.post;
       }
-    },
-      (reason) => { console.log(reason); }
-    ).catch((error) => {
+    }).catch((error) => {
       console.log(error);
     }
     );

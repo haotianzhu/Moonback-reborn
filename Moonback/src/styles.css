@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+.postContentClass .modal-dialog {
+    max-width: 95%;
+}
+
+#post-content img {
+    /* max-height: 35rem; */
+}
