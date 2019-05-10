@@ -13,16 +13,29 @@ export class AuthService {
 
   getToken() {
     const token = localStorage.getItem('token');
+<<<<<<< HEAD
     if (token) {
+=======
+    if (token && token !== undefined) {
+>>>>>>> master
       return token;
     }
     return '';
   }
+
   setToken(token) {
-    localStorage.setItem('token', token);
+    if (token && token !== undefined) {
+      localStorage.setItem('token', token);
+    }
   }
+
   isAuth() {
-    return !!localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if (token && token !== undefined) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   setAuth(user) {

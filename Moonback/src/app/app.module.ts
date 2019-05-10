@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { QuillModule } from 'ngx-quill';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -34,6 +34,7 @@ import { SidebarComponent } from './home/sidebar/sidebar.component';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    QuillModule,
     NgbModule.forRoot()
   ],
   providers: [

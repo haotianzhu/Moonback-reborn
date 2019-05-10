@@ -42,11 +42,11 @@ export class PostListComponent implements OnInit {
     // https://angular.io/guide/router
     this.postsRoute$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) => of(params.get('id')))
-    )
+    );
     this.postsRoute$.subscribe(
       (id) => {
         if (id) { // with id
-          this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=100'}`
+          this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=100'}`;
           this.loadingPost(this.url + '&skip=' + this.postArray.length);
         } else {
           // home page
@@ -54,7 +54,7 @@ export class PostListComponent implements OnInit {
           this.loadingPost(this.url + '&skip=' + this.postArray.length);
         }
       }
-    )
+    );
 
     this.scroll$ = fromEvent(document, 'scroll')
       .pipe(
@@ -62,7 +62,7 @@ export class PostListComponent implements OnInit {
           return (window.scrollY + window.innerHeight === document.body.scrollHeight);
         }),
         filter(needFetch => needFetch && this.pullable)
-      )
+      );
     this.scroll$.subscribe(
       () => {
         this.isLoading = true;
@@ -76,7 +76,7 @@ export class PostListComponent implements OnInit {
     this.isLoading = await this.http.get<any>(url, { observe: 'response' })
       .toPromise()
       .then(async (res) => {
-        await delay(500)
+        await delay(500);
         if (res.body.length === 0) {
           this.pullable = false;
           return;
