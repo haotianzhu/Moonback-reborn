@@ -13,19 +13,24 @@ export class SidebarComponent implements OnInit {
     private router:Router,
     private auth: AuthService,){}
 
+
   ngOnInit() {
+    
   }
 
   
   signUp(){
   	this.router.navigate(['/signup']);
-
   }
 
   signIn(){
   	this.router.navigate(['/signin']);
-
   }
 
+  signOut(){
+    this.router.navigate(['/signout']);
+  }
+
+    
 
 }
