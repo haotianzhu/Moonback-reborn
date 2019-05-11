@@ -1,30 +1,38 @@
 
-import { Component, OnInit, Renderer2, ElementRef, } from '@angular/core';
+import {
+  Component,
+  OnInit, Renderer2,
+  ElementRef, AfterViewInit,
+  Inject, forwardRef,
+  ViewChildren, QueryList
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { delay, async } from 'q';
 import { concatMap, switchMap, map, mapTo, combineLatest, mergeMap, debounceTime, filter } from 'rxjs/operators';
-
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/authentication/shared/auth.service';
-
-
 import { of, Observable, fromEvent, concat } from 'rxjs';
+import { AppComponent } from 'src/app/app.component';
+
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css']
 })
-export class PostListComponent implements OnInit {
+export class PostListComponent implements OnInit, AfterViewInit {
   postArray = [];
   isLoading = true;
   url = null;
   pullable = true;
+  scollPosInit: boolean;
   postsRoute$: Observable<any>;
   scroll$: Observable<any>;
+  @ViewChildren('allposts') loadingQueryList: QueryList<any>;
 
   constructor(
+    @Inject(forwardRef(() => AppComponent)) private appComponent: AppComponent,
     private http: HttpClient,
     private auth: AuthService,
     private router: Router,
@@ -34,24 +42,27 @@ export class PostListComponent implements OnInit {
   }
 
   ngOnInit() {
+    const pos = this.appComponent.getScrollPosition();
+    this.scollPosInit = pos !== [0, 0];
     // api/post/user/id
     if (!this.auth.isAuth()) {
       this.router.navigate(['/signin']);
     }
-
     // https://angular.io/guide/router
     this.postsRoute$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) => of(params.get('id')))
     );
     this.postsRoute$.subscribe(
       (id) => {
-        if (id) { // with id
-          this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=100'}`;
-          this.loadingPost(this.url + '&skip=' + this.postArray.length);
-        } else {
-          // home page
-          this.url = `${environment.baseUrl + 'posts?limit=100'}`;
-          this.loadingPost(this.url + '&skip=' + this.postArray.length);
+        if (this.postArray.length === 0) {
+          if (id) { // with id
+            this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=100'}`;
+            this.loadingPost(this.url + '&skip=' + this.postArray.length);
+          } else {
+            // home page
+            this.url = `${environment.baseUrl + 'posts?limit=100'}`;
+            this.loadingPost(this.url + '&skip=' + this.postArray.length);
+          }
         }
       }
     );
@@ -66,10 +77,21 @@ export class PostListComponent implements OnInit {
     this.scroll$.subscribe(
       () => {
         this.isLoading = true;
-        this.loadingPost(this.url + '&skip=' + this.postArray.length);
-        return;
+        return this.loadingPost(this.url + '&skip=' + this.postArray.length);
       }
     );
+  }
+
+  ngAfterViewInit() {
+    this.loadingQueryList.changes.subscribe(t => {
+      if (this.scollPosInit) {
+        this.restoreScroll();
+      }
+    });
+  }
+
+  restoreScroll() {
+    this.appComponent.restoreScrollPosition();
   }
 
   async loadingPost(url) {
