@@ -13,11 +13,7 @@ export class AuthService {
 
   getToken() {
     const token = localStorage.getItem('token');
-<<<<<<< HEAD
-    if (token) {
-=======
     if (token && token !== undefined) {
->>>>>>> master
       return token;
     }
     return '';

@@ -1,10 +1,12 @@
 div.side-bar {
-    width: 18rem;
+    max-width: 100%;
+    /* width: 18rem; */
     height: 18rem;
 }
 
 .sidebar{
     position: fixed;
+    margin-top: 25vh;
 }
 
 .backTop{
