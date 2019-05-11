@@ -12,8 +12,7 @@ import { SignupComponent } from './authentication/signup/signup.component';
 import { SignoutComponent } from './authentication/signout/signout.component';
 import { AuthTokenInterceptor } from './authentication/shared/token.service';
 import { PostListComponent } from './post/post-list/post-list.component';
-import { PostComponent, PostModalContent } from './post/post/post.component';
-import { SidebarComponent } from './home/sidebar/sidebar.component';
+import { PostComponent } from './post/post/post.component';
 
 
 @NgModule({
@@ -25,8 +24,11 @@ import { SidebarComponent } from './home/sidebar/sidebar.component';
     SignoutComponent,
     PostListComponent,
     PostComponent,
+<<<<<<< HEAD
     PostModalContent,
     SidebarComponent,
+=======
+>>>>>>> master
   ],
   imports: [
     BrowserModule,
@@ -40,7 +42,7 @@ import { SidebarComponent } from './home/sidebar/sidebar.component';
   providers: [
     [{ provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true }]
   ],
-  entryComponents: [PostModalContent],
+  entryComponents: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
