@@ -31,4 +31,10 @@ export class SidebarComponent implements OnInit {
     this.router.navigate(['/signout']);
   }
 
+  backTop() {
+    window.scroll(0,0);
+
+}
+  
+
 }
