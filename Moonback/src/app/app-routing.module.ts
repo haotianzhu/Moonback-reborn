@@ -8,16 +8,16 @@ import { PostComponent } from './post/post/post.component';
 
 
 const routes: Routes = [
-  { path: '', component: PostListComponent},
-  { path: 'signin', component: SigninComponent},
-  { path: 'signout', component: SignoutComponent},
-  { path: 'signup', component: SignupComponent},
-  { path: 'user/:id', component: PostListComponent},
-  { path: 'posts/:id', component: PostComponent}
+  { path: '', component: PostListComponent },
+  { path: 'signin', component: SigninComponent },
+  { path: 'signout', component: SignoutComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'user/:id', component: PostListComponent },
+  { path: 'posts/:id', component: PostComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
