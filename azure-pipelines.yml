@@ -30,7 +30,7 @@ steps:
 - script: 
     cd ./Moonback  
     npm run lint
-    displayName: 'npm pylint test'
+  displayName: 'npm pylint test'
 
 - script: 
     cd ./server  
