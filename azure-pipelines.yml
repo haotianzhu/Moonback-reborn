@@ -28,9 +28,8 @@ steps:
   displayName: 'npm front-end test'
   
 - script: 
-    cd ./Moonback  
-    npm run lint
-    displayName: 'npm pylint test'
+    ./Moonback/node_modules/tslint/bin/tslint  -p Moonback 
+  displayName: 'npm tslint test'
 
 - script: 
     cd ./server  
