@@ -10,10 +10,8 @@
 
       <button *ngIf="!auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signIn()">Sign In</button>
       <div *ngIf="!auth.isAuth()" class="row justify-content-center mb-1">Do not have a account?&nbsp;<a routerLink="/signup">sign up</a></div>
-
-      <div class="col" *ngIf="auth.isAuth()">
-        <button class="btn btn-primary mx-2 mb-2" (click)="signOut()">log out</button>
-      </div>
+      
+      <button *ngIf="auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signOut()">log out</button>
     </div>
 
   <button class="btn btn-primary mb-2 backTop" (click)="backTop()"> Back to Top </button>
