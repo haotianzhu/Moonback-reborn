@@ -2,7 +2,6 @@ import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../shared/auth.service';
 
@@ -27,19 +26,9 @@ export class SigninComponent implements OnInit {
   ngOnInit() {
     if (this.auth.isAuth()) { this.router.navigate(['/']); }
     this.signinForm = new FormGroup({
-      username: new FormControl('', [
-        Validators.required,
-      ]),
+      username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
-  }
-
-  setRed(el, isAdd: boolean) {
-    if (isAdd) {
-      this.rd.addClass(el, 'control-warm');
-    } else {
-      this.rd.removeClass(el, 'control-warm');
-    }
   }
 
   onSignIn() {

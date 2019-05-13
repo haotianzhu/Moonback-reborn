@@ -6,7 +6,7 @@ import { SignoutComponent } from './authentication/signout/signout.component';
 import { SignupComponent } from './authentication/signup/signup.component';
 import { PostListComponent } from './post/post-list/post-list.component';
 import { PostComponent } from './post/post/post.component';
-import { UserComponent } from './user/user.component';
+import { UserprofileComponent} from '../app/userprofile/userprofile.component';
 
 const routes: Routes = [
   { path: '', component: PostListComponent},
@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent},
   { path: 'user/:id', component: PostListComponent},
   { path: 'posts/:id', component: PostComponent},
-  { path: 'settings/account', component: UserComponent},
+  { path: 'account/settings', component: UserprofileComponent}
 ];
 
 @NgModule({

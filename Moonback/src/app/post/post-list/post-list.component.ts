@@ -76,7 +76,6 @@ export class PostListComponent implements OnInit {
     this.isLoading = await this.http.get<any>(url, { observe: 'response' })
       .toPromise()
       .then(async (res) => {
-        await delay(500);
         if (res.body.length === 0) {
           this.pullable = false;
           return;
