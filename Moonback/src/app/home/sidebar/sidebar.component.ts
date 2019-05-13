@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../authentication/shared/auth.service';
 
 
@@ -10,31 +10,30 @@ import { AuthService } from '../../authentication/shared/auth.service';
 })
 export class SidebarComponent implements OnInit {
   constructor(
-    private router:Router,
-    private auth: AuthService,){}
+    private router: Router,
+    private auth: AuthService, ) { }
 
 
   ngOnInit() {
-    
   }
 
-  
-  signUp(){
-  	this.router.navigate(['/signup']);
+
+  signUp() {
+    this.router.navigate(['/signup']);
   }
 
-  signIn(){
-  	this.router.navigate(['/signin']);
+  signIn() {
+    this.router.navigate(['/signin']);
   }
 
-  signOut(){
+  signOut() {
     this.router.navigate(['/signout']);
   }
 
   backTop() {
-    window.scroll(0,0);
+    window.scroll(0, 0);
 
-}
-  
+  }
+
 
 }

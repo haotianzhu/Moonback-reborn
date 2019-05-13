@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  username = "you are not signin"
+  username = 'you are not signin';
   constructor() {
     if (this.isAuth()) {
       this.username = this.getAuth().username;
@@ -55,6 +55,6 @@ export class AuthService {
     localStorage.removeItem('authUsername');
     localStorage.removeItem('authId');
     localStorage.removeItem('token');
-    this.username = "you are not signin";
+    this.username = 'you are not signin';
   }
 }
