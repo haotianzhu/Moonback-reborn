@@ -14,7 +14,7 @@ export class UserprofileComponent implements OnInit {
   verifyPasswordForm: FormGroup;
   changePasswordForm: FormGroup;
   userInfo: any;
-  isVerified = true;
+  isVerified = false;
 
   constructor(
     private http: HttpClient,

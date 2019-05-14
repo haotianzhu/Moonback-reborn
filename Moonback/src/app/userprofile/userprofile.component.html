@@ -6,21 +6,22 @@
 </div>
 
 <mat-tab-group>
-  <mat-tab label="Reset password">
+  <mat-tab label="Reset your password">
     <ng-template matTabContent>
       <form [formGroup]='verifyPasswordForm' novalidate *ngIf="!isVerified ">
         <small class="form-text">
           To continue, first verify it's you.
         </small>
-        <div class="form-group">
-          <label for="disabledTextInput">Username</label>
-          <input type="text" class="form-control" formControlName="username">
-        </div>
-        <div class="form-group">
-          <label for="inputPassword">Password</label>
-          <input type="password" class="form-control" id="inputPassword" aria-describedby="passwordlHelp"
+        <mat-form-field class="full-width">
+          <input matInput type="text" formControlName="username">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput type="password" aria-describedby="passwordlHelp"
             placeholder="Password" required formControlName='password'>
-        </div>
+            <mat-error>
+              Password is required.
+            </mat-error>
+          </mat-form-field>
         <div class="mt-4">
           <a class="text-left" routerLink="/">
             Forget the password?
@@ -62,7 +63,7 @@
       </form>
     </ng-template>
   </mat-tab>
-  
+
   <mat-tab label="Second">
     <ng-template matTabContent>
       <div class="my-3 p-3 bg-white rounded box-shadow">
