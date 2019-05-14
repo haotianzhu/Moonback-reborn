@@ -1,14 +1,27 @@
 <div class="d-flex align-items-center p-3 my-3 bg-white rounded box-shadow">
   <div class="lh-100">
-    <h6 class="mb-0 lh-100">Username</h6>
+    <h6 class="mb-0 lh-100">Hello {{userInfo.username}}</h6>
     <small>Mood</small>
   </div>
 </div>
 
 <mat-tab-group>
-  <mat-tab label="First">
+  <mat-tab label="Reset password">
     <ng-template matTabContent>
-      The First Content
+      <form [formGroup]='changePasswordForm' ngNativeValidate>
+          <small  class="form-text">
+              To continue, first verify it's you.
+          </small>
+        <div class="form-group">
+          <label for="disabledTextInput">Username</label>
+          <input type="text" class="form-control" formControlName= "username">
+        </div>
+        <div class="form-group">
+          <label for="inputPassword">Password</label>
+          <input type="password" class="form-control" id="inputPassword" aria-describedby="passwordlHelp" placeholder="Password" 
+          required formControlName='password'>
+        </div>
+      </form>
     </ng-template>
   </mat-tab>
   <mat-tab label="Second">
