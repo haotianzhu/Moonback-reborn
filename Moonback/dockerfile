@@ -1,0 +1,16 @@
+# base image
+FROM node:10.15.3-alpine
+
+# set working directory
+RUN mkdir -p /usr/src/moonback-front
+WORKDIR /usr/src/moonback-front
+
+# install and cache app dependencies
+COPY package*.json ./
+RUN npm install
+RUN npm install -g @angular/cli@1.7.1
+
+# add app
+COPY . .
+
+CMD ["ng","serve","--host", "0.0.0.0"]
