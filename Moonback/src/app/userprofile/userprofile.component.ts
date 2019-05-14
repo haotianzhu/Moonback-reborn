@@ -13,6 +13,7 @@ import { AuthService } from '../authentication/shared/auth.service';
 export class UserprofileComponent implements OnInit {
   changePasswordForm: FormGroup;
   userInfo: any;
+  isAuth = false;
 
    constructor(
     private http: HttpClient,

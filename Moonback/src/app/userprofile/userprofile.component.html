@@ -8,7 +8,7 @@
 <mat-tab-group>
   <mat-tab label="Reset password">
     <ng-template matTabContent>
-      <form [formGroup]='changePasswordForm' ngNativeValidate>
+      <form [formGroup]='changePasswordForm' ngNativeValidate *ngIf="!isAuth">
           <small  class="form-text">
               To continue, first verify it's you.
           </small>
@@ -21,6 +21,21 @@
           <input type="password" class="form-control" id="inputPassword" aria-describedby="passwordlHelp" placeholder="Password" 
           required formControlName='password'>
         </div>
+        <div class="mt-2">
+          <a class = "text-left" routerLink="/">
+            Forget the password?
+          </a>
+          <button (click)="onAuth()" class="btn btn-primary ml-5">
+            Next
+          </button>
+        </div>
+      </form>
+
+      <form [formGroup]='changePasswordForm' ngNativeValidate *ngIf="isAuth">
+          <h6  class="form-text text-muted">
+              Changing your password will sign you out of your devices. You’ll need to enter the new password when you sign back in.
+          </h6>
+      
       </form>
     </ng-template>
   </mat-tab>
