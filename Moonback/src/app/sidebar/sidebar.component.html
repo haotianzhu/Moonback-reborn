@@ -1,4 +1,4 @@
-<div *ngIf="viewable" class="sidebar d-flex flex-column bd-highlight">
+<div *ngIf="viewable" class="sidebar d-flex flex-column bd-highlight mr-2">
   <div class=" justify-content-center">
     <div class="card side-bar justify-content-center">
       <div class="card-body">
@@ -13,9 +13,7 @@
           routerLink="/signup">sign up</a>
       </div>
       <button *ngIf="auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signOut()">Sign Out</button>
-    </div>
-    <div class="backTop mt-2">
-        <button class="btn btn-primary mb-2 backTop" (click)="backTop()"> Back to Top </button>
+      <button class="btn btn-primary mx-2 mb-2" (click)="backTop()"> Back to Top </button>
     </div>
   </div>
 </div>

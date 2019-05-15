@@ -1,17 +1,12 @@
 div.side-bar {
     max-width: 22rem;
-    height: 18rem;
+    min-height: 15rem;
 }
 
 .sidebar{
     margin-top: 22rem;
-    min-width: 20rem;
-}
-
-.backTop{
-    width: 20rem;
-    position:fixed
-
+    max-width: 22rem;
+    position: fixed;
 }
 
 
