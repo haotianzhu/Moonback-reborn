@@ -34,6 +34,7 @@ export class SigninComponent implements OnInit {
 
   onSignIn() {
     if (this.signinForm.valid) {
+      console.log(this.signinForm.value)
       this.http.post<any>(
         `${environment.baseUrl + 'authentication/signin'}`,
         { user: this.signinForm.value },

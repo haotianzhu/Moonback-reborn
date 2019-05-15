@@ -6,14 +6,17 @@
 </div>
 
 <mat-tab-group>
-  <mat-tab label="Reset your password">
+  <mat-tab label="Reset your password" class = "text-color-black">
     <ng-template matTabContent>
       <form [formGroup]='verifyPasswordForm' novalidate *ngIf="!isVerified ">
-        <small class="form-text">
+        <h6 class="form-text">
           To continue, first verify it's you.
-        </small>
+        </h6>
+        <ngb-alert [dismissible]="false" type="danger" *ngIf="isVerficationFail" class = "mt-4">
+            <strong>Error!</strong> Username or password is not correct.
+        </ngb-alert>
         <mat-form-field class="full-width">
-          <input matInput type="text" formControlName="username">
+          <input matInput type="text" formControlName="username" readonly>
         </mat-form-field>
         <mat-form-field class="full-width">
           <input matInput type="password" aria-describedby="passwordlHelp"
@@ -31,8 +34,9 @@
           </button>
         </div>
       </form>
+
       <!-- isVerified now user can change password\ -->
-      <form *ngIf="isVerified" [formGroup]='changePasswordForm' class="full-width" novalidate >
+      <form *ngIf="isVerified" [formGroup]="changePasswordForm" class="full-width" novalidate >
         <h6 class="form-text text-muted">Changing your password will sign you out of your devices.</h6>
         <mat-form-field class="full-width">
           <input matInput type="password" formControlName='password'
@@ -64,7 +68,7 @@
     </ng-template>
   </mat-tab>
 
-  <mat-tab label="Second">
+  <mat-tab label="Latest">
     <ng-template matTabContent>
       <div class="my-3 p-3 bg-white rounded box-shadow">
         <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
