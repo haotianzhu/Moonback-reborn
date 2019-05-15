@@ -27,7 +27,35 @@
         <input formControlName="termsCheck" type="checkbox" class="form-check-input" id="termsCheck" required>
         <label class="form-check-label" for="termsCheck">I Accept terms of services</label>
     </div>
+<<<<<<< HEAD
   <div class="mt-2 text-center">
       <a routerLink="/signin">Already have an account?</a>
   </div>
 </form>
+=======
+    <div class="form-group">
+      <label for="inputUsername">Username</label>
+      <input type="text" class="form-control" id="inputUsername" aria-describedby="usernamelHelp" placeholder="Username" 
+      required minlength="8" maxlength="20" pattern="[a-zA-Z0-9]*" formControlName='username'>
+      <small id="usernamelHelp" class="form-text text-muted">
+        Your username must be 8-20 characters long, and must not contain spaces, special characters.
+      </small>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword">Password</label>
+      <input type="password" class="form-control" id="inputPassword" aria-describedby="passwordlHelp" placeholder="Password" 
+      required minlength="8" maxlength="20" pattern="[a-zA-Z0-9]*" formControlName='password'>
+      <small id="passwordlHelp" class="form-text text-muted ">
+        Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters.
+      </small>
+    </div>
+      <button (click)="onSignUp()" class="btn btn-primary btn-block mb-3">Sign Up</button>
+      <div class="form-check form-check-inline">
+          <input formControlName="termsCheck" type="checkbox" class="form-check-input" id="termsCheck" required>
+          <label class="form-check-label" for="termsCheck">I Accept terms of services</label>
+      </div>
+    <div class="mt-2 text-center">
+        <a routerLink="/signin">Already have an account?</a>
+    </div>
+  </form>
+>>>>>>> master
