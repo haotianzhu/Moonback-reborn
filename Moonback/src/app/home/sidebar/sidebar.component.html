@@ -1,5 +1,7 @@
-<!--  -->
-<div class="sidebar d-flex flex-column bd-highlight mr-2">
+
+<div *ngIf="viewable" class="sidebar flex-column bd-highlight mr-2 d-none d-lg-block">
+  <div class=" justify-content-center">
+<div *ngIf="viewable" class="sidebar d-flex flex-column bd-highlight mr-2">
   <div class=" justify-content-center mb-2">
     <div class="card side-bar justify-content-center">
       <div class="card-body">
@@ -11,10 +13,9 @@
       <button *ngIf="!auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signIn()">Sign In</button>
       <div *ngIf="!auth.isAuth()" class="row justify-content-center mb-1">Do not have a account?&nbsp;<a routerLink="/signup">sign up</a></div>
       
-      <button *ngIf="auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signOut()">log out</button>
+      <button *ngIf="auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signOut()">Sign Out</button>
     </div>
 
   <button class="btn btn-primary mb-2 backTop" (click)="backTop()"> Back to Top </button>
-  <!-- <a class="back-to-top" href="#top">返回顶部</a> -->
   
 </div>
