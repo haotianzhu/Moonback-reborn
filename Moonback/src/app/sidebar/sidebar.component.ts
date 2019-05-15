@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit {
   }
 
   checkUrl(path) {
-    const urls = ['/signin', '/signup', '/signout', 'account/settings'];
+    const urls = ['/signin', '/signup', '/signout', '/account/settings'];
     return urls.some(oneUrl => {
       return (path === oneUrl);
     });
