@@ -32,15 +32,15 @@ steps:
   displayName: 'npm tslint test'
 
 - script: 
-    mv ./server/* ./Moonback/dist/ &&
-    cd ./Moonback/dist/ &&
+    mv ./server/* ./Moonback/dist/Moonback &&
+    cd ./Moonback/distMoonback/ &&
     npm install &&
     npm test
   displayName: 'npm back-end test'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: ./Moonback/dist/
+    PathtoPublish: ./Moonback/dist/Moonback
     ArtifactName: 'app'
     publishLocation: 'Container'
 
