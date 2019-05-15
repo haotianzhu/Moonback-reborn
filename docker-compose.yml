@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
 
-  back-end:
+  moonback:
     container_name: moonback-back
     build:
       context: ./server
@@ -13,13 +13,3 @@ services:
     ports:
       - '3000:3000'
 
-  front-end:
-    container_name: moonback-front
-    build:
-      context: ./Moonback
-      dockerfile: Dockerfile
-    volumes:
-      - '/usr/src/moonback-back'
-      - '/usr/src/moonback-back/node_modules'
-    ports:
-      - '4200:4200'
