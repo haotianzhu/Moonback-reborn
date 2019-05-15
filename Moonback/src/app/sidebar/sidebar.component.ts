@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../authentication/shared/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { AuthService } from '../../authentication/shared/auth.service';
 import { filter, map, mapTo } from 'rxjs/operators';
 import { Event as MyRouterEvent } from '@angular/router';
 
@@ -13,7 +13,7 @@ import { Event as MyRouterEvent } from '@angular/router';
 export class SidebarComponent implements OnInit {
   constructor(
     private router: Router,
-    private auth: AuthService) { }
+    public auth: AuthService) { }
 
   viewable = true;
 
@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit {
   }
 
   checkUrl(path) {
-    const urls = ['/signin', '/signup', '/signout'];
+    const urls = ['/signin', '/signup', '/signout', '/account/settings'];
     return urls.some(oneUrl => {
       return (path === oneUrl);
     });

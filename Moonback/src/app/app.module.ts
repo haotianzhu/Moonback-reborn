@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 import { QuillModule } from 'ngx-quill';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,7 +15,9 @@ import { SignoutComponent } from './authentication/signout/signout.component';
 import { AuthTokenInterceptor } from './authentication/shared/token.service';
 import { PostListComponent } from './post/post-list/post-list.component';
 import { PostComponent } from './post/post/post.component';
-import { SidebarComponent } from './home/sidebar/sidebar.component';
+import { UserprofileComponent } from './user/userprofile/userprofile.component';
+import { MoonMaterialModule } from '../material-module';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 
 @NgModule({
@@ -25,16 +29,19 @@ import { SidebarComponent } from './home/sidebar/sidebar.component';
     SignoutComponent,
     PostListComponent,
     PostComponent,
+    UserprofileComponent,
     SidebarComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
     QuillModule,
-    NgbModule.forRoot()
+    NgbModule,
+    MoonMaterialModule
   ],
   providers: [
     [{ provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true }]
