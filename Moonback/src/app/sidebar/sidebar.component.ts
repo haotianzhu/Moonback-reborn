@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { AuthService } from '../../authentication/shared/auth.service';
+import { AuthService } from '../authentication/shared/auth.service';
 import { filter, map, mapTo } from 'rxjs/operators';
 import { Event as MyRouterEvent } from '@angular/router';
 
