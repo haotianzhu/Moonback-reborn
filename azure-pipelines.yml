@@ -33,7 +33,7 @@ steps:
 
 - script: 
     mv ./server/* ./Moonback/dist/Moonback &&
-    cd ./Moonback/distMoonback/ &&
+    cd ./Moonback/dist/Moonback/ &&
     npm install &&
     npm test
   displayName: 'npm back-end test'
