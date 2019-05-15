@@ -2,7 +2,6 @@ import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../shared/auth.service';
 
@@ -34,7 +33,6 @@ export class SigninComponent implements OnInit {
 
   onSignIn() {
     if (this.signinForm.valid) {
-      console.log(this.signinForm.value)
       this.http.post<any>(
         `${environment.baseUrl + 'authentication/signin'}`,
         { user: this.signinForm.value },
@@ -68,5 +66,4 @@ export class SigninComponent implements OnInit {
       }
     }
   }
-
 }
