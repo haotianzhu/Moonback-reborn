@@ -38,5 +38,9 @@ steps:
     npm test
   displayName: 'npm back-end test'
 
-
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: ./Moonback/dist/
+    ArtifactName: 'app'
+    publishLocation: 'Container'
 
