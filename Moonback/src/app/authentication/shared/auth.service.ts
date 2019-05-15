@@ -4,8 +4,12 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-
-  constructor() { }
+  username = 'you are not signin';
+  constructor() {
+    if (this.isAuth()) {
+      this.username = this.getAuth().username;
+    }
+  }
 
   getToken() {
     const token = localStorage.getItem('token');
@@ -34,6 +38,7 @@ export class AuthService {
     this.setToken(user.token);
     localStorage.setItem('authUsername', user.username);
     localStorage.setItem('authId', user.id);
+    this.username = user.username;
   }
 
   getAuth() {
@@ -50,5 +55,6 @@ export class AuthService {
     localStorage.removeItem('authUsername');
     localStorage.removeItem('authId');
     localStorage.removeItem('token');
+    this.username = 'you are not signin';
   }
 }
