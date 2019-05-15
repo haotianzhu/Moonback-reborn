@@ -15,7 +15,7 @@ import { SignoutComponent } from './authentication/signout/signout.component';
 import { AuthTokenInterceptor } from './authentication/shared/token.service';
 import { PostListComponent } from './post/post-list/post-list.component';
 import { PostComponent } from './post/post/post.component';
-import { UserprofileComponent } from './userprofile/userprofile.component';
+import { UserprofileComponent } from './user/userprofile/userprofile.component';
 import { MoonMaterialModule } from '../material-module';
 import { SidebarComponent } from './sidebar/sidebar.component';
 

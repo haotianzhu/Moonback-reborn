@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { environment } from 'src/environments/environment';
-import { AuthService } from '../authentication/shared/auth.service';
+import { AuthService } from 'src/app/authentication/shared/auth.service';
+
 
 @Component({
   selector: 'app-userprofile',

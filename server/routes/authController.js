@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken')
 authRouter.post('/signup', (req, res) => {
     let data = req.body;
     let newUser = new User(data.user);
-    console.log(newUser)
     newUser.save((error, data) => {
         if (error) {
             console.log('signup => ', error);

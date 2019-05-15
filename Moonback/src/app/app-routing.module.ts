@@ -6,7 +6,7 @@ import { SignoutComponent } from './authentication/signout/signout.component';
 import { SignupComponent } from './authentication/signup/signup.component';
 import { PostListComponent } from './post/post-list/post-list.component';
 import { PostComponent } from './post/post/post.component';
-import { UserprofileComponent} from '../app/userprofile/userprofile.component';
+import { UserprofileComponent} from './user/userprofile/userprofile.component';
 
 const routes: Routes = [
   { path: '', component: PostListComponent},
