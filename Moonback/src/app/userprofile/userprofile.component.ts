@@ -35,11 +35,11 @@ export class UserprofileComponent implements OnInit {
     }
   }
 
-onVerify() {
+  onVerify() {
     if (this.verifyPasswordForm.valid) {
       this.http.post<any>(
         `${environment.baseUrl + 'authentication/signin'}`,
-        { user: this.verifyPasswordForm.value},
+        { user: this.verifyPasswordForm.value },
         { observe: 'response' }
       ).subscribe(
         res => {
@@ -60,12 +60,12 @@ onVerify() {
       );
     }
   }
-  onPatch(){
+  onPatch() {
     if (this.changePasswordForm.valid) {
       this.userInfo.password = this.changePasswordForm.value.password;
       this.http.patch<any>(
         `${environment.baseUrl + 'user/' + this.userInfo.id}`,
-        { user: this.userInfo},
+        { user: this.userInfo },
         { observe: 'response' }
       ).subscribe(
         res => {
