@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <div *ngIf="viewable" class="sidebar flex-column bd-highlight mr-2 d-none d-lg-block">
+=======
+<div *ngIf="viewable" class="sidebar d-flex flex-column bd-highlight">
+>>>>>>> parent of a2a90fe... fixed
   <div class=" justify-content-center">
     <div class="card side-bar justify-content-center">
       <div class="card-body">
@@ -13,7 +17,9 @@
           routerLink="/signup">sign up</a>
       </div>
       <button *ngIf="auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signOut()">Sign Out</button>
-      <button class="btn btn-primary mx-2 mb-2" (click)="backTop()"> Back to Top </button>
+    </div>
+    <div class="backTop mt-2">
+        <button class="btn btn-primary mb-2 backTop" (click)="backTop()"> Back to Top </button>
     </div>
   </div>
 </div>
