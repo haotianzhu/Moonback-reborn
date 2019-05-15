@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const PORT = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 const postApi = require('./routes/postController');
 const authApi = require('./routes/authController');
@@ -12,6 +12,7 @@ const timeout = require('connect-timeout'); //express v4
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
+const path = require('path');
 mongoose.set('useCreateIndex', true);
 
 // init connetction to remote database
@@ -22,6 +23,9 @@ mongoose.connect(database, { useNewUrlParser: true }, error => {
         console.log("connected");
     }
 })
+
+// angualr static file
+app.use(express.static(path.join(__dirname, './')));
 
 app.use(cors());
 app.use(timeout('10s'));
