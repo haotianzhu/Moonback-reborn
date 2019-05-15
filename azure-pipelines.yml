@@ -32,7 +32,11 @@ steps:
   displayName: 'npm tslint test'
 
 - script: 
-    cd ./server  
+    mv ./server/* ./Moonback/dist/
+    cd ./Moonback/dist/
+    npm install 
     npm test
   displayName: 'npm back-end test'
+
+
 
