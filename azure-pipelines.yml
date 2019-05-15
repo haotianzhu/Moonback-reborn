@@ -6,33 +6,21 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'Ubuntu-16.04'
-
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '11.x'
   displayName: 'Install Node.js'
 
-- script: |
-    cd ./Moonback
-    npm install -g @angular/cli
-    npm install
-    ng build
-  displayName: 'npm install and build'
-
 - script: 
-    cd ./Moonback  
-    npm test
-  displayName: 'npm front-end test'
-  
-- script: 
-    ./Moonback/node_modules/tslint/bin/tslint  -p Moonback 
-  displayName: 'npm tslint test'
-
-- script: 
-    cd ./server  
+    cd ./server
+    npm install &&
     npm test
   displayName: 'npm back-end test'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: ./server
+    ArtifactName: 'app'
+    publishLocation: 'Container'
 
