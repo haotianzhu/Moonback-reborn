@@ -7,15 +7,10 @@ trigger:
 - master
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '11.x'
-  displayName: 'Install Node.js'
 
 - script: 
     cd ./server
-    npm install &&
-    npm test
+    npm install
   displayName: 'npm back-end test'
 
 - task: PublishBuildArtifacts@1
