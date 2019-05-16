@@ -9,9 +9,9 @@ trigger:
 steps:
 
 - script: 
-    cd ./server
+    cd ./server;
     npm install
-  displayName: 'npm back-end test'
+  displayName: 'npm back-end'
 
 - task: PublishBuildArtifacts@1
   inputs:
