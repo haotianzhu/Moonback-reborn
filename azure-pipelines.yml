@@ -15,14 +15,33 @@ steps:
   inputs:
     versionSpec: '10.14'
   displayName: 'Install Node.js'
+
+- script: |
+    cd ./Moonback;
+    npm install -g @angular/cli;
+    npm install;
+    ng build;
+  displayName: 'npm install and build'
+
+- script: 
+    cd ./Moonback;
+    npm test;
+  displayName: 'npm front-end test'
+  
+- script: 
+    ./Moonback/node_modules/tslint/bin/tslint  -p Moonback;
+  displayName: 'npm tslint test'
+
 - script: 
     cd ./server;
-    npm install
+    npm install;
   displayName: 'npm back-end'
+
+- script: 
+    mv ./server/* ./Moonback/dist/Moonback
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: ./server
+    PathtoPublish: ./Moonback/dist/Moonback
     ArtifactName: 'app'
     publishLocation: 'Container'
-
