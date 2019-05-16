@@ -23,10 +23,6 @@ steps:
     ng build;
   displayName: 'npm install and build'
 
-- script: 
-    cd ./Moonback;
-    npm test;
-  displayName: 'npm front-end test'
   
 - script: 
     ./Moonback/node_modules/tslint/bin/tslint  -p Moonback;
