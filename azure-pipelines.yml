@@ -20,7 +20,7 @@ steps:
     cd ./Moonback;
     npm install -g @angular/cli;
     npm install;
-    ng build;
+    ng build --env=prod;
   displayName: 'npm install and build'
 
   
