@@ -10,7 +10,6 @@ const path = require('path');
 const postApi = require('./routes/postController');
 const authApi = require('./routes/authController');
 const userApi = require('./routes/userController');
-const logger = require('./logger');
 const database = 'mongodb://yz:qaz98765432@ds155213.mlab.com:55213/db1';
 const app = express();
 mongoose.set('useCreateIndex', true);
@@ -19,9 +18,9 @@ const PORT = process.env.PORT || 3000;
 // init connetction to remote database
 mongoose.connect(database, { useNewUrlParser: true }, error => {
     if (error) {
-        logger.error(error);
+        console.error(error);
     } else {
-        logger.info("connected");
+        console.log("connected");
     }
 })
 
@@ -40,7 +39,7 @@ app.use('/api/user', verifyToken, userApi);
 app.use(haltOnTimedout);
 
 app.listen(PORT, function () {
-    logger.info('server running on localhost' + PORT);
+    console.log('server running on localhost' + PORT);
 })
 
 function verifyToken(req, res, next) {
@@ -57,7 +56,7 @@ function verifyToken(req, res, next) {
         req.userid = payload.id;
         req.username = payload.username;
     } catch (error) {
-        logger.info('verifyToken => ' + error);
+        console.log('verifyToken => ' + error);
         return res.status(401).send({ error: error });
     }
     next();
@@ -65,7 +64,7 @@ function verifyToken(req, res, next) {
 
 function haltOnTimedout(error, req, res, next) {
     if (error) {
-        logger.error(error)
+        console.error(error)
         if (error.status) {
             res.status(error.status).send({ message: error.message });
             return;
@@ -73,7 +72,7 @@ function haltOnTimedout(error, req, res, next) {
     }
     //https://www.npmjs.com/package/connect-timeout
     if (!req.timedout) {
-        logger.info(JSON.stringify(req.route))
+        console.log(JSON.stringify(req.route))
         next();
     } else {
         res.status(508).send({ message: "timeout!" });

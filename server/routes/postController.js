@@ -29,11 +29,11 @@ postRouter.get('/', (req, res) => {
     let query = pasrseUrlToQuery(req.query)
     Post.execute(query, (error, data) => {
         if (error) {
-            logger.info('GET /posts => 520 ', error)
+            console.log('GET /posts => 520 ', error)
             res.status(520).send({ query: "findAllPosts", message: error })
         } else {
             res.status(200).send({ posts: data, length: data.length, query: "findAllPosts" });
-            logger.info('GET /posts => 200 ')
+            console.log('GET /posts => 200 ')
         }
     });
 });
@@ -45,7 +45,7 @@ postRouter.post('/', (req, res) => {
         const authUserid = req.userid;
         reqData.post.author = authUserid;
     } catch (error) {
-        logger.info('POST /posts => 400 ', error)
+        console.log('POST /posts => 400 ', error)
         res.status(400).send({ query: "createNewPost", status: 'unsucessful', message: error.toString() });
         return;
     }
@@ -53,11 +53,11 @@ postRouter.post('/', (req, res) => {
     let newPost = new Post(reqData.post);
     newPost.save((error, data) => {
         if (error) {
-            logger.info('POST /posts => 520', error)
+            console.log('POST /posts => 520', error)
             res.status(520).send({ query: "createNewPost", status: 'unsucessful', message: error })
         } else {
             res.status(200).send({ post: data, query: "createNewPost", status: 'sucessful' })
-            logger.info('POST /posts => 200', error)
+            console.log('POST /posts => 200', error)
         }
     });
 });
@@ -66,15 +66,15 @@ postRouter.post('/', (req, res) => {
 postRouter.get('/:id', (req, res) => {
     Post.findById(req.params.id, (error, data) => {
         if (error) {
-            logger.info('GET /posts/:id => 520 ', error)
+            console.log('GET /posts/:id => 520 ', error)
             res.status(520).send({ query: "findPostById", message: error })
             return;
         }
         if (data) {
-            logger.info('GET /posts/:id => 200 ')
+            console.log('GET /posts/:id => 200 ')
             res.status(200).send({ post: data, query: "findPostById" })
         } else {
-            logger.info('GET /posts/:id => 404 ', "post not found")
+            console.log('GET /posts/:id => 404 ', "post not found")
             res.status(404).send({ status: 'unsucessful', query: "findPostById", message: "post not found" })
         }
     })
@@ -103,7 +103,7 @@ postRouter.patch('/:id', awaitHandlerFactory(async (req, res) => {
         reqPost = req.body.post;
         if (!reqPost || reqPost == undefined) throw Error("body has no post")
     } catch (error) {
-        logger.info("PATCH api/posts/:id => 400 ", error.toString())
+        console.log("PATCH api/posts/:id => 400 ", error.toString())
         res.status(400).send({ query: "createNewPost", status: 'unsucessful', message: error.toString() });
         return;
     }
@@ -111,7 +111,7 @@ postRouter.patch('/:id', awaitHandlerFactory(async (req, res) => {
     // find post with given id
     var post = await Post.findById(req.params.id).catch((error) => {
         if (error) {
-            logger.info("PATCH api/posts/:id => 404 ", error)
+            console.log("PATCH api/posts/:id => 404 ", error)
             res.status(404).send({ query: "updatePostById", status: 'unsucessful', message: error })
         }
     });
@@ -135,16 +135,16 @@ postRouter.patch('/:id', awaitHandlerFactory(async (req, res) => {
         }
         post.save((error, newPost) => {
             if (error) {
-                logger.info("PATCH api/posts/:id => 403 ", error)
+                console.log("PATCH api/posts/:id => 403 ", error)
                 res.status(403).send({ query: "updatePostById", status: 'unsucessful', message: error })
             } else {
-                logger.info("PATCH api/posts/:id => 200 ")
+                console.log("PATCH api/posts/:id => 200 ")
                 res.status(200).send({ query: "updatePostById", status: 'sucessful' })
             }
         })
     } else if (!hasPermission) {
         // no permission
-        logger.info("PATCH api/posts/:id => ", error)
+        console.log("PATCH api/posts/:id => ", error)
         res.status(403).send({ query: "updatePostById", status: 'unsucessful', message: "no permission" })
         return;
     }
@@ -156,10 +156,10 @@ postRouter.delete('/:id', (req, res) => {
     //TODO: permission check
     Post.findByIdAndDelete(req.params.id, (error, data) => {
         if (error) {
-            logger.info('DELETE api/posts/:id => 520 ', error)
+            console.log('DELETE api/posts/:id => 520 ', error)
             res.status(520).send({ query: "deletePostById", message: error })
         } else {
-            logger.info('DELETE api/posts/:id => 200 ')
+            console.log('DELETE api/posts/:id => 200 ')
             res.status(200).send({ query: "deletePostById" })
         }
     })
@@ -173,11 +173,11 @@ postRouter.get('/user/:id', (req, res) => {
     query.select.author = req.params.id;
     Post.execute(query, (error, data) => {
         if (error) {
-            logger.info('GET api/posts/user/:id => 404 ', error);
+            console.log('GET api/posts/user/:id => 404 ', error);
             res.status(404).send({ query: "findPostsByUserId", message: error });
             return;
         } else {
-            logger.info('GET api/posts/user/:id => 200 ')
+            console.log('GET api/posts/user/:id => 200 ')
             res.status(200).send({ query: "findPostsByUserId", status: 'sucessful', posts: data, length: data.length });
             return;
         }
