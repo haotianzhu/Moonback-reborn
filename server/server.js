@@ -41,12 +41,12 @@ if (process.env.NODE_ENV !== 'production') {
 // init connetction to remote database
 mongoose.connect(database, { useNewUrlParser: true }, error => {
     if (error) {
-        console.error(error);
+        logger.error(error);
     } else {
-        console.log("connected");
+        logger.info("connected");
     }
 })
-app.use(logger());
+
 // angualr static file
 app.use(express.static(path.join(__dirname, './')));
 
@@ -62,7 +62,7 @@ app.use('/api/user', verifyToken, userApi);
 app.use(haltOnTimedout);
 
 app.listen(PORT, function () {
-    console.log('server running on localhost' + PORT);
+    logger.info('server running on localhost' + PORT);
 })
 
 function verifyToken(req, res, next) {
@@ -87,14 +87,15 @@ function verifyToken(req, res, next) {
 
 function haltOnTimedout(error, req, res, next) {
     if (error) {
+        logger.error(error)
         if (error.status) {
-            logger.error(error)
             res.status(error.status).send({ message: error.message });
             return;
         }
     }
     //https://www.npmjs.com/package/connect-timeout
     if (!req.timedout) {
+        logger.info(JSON.stringify(req.route))
         next();
     } else {
         res.status(508).send({ message: "timeout!" });
