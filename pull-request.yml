@@ -1,0 +1,43 @@
+# Node.js with Angular
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.14'
+  displayName: 'Install Node.js'
+
+- script: |
+    cd ./Moonback;
+    npm install -g @angular/cli;
+    npm install;
+    ng build --prod;
+  displayName: 'npm install and build'
+
+  
+- script: 
+    ./Moonback/node_modules/tslint/bin/tslint  -p Moonback;
+  displayName: 'npm tslint test'
+
+- script: 
+    cd ./server;
+    npm install;
+  displayName: 'npm back-end'
+
+- script: 
+    mv ./server/* ./Moonback/dist/Moonback
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: ./Moonback/dist/Moonback
+    ArtifactName: 'app'
+    publishLocation: 'Container'
