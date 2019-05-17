@@ -13,7 +13,30 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const path = require('path');
+const winston = require('winston');
 mongoose.set('useCreateIndex', true);
+
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.json(),
+    defaultMeta: { service: 'user-service' },
+    transports: [
+      //
+      // - Write to all logs with level `info` and below to `combined.log` 
+      // - Write all logs error (and below) to `error.log`.
+      //
+      new winston.transports.File({ filename: 'error.log', level: 'error' }),
+      new winston.transports.File({ filename: 'combined.log' })
+    ]
+  });
+// If we're not in production then log to the `console` with the format:
+// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
+// 
+if (process.env.NODE_ENV !== 'production') {
+    logger.add(new winston.transports.Console({
+      format: winston.format.simple()
+    }));
+  }
 
 // init connetction to remote database
 mongoose.connect(database, { useNewUrlParser: true }, error => {
@@ -23,7 +46,7 @@ mongoose.connect(database, { useNewUrlParser: true }, error => {
         console.log("connected");
     }
 })
-
+app.use(logger());
 // angualr static file
 app.use(express.static(path.join(__dirname, './')));
 
@@ -56,7 +79,7 @@ function verifyToken(req, res, next) {
         req.userid = payload.id;
         req.username = payload.username;
     } catch (error) {
-        console.log('verifyToken => ' + error);
+        logger.info('verifyToken => ' + error);
         return res.status(401).send({ error: error });
     }
     next();
@@ -65,7 +88,7 @@ function verifyToken(req, res, next) {
 function haltOnTimedout(error, req, res, next) {
     if (error) {
         if (error.status) {
-            console.log(error)
+            logger.error(error)
             res.status(error.status).send({ message: error.message });
             return;
         }
