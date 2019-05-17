@@ -35,6 +35,7 @@ const awaitHandlerFactory = (middleware) => {
 }
 // api/authentication/signin
 authRouter.post('/signin', awaitHandlerFactory(async (req, res) => {
+    logger.error('api/authentication/signin => 400 ', req.body)
     let data = req.body;
     let signinUser = new User(data.user);
     await User.findOne({ username: signinUser.username }, (error, user) => {
