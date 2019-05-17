@@ -65,10 +65,12 @@ function verifyToken(req, res, next) {
 
 function haltOnTimedout(error, req, res, next) {
     if (error) {
-        logger.error(error)
         if (error.status) {
+            logger.info(error.status, error)
             res.status(error.status).send({ message: error.message });
             return;
+        } else {
+            logger.error(error)
         }
     }
     //https://www.npmjs.com/package/connect-timeout
