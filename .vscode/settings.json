@@ -1,4 +1,6 @@
 {
     "tslint.enable": true,
     "tslint.jsEnable":true,
+    "eslint.enable": true,
+    "eslint.workingDirectories": ["./server"]
 }
