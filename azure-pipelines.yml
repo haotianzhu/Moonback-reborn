@@ -28,6 +28,10 @@ steps:
     ./Moonback/node_modules/tslint/bin/tslint  -p Moonback;
   displayName: 'npm tslint test'
 
+- script: 
+    cd ./server;
+    npm install;
+  displayName: 'npm back-end'
 
 - script: 
     mv ./server/* ./Moonback/dist/Moonback
