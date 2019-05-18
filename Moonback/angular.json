@@ -20,9 +20,11 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/wen.config"
             ],
             "styles": [
+              "src/custom-theme.scss",
               "./node_modules/quill/dist/quill.core.css",
               "./node_modules/quill/dist/quill.snow.css",
               "node_modules/bootstrap/dist/css/bootstrap.css",

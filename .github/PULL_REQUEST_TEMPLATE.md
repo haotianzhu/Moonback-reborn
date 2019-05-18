@@ -5,10 +5,18 @@
 - [ ] Branch is up to date with master
 
 - [ ] Now it's a good time for reviewing
-
+ 
 - [ ] Branch should have prefix either "feature/" or "fix/"
 
+- [ ] Have an image/gif
+
+
+##### GIF or Image
+
+
+
 ##### Comment
+
 
 
 

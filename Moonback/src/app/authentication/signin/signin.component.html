@@ -1,10 +1,10 @@
 <form class="form-auth " [formGroup]='signinForm' novalidate>
-  <img class="rounded mx-auto d-block" src="../../../assets/img/login/signup_icon.png" alt="signin">
+  <img class="rounded mx-auto d-block" src="/assets/img/login/signup_icon.png" alt="signin">
   <h1 class="h3 mb-3 font-weight-normal text-center">
     Please sign in
   </h1>
   <div *ngIf="!isCorrect" class="alert alert-danger">
-    username or password is not correct
+    Username or password is not correct.
   </div>
 
   <div class="form-group ">
