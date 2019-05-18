@@ -1,18 +1,30 @@
-<div *ngIf="viewable" class="sidebar bd-highlight mr-2 d-none d-lg-block">
-  <div class=" justify-content-center mb-2">
-    <div class="card side-bar justify-content-center">
-      <div class="card-body">
-        <h5 class="card-title">{{auth.username}}</h5>
-        <p *ngIf="auth.isAuth()" class="card-text">Some quick example text to build on the card title and make up the
-          bulk of
-          the card's content.</p>
-      </div>
-      <button *ngIf="!auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signIn()">Sign In</button>
-      <div *ngIf="!auth.isAuth()" class="row justify-content-center mb-1">Do not have a account?&nbsp;<a
-          routerLink="/signup">sign up</a></div>
+<div *ngIf="viewable" class="sidebar bd-highlight mt-1 d-none d-lg-block">
+  <!-- create new post -->
+  <div class = "card mb-4">
 
-      <button *ngIf="auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signOut()">Sign Out</button>
+  </div>
+  <!-- user info -->
+  <div class = "card">
+    <div class="card-body">
+      <h5 class="card-title">{{auth.username}}</h5>
+      <p *ngIf="auth.isAuth()" class="card-text">
+        A horse, a horse! 
+        My kingdom for a horse!</p>
     </div>
+    <button *ngIf="!auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signIn()">
+      Sign In
+    </button>
+    <button *ngIf="!auth.isAuth()" routerLink="/account/settings" class="btn btn-primary mx-2 mb-2" >
+      View your own profile
+    </button>
+
+    <div *ngIf="!auth.isAuth()" class="row justify-content-center mb-1">
+        Don't Have an Account?&nbsp;
+        <a routerLink="/signup">sign up</a>
+    </div>
+    <button *ngIf="auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signOut()">
+      Sign Out
+    </button>
 
     <button class="btn btn-primary mb-2 backTop" (click)="backTop()"> Back to Top </button>
   </div>
