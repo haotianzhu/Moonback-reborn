@@ -1,31 +1,30 @@
-<div *ngIf="viewable" class="sidebar bd-highlight mt-1 d-none d-lg-block">
-  <!-- create new post -->
-  <div class = "card mb-4">
-
+<div *ngIf="viewable" class="bd-highlight mt-1 d-none d-lg-block">
+  <div class="card mb-4">
+      <div class="card-header">Home</div>
+      <div class="card-body">
+        <div *ngIf="auth.isAuth()" class="card-title">{{auth.username}}</div>
+        <div *ngIf="auth.isAuth()"  class="card-text">
+            A horse, a horse!
+            My kingdom for a horse!
+        </div>
+        <button class="btn btn-warning btn-block mt-4 mb-2" routerLink="/account/settings" >CREATE POST</button>
+        <button class="btn btn-info btn-block mt-2 mb-2" routerLink="/account/settings" >VIEW YOUR POST</button>
+      </div>
   </div>
-  <!-- user info -->
-  <div class = "card">
+
+  <div class="card ">
     <div class="card-body">
-      <h5 class="card-title">{{auth.username}}</h5>
-      <p *ngIf="auth.isAuth()" class="card-text">
-        A horse, a horse! 
-        My kingdom for a horse!</p>
-    </div>
-    <button *ngIf="!auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signIn()">
-      Sign In
-    </button>
-    <button *ngIf="!auth.isAuth()" routerLink="/account/settings" class="btn btn-primary mx-2 mb-2" >
-      View your own profile
-    </button>
+      <div *ngIf="!auth.isAuth()" class="row justify-content-center mb-1">
+        <button class="btn btn-primary btn-block mx-2" (click)="signIn()">Sign In</button>
+        <h6>Don't Have an Account?</h6>
+        <a routerLink="/signup"> sign up</a>
+      </div>
 
-    <div *ngIf="!auth.isAuth()" class="row justify-content-center mb-1">
-        Don't Have an Account?&nbsp;
-        <a routerLink="/signup">sign up</a>
+      <div *ngIf="auth.isAuth()">
+        <button class="btn btn-primary btn-block mx-2" (click)="signOut()">Sign Out</button>
+      </div>
     </div>
-    <button *ngIf="auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signOut()">
-      Sign Out
-    </button>
-
-    <button class="btn btn-primary mb-2 backTop" (click)="backTop()"> Back to Top </button>
   </div>
+
+  <button class="btn btn-primary mt-4 btn-block" (click)="backTop()"> Back to Top </button>
 </div>
