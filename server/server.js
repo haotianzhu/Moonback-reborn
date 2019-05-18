@@ -35,6 +35,11 @@ app.use(haltOnTimedout)
 app.use('/api/posts', verifyToken, postApi)
 app.use('/api/authentication', authApi)
 app.use('/api/user', verifyToken, userApi)
+app.all('/*', function (req, res, next) {
+  // Just send the index.html for other files to support HTML5Mode
+  res.sendFile('index.html', { root: __dirname })
+})
+
 app.use(haltOnTimedout)
 
 app.listen(PORT, function () {
