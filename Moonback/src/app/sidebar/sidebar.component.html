@@ -7,26 +7,26 @@
             A horse, a horse!
             My kingdom for a horse!
         </div>
-        <button class="btn btn-primary text-white btn-block mt-4 mb-2" routerLink="/account/settings" >CREATE POST</button>
-        <button class="btn btn-light text-primary btn-block mt-2 mb-2" routerLink="/account/settings" >VIEW YOUR POST</button>
+        <button class="btn btn-danger text-white btn-block mt-4 mb-2" routerLink="/account/settings" >CREATE POST</button>
+        <button class="btn btn-light text-danger btn-block mt-2 mb-2" routerLink="/account/settings" >VIEW YOUR POST</button>
       </div>
   </div>
 
   <div class="card ">
     <div class="card-body">
       <div *ngIf="!auth.isAuth()" class="row justify-content-center mb-1">
-        <button class="btn btn-primary btn-block mx-2" (click)="signIn()">Sign In</button>
+        <button class="btn btn-danger btn-block mx-2" (click)="signIn()">Sign In</button>
         <h6>Don't Have an Account?</h6>
         <a routerLink="/signup"> sign up</a>
       </div>
 
       <div *ngIf="auth.isAuth()">
-        <button class="btn btn-primary btn-block mx-2" (click)="signOut()">Sign Out</button>
+        <button class="btn btn-danger btn-block mx-2" (click)="signOut()">Sign Out</button>
       </div>
     </div>
   </div>
   <div class="d-flex justify-content-end">
-    <button *ngIf = 'isbackTop' class="btn btn-primary back-top" (click)="backTop()"> Back to Top </button>
+    <button *ngIf = 'isbackTop' class="btn btn-dangerback-top" (click)="backTop()"> Back to Top </button>
   </div>
   
 </div>
