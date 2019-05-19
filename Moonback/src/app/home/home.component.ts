@@ -11,7 +11,7 @@ import { Event as MyRouterEvent } from '@angular/router';
 export class HomeComponent implements OnInit {
   isCollapsed = false;
   viewable = true;
-  constructor(private router: Router,) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.router.events.pipe(
