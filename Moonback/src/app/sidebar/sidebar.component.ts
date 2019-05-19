@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../authentication/shared/auth.service';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { filter, map, mapTo } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { Event as MyRouterEvent } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
+
+
+import { AuthService } from '../authentication/shared/auth.service';
+
 
 
 @Component({
@@ -13,9 +17,11 @@ import { Event as MyRouterEvent } from '@angular/router';
 export class SidebarComponent implements OnInit {
   constructor(
     private router: Router,
+    private viewportScroller: ViewportScroller,
     public auth: AuthService) { }
 
   viewable = true;
+  isbackTop = false;
 
   ngOnInit() {
     this.router.events.pipe(
@@ -24,6 +30,16 @@ export class SidebarComponent implements OnInit {
     ).subscribe(isNotViewable => {
       this.viewable = !isNotViewable;
     });
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  checkScroll() {
+    if (this.viewportScroller.getScrollPosition()[1] >= window.innerHeight) {
+      this.isbackTop = true;
+    }
+    if (this.viewportScroller.getScrollPosition()[1] <= window.innerHeight) {
+      this.isbackTop = false;
+    }
   }
 
   checkUrl(path) {

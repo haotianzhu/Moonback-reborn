@@ -1,19 +1,32 @@
-<div *ngIf="viewable" class="sidebar bd-highlight mr-2 d-none d-lg-block">
-  <div class=" justify-content-center mb-2">
-    <div class="card side-bar justify-content-center">
+<div *ngIf="viewable" class="bd-highlight mt-1 d-none d-lg-block">
+  <div class="card mb-4">
+      <div class="card-header">Home</div>
       <div class="card-body">
-        <h5 class="card-title">{{auth.username}}</h5>
-        <p *ngIf="auth.isAuth()" class="card-text">Some quick example text to build on the card title and make up the
-          bulk of
-          the card's content.</p>
+        <div *ngIf="auth.isAuth()" class="card-title">{{auth.username}}</div>
+        <div *ngIf="auth.isAuth()"  class="card-text">
+            A horse, a horse!
+            My kingdom for a horse!
+        </div>
+        <button class="btn btn-primary text-white btn-block mt-4 mb-2" routerLink="/account/settings" >CREATE POST</button>
+        <button class="btn btn-light text-primary btn-block mt-2 mb-2" routerLink="/account/settings" >VIEW YOUR POST</button>
       </div>
-      <button *ngIf="!auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signIn()">Sign In</button>
-      <div *ngIf="!auth.isAuth()" class="row justify-content-center mb-1">Do not have a account?&nbsp;<a
-          routerLink="/signup">sign up</a></div>
-
-      <button *ngIf="auth.isAuth()" class="btn btn-primary mx-2 mb-2" (click)="signOut()">Sign Out</button>
-    </div>
-
-    <button class="btn btn-primary mb-2 backTop" (click)="backTop()"> Back to Top </button>
   </div>
+
+  <div class="card ">
+    <div class="card-body">
+      <div *ngIf="!auth.isAuth()" class="row justify-content-center mb-1">
+        <button class="btn btn-primary btn-block mx-2" (click)="signIn()">Sign In</button>
+        <h6>Don't Have an Account?</h6>
+        <a routerLink="/signup"> sign up</a>
+      </div>
+
+      <div *ngIf="auth.isAuth()">
+        <button class="btn btn-primary btn-block mx-2" (click)="signOut()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-end">
+    <button *ngIf = 'isbackTop' class="btn btn-primary back-top" (click)="backTop()"> Back to Top </button>
+  </div>
+  
 </div>
