@@ -1,5 +1,4 @@
 .navbar-brand .nav-icon-image {
-    width: 2rem;
-    height: 2rem;
+  max-width: 4rem;
 }
 
