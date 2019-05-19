@@ -20,9 +20,16 @@ export class SidebarComponent implements OnInit {
     private viewportScroller: ViewportScroller,
     public auth: AuthService) { }
 
+  viewable = true;
   isbackTop = false;
 
   ngOnInit() {
+    this.router.events.pipe(
+      filter((e: MyRouterEvent) => e instanceof NavigationEnd),
+      map(e => this.checkUrl(this.router.url.split('?')[0]))
+    ).subscribe(isNotViewable => {
+      this.viewable = !isNotViewable;
+    });
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -35,6 +42,12 @@ export class SidebarComponent implements OnInit {
     }
   }
 
+  checkUrl(path) {
+    const urls = ['/signin', '/signup', '/signout', '/account/settings'];
+    return urls.some(oneUrl => {
+      return (path === oneUrl);
+    });
+  }
 
   signUp() {
     this.router.navigate(['/signup']);
