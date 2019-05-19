@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'signout', component: SignoutComponent},
   { path: 'signup', component: SignupComponent},
   { path: 'user/:id', component: PostListComponent},
-  { path: 'posts/:id', component: PostComponent}, 
+  { path: 'posts/:id', component: PostComponent},
   { path: 'account/settings', component: UserprofileComponent},
   { path: '**', component: NotFound404Component }
 ];
