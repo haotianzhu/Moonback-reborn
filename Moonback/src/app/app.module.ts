@@ -18,6 +18,7 @@ import { PostComponent } from './post/post/post.component';
 import { UserprofileComponent } from './user/userprofile/userprofile.component';
 import { MoonMaterialModule } from '../material-module';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { NotFound404Component } from './not-found404/not-found404.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     PostComponent,
     UserprofileComponent,
     SidebarComponent,
+    NotFound404Component,
   ],
   imports: [
     BrowserModule,
