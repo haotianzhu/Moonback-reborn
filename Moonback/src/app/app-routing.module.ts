@@ -8,6 +8,7 @@ import { PostListComponent } from './post/post-list/post-list.component';
 import { PostComponent } from './post/post/post.component';
 import { UserprofileComponent } from './user/userprofile/userprofile.component';
 import { NotFound404Component } from './not-found404/not-found404.component';
+
 const routes: Routes = [
   { path: '', component: PostListComponent},
   { path: 'signin', component: SigninComponent},
