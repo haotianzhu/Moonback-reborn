@@ -17,3 +17,12 @@
     bottom: 0rem;
     left: 0rem;
 }
+
+.container-fluid{
+    padding: 0;
+ }
+ 
+:host { 
+    height: 100vh;
+    display: flex;
+}
