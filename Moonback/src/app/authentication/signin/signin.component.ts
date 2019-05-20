@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 import { AuthService } from '../shared/auth.service';
 
 
-
+let remember = 0;
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -24,11 +24,18 @@ export class SigninComponent implements OnInit {
     private element: ElementRef) { }
 
   ngOnInit() {
-    if (this.auth.isAuth()) { this.router.navigate(['/']); }
+    if (this.auth.isAuth() || this.auth.isAuth2()) { this.router.navigate(['/']); }
     this.signinForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
+  }
+
+
+  rememberCheck(checked: boolean) {
+    if (checked) {
+      remember = 1;
+    }
   }
 
   onSignIn() {
@@ -40,9 +47,17 @@ export class SigninComponent implements OnInit {
       ).subscribe(
         res => {
           if (res.status === 200) {
-            this.auth.setAuth(res.body.user);
-            if (this.auth.isAuth()) {
-              this.router.navigate(['/']);
+            if (remember === 1) {
+              this.auth.setAuth(res.body.user);
+              if (this.auth.isAuth()) {
+                this.router.navigate(['/']);
+              }
+            }
+            if (remember === 0) {
+              this.auth.setAuth2(res.body.user);
+              if (this.auth.isAuth2()) {
+                this.router.navigate(['/']);
+              }
             }
           }
         },
