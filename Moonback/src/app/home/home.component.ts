@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
     });
   }
   checkUrl(path) {
-    const urls = ['/signin', '/signup', '/signout', '/account/settings'];
+    const urls = ['/signin', '/signup', '/signout', '/account/settings', '/404'];
     return urls.some(oneUrl => {
       return (path === oneUrl);
     });

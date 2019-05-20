@@ -1,7 +1,3 @@
 <div [ngStyle]="{'z-index': 99}">
   <app-post [isClickable]='false' [isView]='true' [post]=data></app-post>
-  <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
-  </div>
 </div>

@@ -1,6 +1,6 @@
 <div *ngIf="data" class="row">
   <div class="col">
-    <div class="card border-primary">
+    <div class="card border-danger">
       <div *ngIf="isView">
         <div class="card-header">{{data.title}}</div>
         <div class="card-body">
@@ -15,21 +15,22 @@
       </div>
 
       <div *ngIf="!isView" class="form-group">
-        <div mat-dialog-title>
+        <div class="card-header">
           <input type="text" class="form-control " name="title" required #title="ngModel"
             [class.is-invalid]="title.invalid && title.touched" maxlength="30" placeholder="Title"
             [(ngModel)]="data.title">
-          <small class="text-danger" [class.d-none]="title.valid || title.untouched">Title is required for a new
-            data.</small>
+          <small class="text-danger" [class.d-none]="title.valid || title.untouched">
+            Title is required for a new data.
+          </small>
         </div>
-        <div mat-dialog-content>
-          <quill-editor id='contentEditor' [styles]="{border: 'none'}" #content="ngModel"
-            [(ngModel)]="data.content" [class.is-invalid]="content.invalid && content.touched">
+        
+        <div class="card-body">
+          <quill-editor id='contentEditor' #content="ngModel" required [(ngModel)]="data.content"
+            [class.is-invalid]="content.invalid && content.touched" placeholder = "Please Enter Your Post!">
           </quill-editor>
-          <small class="text-danger" [class.d-none]="content.valid || content.untouched">
+          <small class="text-danger" [class.d-none] = "content.valid || content.untouched">
             Content is required for a post.
           </small>
-          <small class="text-muted">Last updated {{data.modifyDate}}</small>
         </div>
       </div>
     </div>

@@ -12,7 +12,4 @@ export class PostModalComponent {
     public dialogRef: MatDialogRef<PostModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data) { }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
 }

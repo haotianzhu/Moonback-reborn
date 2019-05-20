@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ɵConsole } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { AuthService } from 'src/app/authentication/shared/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -32,6 +32,7 @@ export class PostPageComponent implements OnInit {
         switchMap((params: ParamMap) => of(params.get('id')))
       ).subscribe(async (id) => {
         await this.loadingPost(id);
+        this.checkEditPermission();
       });
     }
   }
@@ -41,12 +42,13 @@ export class PostPageComponent implements OnInit {
   }
 
   loadingPost(id) {
-    this.http.get<any>(
+    return this.http.get<any>(
       `${environment.baseUrl + 'posts/' + id}`
     ).toPromise(
     ).then(async (res) => {
-      if (res && res.post) {
+      if (res) {
         this.post = res.post;
+        console.log(this.post)
         return false;
       }
     }).catch((error) => {

@@ -26,13 +26,14 @@ export class PostComponent implements OnInit {
     if (this.isClickable) {
       const targetElemnt = event.target as Element;
       if (targetElemnt.className !== 'col' && targetElemnt.className !== 'row') {
-        this.openModal('80%');
+        this.openModal();
       }
     }
   }
-  openModal(width): void {
+  openModal(): void {
     const dialogRef = this.dialog.open(PostModalComponent, {
-      width,
+      width : '80%',
+      maxHeight : '100%',
       data: this.data
     });
 
