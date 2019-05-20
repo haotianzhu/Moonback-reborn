@@ -52,11 +52,11 @@ export class PostListComponent implements OnInit {
       (id) => {
         if (this.postArray.length === 0) {
           if (id) { // with id
-            this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=100'}`;
+            this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=10'}`;
             this.loadingPost(this.url + '&skip=' + this.postArray.length);
           } else {
             // home page
-            this.url = `${environment.baseUrl + 'posts?limit=100'}`;
+            this.url = `${environment.baseUrl + 'posts?limit=10'}`;
             this.loadingPost(this.url + '&skip=' + this.postArray.length);
           }
         }
@@ -87,8 +87,7 @@ export class PostListComponent implements OnInit {
           return;
         }
         if (res.body.length > 0) {
-          // this.postArray = this.postArray.concat(res.body.posts);
-          this.postArray = res.body.posts;
+          this.postArray = this.postArray.concat(res.body.posts);
           return false;
         }
       })

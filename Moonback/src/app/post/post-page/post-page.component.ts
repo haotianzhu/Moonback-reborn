@@ -48,7 +48,6 @@ export class PostPageComponent implements OnInit {
     ).then(async (res) => {
       if (res) {
         this.post = res.post;
-        console.log(this.post)
         return false;
       }
     }).catch((error) => {
