@@ -1,18 +1,4 @@
 .navbar-brand .nav-icon-image {
-    width: 2rem;
-    height: 2rem;
+  max-width: 3rem;
 }
-.headerbg {
-    text-align: center;
-}
-
-.headerbar {
-    width: 100%;
-    height: 3rem;
-}
-
-.content{
-    display: inline;
-}
-
 

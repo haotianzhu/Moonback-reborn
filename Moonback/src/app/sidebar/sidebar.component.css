@@ -1,19 +1,7 @@
-div.side-bar {
-    max-width: 18rem;
-    /* width: 18rem; */
-    height: 18rem;
-}
-
-.sidebar{
+.back-top{
     position: fixed;
-    margin-top: 26vh;
+    bottom:1rem;
+    z-index: 99;
 }
-
-.backTop{
-    width: 18rem;
-}
-
-
-
 
 
