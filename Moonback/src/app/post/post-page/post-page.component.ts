@@ -10,10 +10,9 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-post-page',
-  templateUrl: './post.component.html',
-  styleUrls: ['./post.component.css']
+  templateUrl: './post-page.component.html',
 })
-export class PostComponent implements OnInit {
+export class PostPageComponent implements OnInit {
 
   post: any;
   isViewable = false;
@@ -38,7 +37,7 @@ export class PostComponent implements OnInit {
   }
 
   checkEditPermission() {
-    this.isViewable = this.post.author === this.auth.getAuth().id;
+    this.isViewable = !(this.post.author === this.auth.getAuth().id);
   }
 
   loadingPost(id) {

@@ -1,7 +1,7 @@
 <div *ngFor="let post of postArray; index as i;">
     <div class="row">
         <div class="col mt-1 mb-1">
-            <app-post [isView]='true' [post]=post></app-post>
+            <app-post [isClickable]='true' [isView]='true' [post]=post></app-post>
         </div>
     </div>
 </div>

@@ -12,6 +12,7 @@ export class PostComponent implements OnInit {
 
   data: any;
   @Input() isView = true;
+  @Input() isClickable = false;
 
   @Input('post')
   set setPost(val: object) {
@@ -22,9 +23,11 @@ export class PostComponent implements OnInit {
 
   @HostListener('click', ['$event'])
   onClick(event: Event) {
-    const targetElemnt = event.target as Element;
-    if (targetElemnt.className !== 'col' && targetElemnt.className !== 'row') {
-      this.openModal('80%');
+    if (this.isClickable) {
+      const targetElemnt = event.target as Element;
+      if (targetElemnt.className !== 'col' && targetElemnt.className !== 'row') {
+        this.openModal('80%');
+      }
     }
   }
   openModal(width): void {

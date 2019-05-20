@@ -20,6 +20,7 @@ import { MoonMaterialModule } from '../material-module';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { NotFound404Component } from './not-found404/not-found404.component';
 import { PostModalComponent } from './post/post-modal/post-modal.component';
+import { PostPageComponent } from './post/post-page/post-page.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { PostModalComponent } from './post/post-modal/post-modal.component';
     SignoutComponent,
     PostListComponent,
     PostComponent,
+    PostPageComponent,
     PostModalComponent,
     UserprofileComponent,
     SidebarComponent,
