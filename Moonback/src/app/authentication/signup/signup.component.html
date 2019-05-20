@@ -1,33 +1,44 @@
-<form class="form-auth" [formGroup]='signupForm' ngNativeValidate>
-  <img class="rounded mx-auto d-block" src="assets/img/login/login_icon.png" alt="signup" width="40%" height="40%">
-  <h1 class="h3 mb-3 font-weight-normal text-center">
-    Please sign up
-  </h1>
-  <div class="form-group">
-      <label for="inputEmail">Email</label>
-      <input type="email" class="form-control" id="inputUseremail" placeholder="Email" 
-      required formControlName='email' >
+<form [formGroup]='signupForm' class="w-100" novalidate>
+  <div class="mt-4">
+    <img class="rounded mx-auto d-block" src="assets/img/login/login_icon.png" alt="signup" width="20%" height="20%">
+    <h1 class="h3 mb-3 font-weight-normal text-center">Please sign up</h1>
   </div>
-  <div class="form-group">
-    <input type="text" class="form-control" id="inputUsername" aria-describedby="usernamelHelp" placeholder="Username" 
-    required minlength="8" maxlength="20" pattern="[a-zA-Z0-9]*" formControlName='username'>
+
+  <mat-form-field class="w-100">
+    <input matInput type="email" formControlName='email' placeholder="Email" required>
+    <mat-error>
+      Please enter a valid email address
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="w-100">
+    <input matInput type="text" formControlName='username' aria-describedby="usernamelHelp" placeholder="Username"
+      minlength="8" maxlength="20" pattern="[a-zA-Z0-9]*">
     <small id="usernamelHelp" class="form-text text-muted">
       Your username must be 8-20 characters long, and must not contain spaces, special characters.
     </small>
-  </div>
-  <div class="form-group">
-    <input type="password" class="form-control" id="inputPassword" aria-describedby="passwordlHelp" placeholder="Password" 
-    required minlength="8" maxlength="20" pattern="[a-zA-Z0-9]*" formControlName='password'>
+    <mat-error>
+      Please enter a valid username.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="w-100">
+    <input matInput type="password" formControlName='password' aria-describedby="passwordlHelp"
+      placeholder="Your Password" minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
     <small id="passwordlHelp" class="form-text text-muted ">
-      Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters.
+      Your password must be 8-20 characters long, contain at least one number and one uppercase and lowercase letter,
+      and must not contain spaces, special characters.
     </small>
-  </div>
-    <button (click)="onSignUp()" class="btn btn-primary btn-block mb-3">Sign Up</button>
-    <div class="form-check form-check-inline">
-        <input formControlName="termsCheck" type="checkbox" class="form-check-input" id="termsCheck" required>
-        <label class="form-check-label" for="termsCheck">I Accept terms of services</label>
-    </div>
-  <div class="mt-2 text-center">
+    <mat-error>
+      Please enter a valid password.
+    </mat-error>
+  </mat-form-field>
+  <div>
+    <mat-checkbox formControlName="termsCheck" required>I Accept terms of services</mat-checkbox>
+    <button type='submit' (click)="onSignUp()" class="btn btn-danger btn-block mb-3 mt-3">Sign Up</button>
+    <div class="mt-2 text-center">
       <a routerLink="/signin">Already have an account?</a>
+    </div>
   </div>
+
 </form>
