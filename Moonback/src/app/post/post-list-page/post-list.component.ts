@@ -2,7 +2,7 @@
 import {
   Component,
   OnInit, Renderer2,
-  ElementRef, AfterViewInit,
+  ElementRef,
   Inject, forwardRef,
   ViewChildren, QueryList
 } from '@angular/core';
@@ -21,7 +21,7 @@ import { AppComponent } from 'src/app/app.component';
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css']
 })
-export class PostListComponent implements OnInit, AfterViewInit {
+export class PostListComponent implements OnInit {
   postArray = [];
   isLoading = true;
   url = null;
@@ -29,10 +29,8 @@ export class PostListComponent implements OnInit, AfterViewInit {
   scollPosInit: boolean;
   postsRoute$: Observable<any>;
   scroll$: Observable<any>;
-  @ViewChildren('allposts') loadingQueryList: QueryList<any>;
 
   constructor(
-    @Inject(forwardRef(() => AppComponent)) private appComponent: AppComponent,
     private http: HttpClient,
     private auth: AuthService,
     private router: Router,
@@ -42,8 +40,6 @@ export class PostListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    const pos = this.appComponent.getScrollPosition();
-    this.scollPosInit = pos !== [0, 0];
     // api/post/user/id
     if (!this.auth.isAuth()) {
       this.router.navigate(['/signin']);
@@ -80,18 +76,6 @@ export class PostListComponent implements OnInit, AfterViewInit {
         return this.loadingPost(this.url + '&skip=' + this.postArray.length);
       }
     );
-  }
-
-  ngAfterViewInit() {
-    this.loadingQueryList.changes.subscribe(t => {
-      if (this.scollPosInit) {
-        this.restoreScroll();
-      }
-    });
-  }
-
-  restoreScroll() {
-    this.appComponent.restoreScrollPosition();
   }
 
   async loadingPost(url) {

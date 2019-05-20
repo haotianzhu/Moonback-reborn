@@ -13,12 +13,13 @@ import { SigninComponent } from './authentication/signin/signin.component';
 import { SignupComponent } from './authentication/signup/signup.component';
 import { SignoutComponent } from './authentication/signout/signout.component';
 import { AuthTokenInterceptor } from './authentication/shared/token.service';
-import { PostListComponent } from './post/post-list/post-list.component';
+import { PostListComponent } from './post/post-list-page/post-list.component';
 import { PostComponent } from './post/post/post.component';
 import { UserprofileComponent } from './user/userprofile/userprofile.component';
 import { MoonMaterialModule } from '../material-module';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { NotFound404Component } from './not-found404/not-found404.component';
+import { PostModalComponent } from './post/post-modal/post-modal.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { NotFound404Component } from './not-found404/not-found404.component';
     SignoutComponent,
     PostListComponent,
     PostComponent,
+    PostModalComponent,
     UserprofileComponent,
     SidebarComponent,
     NotFound404Component,
@@ -48,7 +50,7 @@ import { NotFound404Component } from './not-found404/not-found404.component';
   providers: [
     [{ provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true }]
   ],
-  entryComponents: [],
+  entryComponents: [PostModalComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
