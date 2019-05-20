@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 
 
 @Component({
-  selector: 'app-post',
+  selector: 'app-post-page',
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css']
 })

@@ -17,7 +17,7 @@ import { AppComponent } from 'src/app/app.component';
 
 
 @Component({
-  selector: 'app-post-list',
+  selector: 'app-post-list-page',
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css']
 })
