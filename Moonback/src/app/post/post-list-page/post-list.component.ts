@@ -25,6 +25,7 @@ export class PostListComponent implements OnInit {
   postArray = [];
   isLoading = true;
   url = null;
+  limit = 10;
   pullable = true;
   scollPosInit: boolean;
   postsRoute$: Observable<any>;
@@ -52,11 +53,11 @@ export class PostListComponent implements OnInit {
       (id) => {
         if (this.postArray.length === 0) {
           if (id) { // with id
-            this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=10'}`;
+            this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=' + this.limit}`;
             this.loadingPost(this.url + '&skip=' + this.postArray.length);
           } else {
             // home page
-            this.url = `${environment.baseUrl + 'posts?limit=10'}`;
+            this.url = `${environment.baseUrl + 'posts?limit=' + this.limit}`;
             this.loadingPost(this.url + '&skip=' + this.postArray.length);
           }
         }
@@ -65,34 +66,36 @@ export class PostListComponent implements OnInit {
 
     this.scroll$ = fromEvent(document, 'scroll')
       .pipe(
-        map(() => {
-          return (window.scrollY + window.innerHeight === document.body.scrollHeight);
-        }),
+        filter(() => !this.isLoading),
+        map(() =>  window.scrollY + window.innerHeight >= document.body.scrollHeight),
         filter(needFetch => needFetch && this.pullable)
       );
     this.scroll$.subscribe(
       () => {
         this.isLoading = true;
-        return this.loadingPost(this.url + '&skip=' + this.postArray.length);
+        this.loadingPost(this.url + '&skip=' + this.postArray.length);
       }
     );
   }
 
-  async loadingPost(url) {
-    this.isLoading = await this.http.get<any>(url, { observe: 'response' })
+  loadingPost(url) {
+    return this.http.get<any>(url, { observe: 'response' })
       .toPromise()
-      .then(async (res) => {
-        if (res.body.length === 0) {
-          this.pullable = false;
-          return;
-        }
+      .then( (res) => {
         if (res.body.length > 0) {
           this.postArray = this.postArray.concat(res.body.posts);
-          return false;
+          if (res.body.length < this.limit) {
+            this.pullable = false;
+            this.isLoading = false;
+          } else {
+            this.pullable = true;
+            this.isLoading = false;
+          }
         }
       })
       .catch((error) => {
-        return true;
+        this.pullable = false;
+        this.isLoading = false;
       });
   }
 }
