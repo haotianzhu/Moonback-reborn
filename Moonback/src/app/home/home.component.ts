@@ -11,7 +11,7 @@ import { Event as MyRouterEvent } from '@angular/router';
 export class HomeComponent implements OnInit {
   isCollapsed = false;
   viewable = true;
-  imgHeader = 'assets/img/main/4.jpg';
+  imgHeader = 'assets/img/main/1.jpg';
   constructor(private router: Router) { }
 
   ngOnInit() {

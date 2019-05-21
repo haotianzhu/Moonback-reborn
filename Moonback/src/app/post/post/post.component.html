@@ -23,12 +23,13 @@
             Title is required for a new data.
           </small>
         </div>
-        
+
         <div class="card-body">
-          <quill-editor id='contentEditor' #content="ngModel" required [(ngModel)]="data.content"
-            [class.is-invalid]="content.invalid && content.touched" placeholder = "Please Enter Your Post!">
+          <quill-editor id='contentEditor' [modules]='quillconifg' (onEditorCreated)="editorCreated($event)"
+            #content="ngModel" required [(ngModel)]="data.content"
+            [class.is-invalid]="content.invalid && content.touched" placeholder="Please Enter Your Post!">
           </quill-editor>
-          <small class="text-danger" [class.d-none] = "content.valid || content.untouched">
+          <small class="text-danger" [class.d-none]="content.valid || content.untouched">
             Content is required for a post.
           </small>
         </div>

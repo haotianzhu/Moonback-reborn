@@ -26,7 +26,7 @@ export class PostListComponent implements OnInit {
   isLoading = true;
   url = null;
   limit = 10;
-  pullable = true;
+  pullable = false;
   scollPosInit: boolean;
   postsRoute$: Observable<any>;
   scroll$: Observable<any>;
@@ -53,11 +53,11 @@ export class PostListComponent implements OnInit {
       (id) => {
         if (this.postArray.length === 0) {
           if (id) { // with id
-            this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=' + this.limit}`;
+            this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=' + this.limit + '&sort=-modifyDate'}`;
             this.loadingPost(this.url + '&skip=' + this.postArray.length);
           } else {
             // home page
-            this.url = `${environment.baseUrl + 'posts?limit=' + this.limit}`;
+            this.url = `${environment.baseUrl + 'posts?limit=' + this.limit + '&sort=-modifyDate'}`;
             this.loadingPost(this.url + '&skip=' + this.postArray.length);
           }
         }

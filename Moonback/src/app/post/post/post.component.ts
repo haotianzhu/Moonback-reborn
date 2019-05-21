@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, ElementRef, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { PostModalComponent } from '../post-modal/post-modal.component';
-
+import { editorOptions } from '../quill/quill-config';
+import Quill from 'quill';
+import { ImageBlot } from '../quill/block-image';
 
 @Component({
   selector: 'app-post',
@@ -11,15 +13,27 @@ import { PostModalComponent } from '../post-modal/post-modal.component';
 export class PostComponent implements OnInit {
 
   data: any;
+  quill: any;
+  quillconifg = editorOptions;
   @Input() isView = true;
   @Input() isClickable = false;
-
   @Input('post')
   set setPost(val: object) {
     this.data = val;
   }
 
-  constructor(private element: ElementRef, public dialog: MatDialog) { }
+  constructor(private element: ElementRef, public dialog: MatDialog) {
+    if (!this.isView) {
+      ImageBlot.blotName = 'image';
+      ImageBlot.tagName = 'img';
+      ImageBlot.className = 'imgcenter';
+      Quill.register(ImageBlot, true);
+    }
+  }
+
+
+  ngOnInit() {
+  }
 
   @HostListener('click', ['$event'])
   onClick(event: Event) {
@@ -32,8 +46,8 @@ export class PostComponent implements OnInit {
   }
   openModal(): void {
     const dialogRef = this.dialog.open(PostModalComponent, {
-      width : '80%',
-      maxHeight : '100%',
+      width: '80%',
+      maxHeight: '100%',
       data: this.data
     });
 
@@ -42,8 +56,41 @@ export class PostComponent implements OnInit {
     });
   }
 
+  editorCreated(quill: any) {
+    this.quill = quill;
+    const toolbar = this.quill.getModule('toolbar');
+    toolbar.addHandler('image', this.imageHandler.bind(this));
+  }
 
-  ngOnInit() {
+  imageHandler() {
+    if (this.quill != null) {
+      const range = this.quill.getSelection();
+      if (range != null) {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.addEventListener('change', () => {
+          if (input.files != null) {
+            const file = input.files[0];
+            if (file != null) {
+              const reader = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onerror = (error) => {
+                console.log('Error: ', error);
+              };
+              reader.onloadend = () => {
+                // Read complete
+                if (reader.readyState === 2) {
+                  const base64result = reader.result;
+                  this.quill.insertEmbed(range.index, 'image', { src: base64result, alt: file.name });
+                }
+              };
+            }
+          }
+        });
+        input.click();
+      }
+    }
   }
 
 }
