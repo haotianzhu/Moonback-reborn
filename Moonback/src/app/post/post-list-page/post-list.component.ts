@@ -2,7 +2,7 @@
 import {
   Component,
   OnInit, Renderer2,
-  ElementRef, AfterViewInit,
+  ElementRef,
   Inject, forwardRef,
   ViewChildren, QueryList
 } from '@angular/core';
@@ -17,22 +17,21 @@ import { AppComponent } from 'src/app/app.component';
 
 
 @Component({
-  selector: 'app-post-list',
+  selector: 'app-post-list-page',
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css']
 })
-export class PostListComponent implements OnInit, AfterViewInit {
+export class PostListComponent implements OnInit {
   postArray = [];
   isLoading = true;
   url = null;
-  pullable = true;
+  limit = 10;
+  pullable = false;
   scollPosInit: boolean;
   postsRoute$: Observable<any>;
   scroll$: Observable<any>;
-  @ViewChildren('allposts') loadingQueryList: QueryList<any>;
 
   constructor(
-    @Inject(forwardRef(() => AppComponent)) private appComponent: AppComponent,
     private http: HttpClient,
     private auth: AuthService,
     private router: Router,
@@ -42,8 +41,6 @@ export class PostListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    const pos = this.appComponent.getScrollPosition();
-    this.scollPosInit = pos !== [0, 0];
     // api/post/user/id
     if (!this.auth.isAuth()) {
       this.router.navigate(['/signin']);
@@ -56,11 +53,11 @@ export class PostListComponent implements OnInit, AfterViewInit {
       (id) => {
         if (this.postArray.length === 0) {
           if (id) { // with id
-            this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=100'}`;
+            this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=' + this.limit + '&sort=-modifyDate'}`;
             this.loadingPost(this.url + '&skip=' + this.postArray.length);
           } else {
             // home page
-            this.url = `${environment.baseUrl + 'posts?limit=100'}`;
+            this.url = `${environment.baseUrl + 'posts?limit=' + this.limit + '&sort=-modifyDate'}`;
             this.loadingPost(this.url + '&skip=' + this.postArray.length);
           }
         }
@@ -69,47 +66,36 @@ export class PostListComponent implements OnInit, AfterViewInit {
 
     this.scroll$ = fromEvent(document, 'scroll')
       .pipe(
-        map(() => {
-          return (window.scrollY + window.innerHeight === document.body.scrollHeight);
-        }),
+        filter(() => !this.isLoading),
+        map(() =>  window.scrollY + window.innerHeight >= document.body.scrollHeight),
         filter(needFetch => needFetch && this.pullable)
       );
     this.scroll$.subscribe(
       () => {
         this.isLoading = true;
-        return this.loadingPost(this.url + '&skip=' + this.postArray.length);
+        this.loadingPost(this.url + '&skip=' + this.postArray.length);
       }
     );
   }
 
-  ngAfterViewInit() {
-    this.loadingQueryList.changes.subscribe(t => {
-      if (this.scollPosInit) {
-        this.restoreScroll();
-      }
-    });
-  }
-
-  restoreScroll() {
-    this.appComponent.restoreScrollPosition();
-  }
-
-  async loadingPost(url) {
-    this.isLoading = await this.http.get<any>(url, { observe: 'response' })
+  loadingPost(url) {
+    return this.http.get<any>(url, { observe: 'response' })
       .toPromise()
-      .then(async (res) => {
-        if (res.body.length === 0) {
-          this.pullable = false;
-          return;
-        }
+      .then( (res) => {
         if (res.body.length > 0) {
-          // this.postArray = this.postArray.concat(res.body.posts);
-          this.postArray = res.body.posts;
-          return false;
+          this.postArray = this.postArray.concat(res.body.posts);
+          if (res.body.length < this.limit) {
+            this.pullable = false;
+            this.isLoading = false;
+          } else {
+            this.pullable = true;
+            this.isLoading = false;
+          }
         }
       })
       .catch((error) => {
-        return true;
+        this.pullable = false;
+        this.isLoading = false;
       });
   }
 }
