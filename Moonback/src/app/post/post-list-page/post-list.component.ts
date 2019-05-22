@@ -13,7 +13,6 @@ import { concatMap, switchMap, map, mapTo, combineLatest, mergeMap, debounceTime
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/authentication/shared/auth.service';
 import { of, Observable, fromEvent, concat } from 'rxjs';
-import { AppComponent } from 'src/app/app.component';
 
 
 @Component({

@@ -14,7 +14,13 @@ export class ImageBlot extends BlockEmbed {
   static value(node) {
     return {
       alt: node.getAttribute('alt'),
-      url: node.getAttribute('src')
+      src: node.getAttribute('src'),
+    };
+  }
+  static formats(node) {
+    return {
+      alt: node.getAttribute('alt'),
+      src: node.getAttribute('src')
     };
   }
 }

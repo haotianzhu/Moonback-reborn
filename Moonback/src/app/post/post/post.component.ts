@@ -23,12 +23,10 @@ export class PostComponent implements OnInit {
   }
 
   constructor(private element: ElementRef, public dialog: MatDialog) {
-    if (!this.isView) {
-      ImageBlot.blotName = 'image';
-      ImageBlot.tagName = 'img';
-      ImageBlot.className = 'imgcenter';
-      Quill.register(ImageBlot, true);
-    }
+    ImageBlot.blotName = 'bimage';
+    ImageBlot.tagName = 'img';
+    ImageBlot.className = 'imgcenter';
+    Quill.register(ImageBlot, true);
   }
 
 
@@ -82,7 +80,7 @@ export class PostComponent implements OnInit {
                 // Read complete
                 if (reader.readyState === 2) {
                   const base64result = reader.result;
-                  this.quill.insertEmbed(range.index, 'image', { src: base64result, alt: file.name });
+                  this.quill.insertEmbed(range.index, 'bimage', { src: base64result, alt: file.name }, 'user');
                 }
               };
             }
