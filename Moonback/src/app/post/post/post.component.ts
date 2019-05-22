@@ -80,7 +80,7 @@ export class PostComponent implements OnInit {
                 // Read complete
                 if (reader.readyState === 2) {
                   const base64result = reader.result;
-                  this.quill.insertEmbed(range.index, 'bimage', { src: base64result, alt: file.name });
+                  this.quill.insertEmbed(range.index, 'bimage', { src: base64result, alt: file.name }, 'user');
                 }
               };
             }
