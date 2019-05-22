@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ɵConsole } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { AuthService } from 'src/app/authentication/shared/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap, filter } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -15,21 +15,32 @@ import { environment } from 'src/environments/environment';
 export class PostPageComponent implements OnInit {
 
   post: any;
-  isViewable = false;
+  isViewable = true;
 
   constructor(
     private http: HttpClient,
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-  ) { }
+  ) {}
 
   ngOnInit() {
     // https://angular.io/guide/router
     if (!this.post) {
       // fetch post
       this.route.paramMap.pipe(
-        switchMap((params: ParamMap) => of(params.get('id')))
+        tap(() => {
+          if (this.router.url.split('?')[0] === '/post/new') {
+            this.isViewable = false;
+            this.post = {
+              title: '',
+              content: '',
+              author: this.auth.getAuth().id
+            };
+          }
+        }),
+        switchMap((params: ParamMap) => of(params.get('id'))),
+        filter((id) => id !== null && id !== undefined)
       ).subscribe(async (id) => {
         await this.loadingPost(id);
         this.checkEditPermission();
@@ -53,5 +64,22 @@ export class PostPageComponent implements OnInit {
     }).catch((error) => {
       return true;
     });
+  }
+
+  onCreate() {
+    if (this.post) {
+      this.http.post<any>(
+        `${environment.baseUrl + 'posts/'}`,
+        { post: this.post },
+        { observe: 'response' }
+      ).subscribe(
+        res => {
+          if (res.status === 200) {
+            this.router.navigate(['/']);
+          }
+        },
+        error => {
+        });
+    }
   }
 }

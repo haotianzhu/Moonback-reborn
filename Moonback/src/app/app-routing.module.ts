@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: 'user/:id', component: PostListComponent},
   { path: 'posts/:id', component: PostPageComponent},
   { path: 'account/settings', component: UserprofileComponent},
+  { path: 'post/new', component: PostPageComponent },
   { path: '**', component: NotFound404Component }
 ];
 

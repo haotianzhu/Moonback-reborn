@@ -84,6 +84,7 @@ export class PostListComponent implements OnInit {
       .then( (res) => {
         if (res.body.length > 0) {
           this.postArray = this.postArray.concat(res.body.posts);
+          console.log(this.postArray[1].content)
           if (res.body.length < this.limit) {
             this.pullable = false;
             this.isLoading = false;
