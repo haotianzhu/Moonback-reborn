@@ -57,7 +57,6 @@ export class PostComponent implements OnInit {
   editorCreated(quill: any) {
     this.quill = quill;
     const toolbar = this.quill.getModule('toolbar');
-    console.log('here')
     toolbar.addHandler('image', this.imageHandler.bind(this));
   }
 

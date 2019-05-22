@@ -13,7 +13,6 @@ import { concatMap, switchMap, map, mapTo, combineLatest, mergeMap, debounceTime
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/authentication/shared/auth.service';
 import { of, Observable, fromEvent, concat } from 'rxjs';
-import { AppComponent } from 'src/app/app.component';
 
 
 @Component({
@@ -84,7 +83,6 @@ export class PostListComponent implements OnInit {
       .then( (res) => {
         if (res.body.length > 0) {
           this.postArray = this.postArray.concat(res.body.posts);
-          console.log(this.postArray[1].content)
           if (res.body.length < this.limit) {
             this.pullable = false;
             this.isLoading = false;

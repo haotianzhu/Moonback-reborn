@@ -4,10 +4,11 @@
       <div *ngIf="isView">
         <div class="card-header">{{data.title}}</div>
         <div class="card-body">
-          <div [innerHTML]="data.content" >
-            <!-- <quill-editor [bounds]="self" [readOnly]="true" [(ngModel)]="data.content" placeholder=""
+          <div>
+            <quill-editor
+              [bounds]="self" [readOnly]="true" [(ngModel)]="data.content" placeholder=""
               [styles]="{border: 'none'}" [modules]="{ toolbar: false}">
-            </quill-editor> -->
+            </quill-editor>
           </div>
           <p class="card-text"><small class="text-muted">Last updated {{data.modifyDate}}</small></p>
 
