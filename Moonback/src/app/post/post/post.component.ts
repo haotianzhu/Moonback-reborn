@@ -17,6 +17,7 @@ export class PostComponent implements OnInit {
   quillconifg = editorOptions;
   @Input() isView = true;
   @Input() isClickable = false;
+  @Input() overview = false;
   @Input('post')
   set setPost(val: object) {
     this.data = val;
@@ -46,7 +47,11 @@ export class PostComponent implements OnInit {
     const dialogRef = this.dialog.open(PostModalComponent, {
       width: '80%',
       height: '70vh',
-      data: this.data
+      data: {
+        title: this.data.title,
+        content: this.data.content,
+        modifyDate: this.data.modifyDate
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
