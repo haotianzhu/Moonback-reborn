@@ -13,6 +13,7 @@ import { concatMap, switchMap, map, mapTo, combineLatest, mergeMap, debounceTime
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/authentication/shared/auth.service';
 import { of, Observable, fromEvent, concat } from 'rxjs';
+import { AppComponent } from 'src/app/app.component';
 
 
 @Component({
@@ -49,7 +50,7 @@ export class PostListComponent implements OnInit {
       switchMap((params: ParamMap) => of(params.get('id')))
     );
     this.postsRoute$.subscribe(
-      (id) => {
+      async (id) => {
         if (this.postArray.length === 0) {
           if (id) { // with id
             this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=' + this.limit + '&sort=-modifyDate'}`;
@@ -57,7 +58,8 @@ export class PostListComponent implements OnInit {
           } else {
             // home page
             this.url = `${environment.baseUrl + 'posts?limit=' + this.limit + '&sort=-modifyDate'}`;
-            this.loadingPost(this.url + '&skip=' + this.postArray.length);
+            await this.loadingPost(this.url + '&skip=' + this.postArray.length);
+            this.handlePosts(this.postArray);
           }
         }
       }
@@ -66,7 +68,7 @@ export class PostListComponent implements OnInit {
     this.scroll$ = fromEvent(document, 'scroll')
       .pipe(
         filter(() => !this.isLoading),
-        map(() =>  window.scrollY + window.innerHeight >= document.body.scrollHeight),
+        map(() => window.scrollY + window.innerHeight >= document.body.scrollHeight),
         filter(needFetch => needFetch && this.pullable)
       );
     this.scroll$.subscribe(
@@ -77,10 +79,22 @@ export class PostListComponent implements OnInit {
     );
   }
 
+  handlePosts(posts: any[]) {
+    posts.forEach((post, index) => {
+      const parts = post.content.split('</p>', 5);
+      if (parts.length > 4) {
+        post.overview = post.content.split('</p>', 5).join('</p>') + '</p><br><br><h2>...</h2>';
+      } else {
+        post.overview = post.content.split('</p>', 5).join('</p>') + '</p><br><br>';
+      }
+      posts[index] = post;
+    });
+  }
+
   loadingPost(url) {
     return this.http.get<any>(url, { observe: 'response' })
       .toPromise()
-      .then( (res) => {
+      .then((res) => {
         if (res.body.length > 0) {
           this.postArray = this.postArray.concat(res.body.posts);
           if (res.body.length < this.limit) {
