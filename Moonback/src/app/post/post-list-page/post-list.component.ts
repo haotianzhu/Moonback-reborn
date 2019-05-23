@@ -59,7 +59,7 @@ export class PostListComponent implements OnInit {
             // home page
             this.url = `${environment.baseUrl + 'posts?limit=' + this.limit + '&sort=-modifyDate'}`;
             await this.loadingPost(this.url + '&skip=' + this.postArray.length);
-            this.handlePosts(this.postArray)
+            this.handlePosts(this.postArray);
           }
         }
       }
