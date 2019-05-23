@@ -18,6 +18,7 @@ export class UserprofileComponent implements OnInit {
   userInfo: any;
   isVerified = false;
   isVerficationFail = false;
+  postArray = [];
 
   constructor(
     private http: HttpClient,
@@ -25,6 +26,7 @@ export class UserprofileComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+
     if (!this.auth.isAuth()) { this.router.navigate(['/signin']); }
     this.userInfo = this.auth.getAuth();
 
@@ -34,6 +36,15 @@ export class UserprofileComponent implements OnInit {
         password: new FormControl('', [Validators.required]),
       });
     }
+    this.http.get<any>(
+      `${environment.baseUrl + 'posts/user/' + this.userInfo.id}`).subscribe(
+        res => {
+          if (res.status === 'sucessful') {
+            this.postArray = this.postArray.concat(res.posts);}
+        },
+        error => {
+        }
+      );
   }
 
   onVerify() {
