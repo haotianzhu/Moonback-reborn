@@ -45,7 +45,7 @@ export class PostComponent implements OnInit {
   openModal(): void {
     const dialogRef = this.dialog.open(PostModalComponent, {
       width: '80%',
-      maxHeight: '100%',
+      height: '70vh',
       data: this.data
     });
 
