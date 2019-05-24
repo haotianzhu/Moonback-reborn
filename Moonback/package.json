@@ -25,6 +25,7 @@
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
     "jquery": "^3.4.1",
+    "ngx-echarts": "^4.1.1",
     "ngx-quill": "^5.1.0",
     "node-gyp": "^4.0.0",
     "node-sass": "^4.12.0",
