@@ -1,26 +1,23 @@
-<div class="d-flex align-items-center p-3 my-3 bg-white rounded box-shadow">
+<div class="d-flex align-items-center p-3 my-3 rounded box-shadow">
   <div class="lh-100">
     <h6 class="mb-0 lh-100">Hello {{userInfo.username}}</h6>
-    <small>Example User Mood Here</small>
+    <!-- <small>Example User Mood Here</small> -->
   </div>
 </div>
-<!-- reset password -->
+
 <mat-tab-group>
   <mat-tab label="Your Post">
     <ng-template matTabContent>
-      <div class="my-3 p-3 bg-white rounded box-shadow">
-        <h6 class="border-bottom border-gray pb-2 mb-0">Recent posts</h6>
-          <div *ngFor="let post of postArray; index as i;">
-            <div class="row">
-                <div class="col mt-1 mb-1">
-                    <app-post [isClickable]='true' [isView]='true' [post]=post></app-post>
-                </div>
-            </div>
-        </div>
+      <div class="my-3 p-3 rounded box-shadow">
+        <app-post-list-page [userId]=this.userInfo.id></app-post-list-page>
       </div>
     </ng-template>
   </mat-tab>
 
+  <mat-tab label="Chart">
+    <app-user-chart></app-user-chart>
+  </mat-tab>
+  <!-- reset password -->
   <mat-tab label="Reset Password" class="text-color-black">
     <ng-template matTabContent>
       <!-- notVerified  user need to sign in -->
@@ -50,7 +47,6 @@
           </button>
         </div>
       </form>
-
       <!-- isVerified now user can change password -->
       <form *ngIf="isVerified" [formGroup]="changePasswordForm" class="full-width" novalidate>
         <h6 class="form-text text-muted">Changing your password will sign you out of your devices.</h6>
@@ -67,7 +63,6 @@
             Your password is invalid.
           </mat-error>
         </mat-form-field>
-
         <mat-form-field class="full-width">
           <input matInput type="password" formControlName='confirmpassword' placeholder="Confirm Your New Password"
             required pattern="{{changePasswordForm.controls.password.value}}">
@@ -83,9 +78,5 @@
         </div>
       </form>
     </ng-template>
-  </mat-tab>
-
-  <mat-tab label="Chart">
-    <app-user-chart></app-user-chart>
   </mat-tab>
 </mat-tab-group>

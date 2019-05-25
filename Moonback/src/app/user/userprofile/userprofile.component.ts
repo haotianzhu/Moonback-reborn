@@ -29,23 +29,12 @@ export class UserprofileComponent implements OnInit {
 
     if (!this.auth.isAuth()) { this.router.navigate(['/signin']); }
     this.userInfo = this.auth.getAuth();
-
     if (!this.isVerified) {
       this.verifyPasswordForm = new FormGroup({
         username: new FormControl(this.userInfo.username, [Validators.required]),
         password: new FormControl('', [Validators.required]),
       });
     }
-    this.http.get<any>(
-      `${environment.baseUrl + 'posts/user/' + this.userInfo.id}`).subscribe(
-        res => {
-          if (res.status === 'sucessful') {
-            this.postArray = this.postArray.concat(res.posts);
-          }
-        },
-        error => {
-        }
-      );
   }
 
   onVerify() {
@@ -73,6 +62,7 @@ export class UserprofileComponent implements OnInit {
       );
     }
   }
+
   onPatch() {
     if (this.changePasswordForm.valid) {
       this.userInfo.password = this.changePasswordForm.value.password;
@@ -94,3 +84,4 @@ export class UserprofileComponent implements OnInit {
     }
   }
 }
+
