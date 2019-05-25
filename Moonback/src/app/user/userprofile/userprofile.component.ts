@@ -40,7 +40,8 @@ export class UserprofileComponent implements OnInit {
       `${environment.baseUrl + 'posts/user/' + this.userInfo.id}`).subscribe(
         res => {
           if (res.status === 'sucessful') {
-            this.postArray = this.postArray.concat(res.posts);}
+            this.postArray = this.postArray.concat(res.posts);
+          }
         },
         error => {
         }
