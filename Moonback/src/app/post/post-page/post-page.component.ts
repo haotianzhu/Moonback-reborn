@@ -1,9 +1,11 @@
-import { Component, OnInit, Input, ɵConsole } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { AuthService } from 'src/app/authentication/shared/auth.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { switchMap, tap, filter } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
+import { AuthService } from 'src/app/authentication/shared/auth.service';
 import { environment } from 'src/environments/environment';
 
 
@@ -16,13 +18,15 @@ export class PostPageComponent implements OnInit {
 
   post: any;
   isViewable = true;
+  isConfirmed = false;
 
   constructor(
     private http: HttpClient,
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-  ) {}
+    public dialog: MatDialog,
+  ) { }
 
   ngOnInit() {
     // https://angular.io/guide/router
@@ -44,6 +48,7 @@ export class PostPageComponent implements OnInit {
       ).subscribe(async (id) => {
         await this.loadingPost(id);
         this.checkEditPermission();
+        console.log(this.isViewable)
       });
     }
   }
@@ -66,11 +71,26 @@ export class PostPageComponent implements OnInit {
     });
   }
 
-  onCreate() {
+  onSave() {
     if (this.post) {
       this.http.post<any>(
         `${environment.baseUrl + 'posts/'}`,
         { post: this.post },
+        { observe: 'response' }
+      ).subscribe(
+        res => {
+          if (res.status === 200) {
+            this.router.navigate(['/']);
+          }
+        },
+        error => {
+        });
+    }
+  }
+  onDelete() {
+    if (this.post) {
+      this.http.delete<any>(
+        `${environment.baseUrl + 'posts/' + this.post.id}`,
         { observe: 'response' }
       ).subscribe(
         res => {
