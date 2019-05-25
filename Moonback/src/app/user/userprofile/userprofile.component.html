@@ -47,66 +47,71 @@
     </ng-template>
   </mat-tab>
 
-  <mat-tab label="Reset Password" class = "text-color-black">
-      <ng-template matTabContent>
-        <!-- notVerified  user need to sign in -->
-        <form [formGroup]='verifyPasswordForm' novalidate *ngIf="!isVerified ">
-          <h6 class="form-text">
-            To continue, first verify it's you.
-          </h6>
-          <ngb-alert [dismissible]="false" type="danger" *ngIf="isVerficationFail" class = "mt-4">
-              <strong>Error!</strong> Username or password is not correct.
-          </ngb-alert>
-          <mat-form-field class="full-width">
-            <input matInput type="text" formControlName="username" readonly>
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput type="password" aria-describedby="passwordlHelp"
-              placeholder="Password" required formControlName='password'>
-              <mat-error>
-                Password is required.
-              </mat-error>
-            </mat-form-field>
-          <div class="mt-4">
-            <a class="text-left" routerLink="/">
-              Forget the password?
-            </a>
-            <button (click)="onVerify()" class="btn btn-primary ml-5">
-              Next
-            </button>
-          </div>
-        </form>
-  
-        <!-- isVerified now user can change password -->
-        <form *ngIf="isVerified" [formGroup]="changePasswordForm" class="full-width" novalidate >
-          <h6 class="form-text text-muted">Changing your password will sign you out of your devices.</h6>
-          <mat-form-field class="full-width">
-            <input matInput type="password" formControlName='password'
-              aria-describedby="passwordlHelp" placeholder="Your New Password" 
-              required minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
-            <small id="passwordlHelp" class="form-text text-muted ">
-                Your password must be 8-20 characters long, contain at least one number and one uppercase and lowercase letter, 
-                and must not contain spaces, special characters.
-            </small>
-            <mat-error>
-              Your password is invalid.
-            </mat-error>
-          </mat-form-field>
-  
-          <mat-form-field class="full-width">
-            <input matInput type="password"  formControlName='confirmpassword'
-              placeholder="Confirm Your New Password" 
-              required pattern= "{{changePasswordForm.controls.password.value}}">
-              <mat-error *ngIf= "(changePasswordForm.controls.confirmpassword.value !== changePasswordForm.controls.password.value)">
-                Passwords don't match.
-              </mat-error>
-          </mat-form-field>
-          <div class="mt-2 ">
-            <button (click)="onPatch()" class="btn btn-primary">
-              CONFIRM CHANGE PASSWORD
-            </button>
-          </div>
-        </form>
-      </ng-template>
-    </mat-tab>
+  <mat-tab label="Reset Password" class="text-color-black">
+    <ng-template matTabContent>
+      <!-- notVerified  user need to sign in -->
+      <form [formGroup]='verifyPasswordForm' novalidate *ngIf="!isVerified ">
+        <h6 class="form-text">
+          To continue, first verify it's you.
+        </h6>
+        <ngb-alert [dismissible]="false" type="danger" *ngIf="isVerficationFail" class="mt-4">
+          <strong>Error!</strong> Username or password is not correct.
+        </ngb-alert>
+        <mat-form-field class="full-width">
+          <input matInput type="text" formControlName="username" readonly>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput type="password" aria-describedby="passwordlHelp" placeholder="Password" required
+            formControlName='password'>
+          <mat-error>
+            Password is required.
+          </mat-error>
+        </mat-form-field>
+        <div class="mt-4">
+          <a class="text-left" routerLink="/">
+            Forget the password?
+          </a>
+          <button (click)="onVerify()" class="btn btn-primary ml-5">
+            Next
+          </button>
+        </div>
+      </form>
+
+      <!-- isVerified now user can change password -->
+      <form *ngIf="isVerified" [formGroup]="changePasswordForm" class="full-width" novalidate>
+        <h6 class="form-text text-muted">Changing your password will sign you out of your devices.</h6>
+        <mat-form-field class="full-width">
+          <input matInput type="password" formControlName='password' aria-describedby="passwordlHelp"
+            placeholder="Your New Password" required minlength="8" maxlength="20"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+          <small id="passwordlHelp" class="form-text text-muted ">
+            Your password must be 8-20 characters long, contain at least one number and one uppercase and lowercase
+            letter,
+            and must not contain spaces, special characters.
+          </small>
+          <mat-error>
+            Your password is invalid.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <input matInput type="password" formControlName='confirmpassword' placeholder="Confirm Your New Password"
+            required pattern="{{changePasswordForm.controls.password.value}}">
+          <mat-error
+            *ngIf="(changePasswordForm.controls.confirmpassword.value !== changePasswordForm.controls.password.value)">
+            Passwords don't match.
+          </mat-error>
+        </mat-form-field>
+        <div class="mt-2 ">
+          <button (click)="onPatch()" class="btn btn-primary">
+            CONFIRM CHANGE PASSWORD
+          </button>
+        </div>
+      </form>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab label="Chart">
+    <app-user-chart></app-user-chart>
+  </mat-tab>
 </mat-tab-group>

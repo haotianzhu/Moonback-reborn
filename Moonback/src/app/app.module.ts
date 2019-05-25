@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { QuillModule } from 'ngx-quill';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -21,6 +22,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { NotFound404Component } from './not-found404/not-found404.component';
 import { PostModalComponent } from './post/post-modal/post-modal.component';
 import { PostPageComponent } from './post/post-page/post-page.component';
+import { UserChartComponent } from './user/user-chart/user-chart.component';
 
 
 @NgModule({
@@ -35,6 +37,7 @@ import { PostPageComponent } from './post/post-page/post-page.component';
     PostPageComponent,
     PostModalComponent,
     UserprofileComponent,
+    UserChartComponent,
     SidebarComponent,
     NotFound404Component,
   ],
@@ -46,6 +49,7 @@ import { PostPageComponent } from './post/post-page/post-page.component';
     HttpClientModule,
     ReactiveFormsModule,
     QuillModule,
+    NgxEchartsModule,
     NgbModule,
     MoonMaterialModule
   ],
