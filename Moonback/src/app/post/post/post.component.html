@@ -6,12 +6,11 @@
         <div class="card-body">
           <div>
             <quill-editor
-              [bounds]="self" [readOnly]="true" [(ngModel)]="data.content" placeholder=""
+              [bounds]="self" [readOnly]="true" [(ngModel)]="data.overview||data.content" placeholder=""
               [styles]="{border: 'none'}" [modules]="{ toolbar: false}">
             </quill-editor>
           </div>
           <p class="card-text"><small class="text-muted">Last updated {{data.modifyDate}}</small></p>
-
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-var bcrypt = require('bcryptjs');
+var bcrypt = require('bcryptjs')
 const SALT_WORK_FACTOR = 10
 const jwt = require('jsonwebtoken')
 
