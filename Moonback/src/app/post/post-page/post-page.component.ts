@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { switchMap, tap, filter } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { AuthService } from 'src/app/authentication/shared/auth.service';
 import { environment } from 'src/environments/environment';
-import { post } from 'selenium-webdriver/http';
+import { PostComponent } from '../post/post.component';
 
 
 
@@ -19,15 +18,16 @@ export class PostPageComponent implements OnInit {
 
   post: any;
   isViewable = true;
-  isCreate = true;
+  isCreate = false;
   isConfirmed = false;
+  isValidate: boolean;
+  @ViewChildren('child') private  childComponent: PostComponent;
 
   constructor(
     private http: HttpClient,
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -38,6 +38,7 @@ export class PostPageComponent implements OnInit {
         tap(() => {
           if (this.router.url.split('?')[0] === '/post/new') {
             this.isViewable = false;
+            this.isCreate = true;
             this.post = {
               title: '',
               content: '',
@@ -53,6 +54,7 @@ export class PostPageComponent implements OnInit {
       });
     }
   }
+
 
   checkEditPermission() {
     this.isViewable = !(this.post.author === this.auth.getAuth().id);
@@ -73,33 +75,35 @@ export class PostPageComponent implements OnInit {
   }
 
   onSave() {
-    if (this.post && !this.post.id) {
-      this.http.post<any>(
-        `${environment.baseUrl + 'posts/'}`,
-        { post: this.post },
-        { observe: 'response' }
-      ).subscribe(
-        res => {
-          if (res.status === 200) {
-            this.router.navigate(['/']);
-          }
-        },
-        error => {
-        });
-    } else if (this.post && this.post.id) {
-      this.http.patch<any>(
-        `${environment.baseUrl + 'posts/' + this.post.id}`,
-        { post: this.post },
-        { observe: 'response' }
-      ).subscribe(
-        res => {
-          if (res.status === 200) {
-            this.router.navigate(['/']);
-          }
-        },
-        error => {
-        });
-    }
+    this.childComponent.validateForm();
+    console.log(this.isValidate)
+    // if (this.post && !this.post.id) {
+    //   this.http.post<any>(
+    //     `${environment.baseUrl + 'posts/'}`,
+    //     { post: this.post },
+    //     { observe: 'response' }
+    //   ).subscribe(
+    //     res => {
+    //       if (res.status === 200) {
+    //         this.router.navigate(['/']);
+    //       }
+    //     },
+    //     error => {
+    //     });
+    // } else if (this.post && this.post.id) {
+    //   this.http.patch<any>(
+    //     `${environment.baseUrl + 'posts/' + this.post.id}`,
+    //     { post: this.post },
+    //     { observe: 'response' }
+    //   ).subscribe(
+    //     res => {
+    //       if (res.status === 200) {
+    //         this.router.navigate(['/']);
+    //       }
+    //     },
+    //     error => {
+    //     });
+    // }
   }
   onDelete() {
     if (this.post) {

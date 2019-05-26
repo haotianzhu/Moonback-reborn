@@ -17,9 +17,9 @@
         </div>
       </div>
 
-      <div *ngIf="!isView" class="form-group">
+      <form *ngIf="!isView" #postForm='ngForm' class="form-group">
         <div class="card-header">
-          <input type="text" class="form-control " name="title" required #title="ngModel"
+          <input type="text" class="form-control " name="title" required
             [class.is-invalid]="title.invalid && title.touched" maxlength="30" placeholder="Title"
             [(ngModel)]="data.title">
           <small class="text-danger" [class.d-none]="title.valid || title.untouched">
@@ -36,7 +36,7 @@
             Content is required for a post.
           </small>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>

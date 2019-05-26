@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, HostListener, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { editorOptions } from '../quill/quill-config';
 import { ImageBlot } from '../quill/block-image';
@@ -22,6 +22,8 @@ export class PostComponent implements OnInit {
   @Input() isEdit = false;
   @Input('post')
   set setPost(val: object) { this.data = val; }
+  @Output() isFormValidate = new EventEmitter<boolean>();
+  @ViewChild('postForm') form;
 
   constructor(private element: ElementRef, public dialog: MatDialog) {
     ImageBlot.blotName = 'bimage';
@@ -30,8 +32,15 @@ export class PostComponent implements OnInit {
     Quill.register(ImageBlot, true);
   }
 
-
   ngOnInit() {
+  }
+
+  validateForm() {
+    if (this.form.valid) {
+      this.isFormValidate.emit(true);
+    } else {
+      this.isFormValidate.emit(false);
+    }
   }
 
   @HostListener('click', ['$event'])
