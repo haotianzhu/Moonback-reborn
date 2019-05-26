@@ -48,7 +48,6 @@ export class PostPageComponent implements OnInit {
       ).subscribe(async (id) => {
         await this.loadingPost(id);
         this.checkEditPermission();
-        console.log(this.isViewable)
       });
     }
   }
