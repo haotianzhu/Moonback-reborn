@@ -66,7 +66,6 @@ export class SigninComponent implements OnInit {
           this.signinForm.controls.username.markAsPristine();
           this.signinForm.controls.password.markAsPristine();
         }
-
       );
     } else {
       if (this.signinForm.controls.password.errors) {

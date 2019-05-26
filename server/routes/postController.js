@@ -116,11 +116,10 @@ postRouter.patch('/:id', awaitHandlerFactory(async (req, res) => {
     // if no post found, end
     return
   }
-  if (authUserid && authUserid !== undefined && authUserid === post.author) {
+  if (authUserid && authUserid !== undefined && authUserid === post.author.toString()) {
     // check permission
     hasPermission = true
   }
-
   if (hasPermission) {
     // update post
     if (reqPost.title !== undefined) {

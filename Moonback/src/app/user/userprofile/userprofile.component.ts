@@ -18,6 +18,7 @@ export class UserprofileComponent implements OnInit {
   userInfo: any;
   isVerified = false;
   isVerficationFail = false;
+  postArray = [];
 
   constructor(
     private http: HttpClient,
@@ -25,9 +26,9 @@ export class UserprofileComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+
     if (!this.auth.isAuth()) { this.router.navigate(['/signin']); }
     this.userInfo = this.auth.getAuth();
-
     if (!this.isVerified) {
       this.verifyPasswordForm = new FormGroup({
         username: new FormControl(this.userInfo.username, [Validators.required]),
@@ -61,6 +62,7 @@ export class UserprofileComponent implements OnInit {
       );
     }
   }
+
   onPatch() {
     if (this.changePasswordForm.valid) {
       this.userInfo.password = this.changePasswordForm.value.password;
@@ -82,3 +84,4 @@ export class UserprofileComponent implements OnInit {
     }
   }
 }
+
