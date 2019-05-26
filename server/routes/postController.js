@@ -7,16 +7,16 @@ function checkCategory (category) {
   var isValidate = false
   switch (category) {
     case 'game':
-      break;
+      break
     case 'anime':
       isValidate = true
-      break;
+      break
     case 'novel':
       isValidate = true
-      break;
+      break
     case 'manga':
       isValidate = true
-      break;
+      break
     default:
       isValidate = false
   }
