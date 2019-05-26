@@ -10,7 +10,10 @@
               [styles]="{border: 'none'}" [modules]="{ toolbar: false}">
             </quill-editor>
           </div>
-          <p class="card-text"><small class="text-muted">Last updated {{data.modifyDate}}</small></p>
+          <p class="card-text">
+            <small class="text-muted">Last updated {{data.modifyDate}}</small>
+            <a *ngIf="isEdit" routerLink = '/posts/{{data.id}}' class = "float-right">Edit</a>
+          </p>
         </div>
       </div>
 

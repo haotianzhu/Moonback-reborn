@@ -1,19 +1,13 @@
-
-import {
-  Component,
-  OnInit, Renderer2,
-  ElementRef,
-  Inject, forwardRef,
-  ViewChildren, QueryList
-} from '@angular/core';
+import {Component, OnInit, Renderer2, ElementRef, Input} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { delay, async } from 'q';
-import { concatMap, switchMap, map, mapTo, combineLatest, mergeMap, debounceTime, filter } from 'rxjs/operators';
+import { switchMap, map, filter } from 'rxjs/operators';
+import { of, Observable, fromEvent} from 'rxjs';
+
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/authentication/shared/auth.service';
-import { of, Observable, fromEvent, concat } from 'rxjs';
-import { AppComponent } from 'src/app/app.component';
+
+
 
 
 @Component({
@@ -30,6 +24,8 @@ export class PostListComponent implements OnInit {
   scollPosInit: boolean;
   postsRoute$: Observable<any>;
   scroll$: Observable<any>;
+  @Input() userId = null;
+  @Input() isEdit = false;
 
   constructor(
     private http: HttpClient,
@@ -52,9 +48,11 @@ export class PostListComponent implements OnInit {
     this.postsRoute$.subscribe(
       async (id) => {
         if (this.postArray.length === 0) {
-          if (id) { // with id
+          if (id || this.userId) { // with id
+            if (this.userId) {id = this.userId; }
             this.url = `${environment.baseUrl + 'posts/user/' + id + '?limit=' + this.limit + '&sort=-modifyDate'}`;
-            this.loadingPost(this.url + '&skip=' + this.postArray.length);
+            await this.loadingPost(this.url + '&skip=' + this.postArray.length);
+            this.handlePosts(this.postArray);
           } else {
             // home page
             this.url = `${environment.baseUrl + 'posts?limit=' + this.limit + '&sort=-modifyDate'}`;
