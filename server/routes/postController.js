@@ -3,6 +3,26 @@ const postRouter = express.Router()
 const Post = require('../models/post')
 const logger = require('../logger')
 
+function checkCategory (category) {
+  var isValidate = false
+  switch (category) {
+    case 'game':
+      break;
+    case 'anime':
+      isValidate = true
+      break;
+    case 'novel':
+      isValidate = true
+      break;
+    case 'manga':
+      isValidate = true
+      break;
+    default:
+      isValidate = false
+  }
+  return isValidate
+}
+
 function pasrseUrlToQuery (params) {
   let query = { select: {}, limit: 100, skip: 0, sort: {} }
   for (var key in params) {
@@ -45,10 +65,13 @@ postRouter.post('/', (req, res) => {
     const authUserid = req.userid
     reqData.post.author = authUserid
   } catch (error) {
-    logger.info('POST /posts => 400 ', error)
+    logger.info('POST api/posts => 400 ', error)
     return res.status(400).send({ query: 'createNewPost', status: 'unsucessful', message: error.toString() })
   }
-
+  if (!checkCategory(reqData.post.category)) {
+    logger.info('POST api/posts => 400 no category')
+    return res.sendStatus(400)
+  }
   let newPost = new Post(reqData.post)
   newPost.save((error, data) => {
     if (error) {
