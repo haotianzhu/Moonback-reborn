@@ -6,7 +6,8 @@ var postSchema = new Schema({
   content: Object,
   createDate: { type: Date, default: Date.now },
   modifyDate: { type: Date, default: Date.now },
-  author: { type: mongoose.Schema.ObjectId, ref: 'user' }
+  author: { type: mongoose.Schema.ObjectId, ref: 'user' },
+  category: { type: String, required: true }
 })
 
 // https://stackoverflow.com/questions/7034848/mongodb-output-id-instead-of-id
