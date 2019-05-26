@@ -19,6 +19,7 @@ export class PostPageComponent implements OnInit {
 
   post: any;
   isViewable = true;
+  isCreate = true;
   isConfirmed = false;
 
   constructor(
