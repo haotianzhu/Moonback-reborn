@@ -28,13 +28,17 @@ userSchema.statics.toAuthJSON = function (user) {
   const token = jwt.sign({
     username: user.username,
     id: user.id,
+    isActivated: user.isActivated,
+    email: user.email,
     exp: parseInt(expirationDate.getTime() / 1000, 10)
   }, 'secret')
 
   const userJson = {
     id: user.id,
     username: user.username,
-    token: token
+    token: token,
+    email: user.email,
+    isActivated: user.isActivated
   }
 
   return userJson
