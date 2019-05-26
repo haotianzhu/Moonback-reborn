@@ -24,7 +24,8 @@ export class PostListComponent implements OnInit {
   scollPosInit: boolean;
   postsRoute$: Observable<any>;
   scroll$: Observable<any>;
-  @Input() userId: null;
+  @Input() userId = null;
+  @Input() isEdit = false;
 
   constructor(
     private http: HttpClient,

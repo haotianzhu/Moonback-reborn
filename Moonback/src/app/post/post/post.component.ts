@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, ElementRef, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { PostModalComponent } from '../post-modal/post-modal.component';
 import { editorOptions } from '../quill/quill-config';
-import Quill from 'quill';
 import { ImageBlot } from '../quill/block-image';
+import Quill from 'quill';
+
+import { PostModalComponent } from '../post-modal/post-modal.component';
 
 @Component({
   selector: 'app-post',
@@ -18,10 +19,9 @@ export class PostComponent implements OnInit {
   @Input() isView = true;
   @Input() isClickable = false;
   @Input() overview = false;
+  @Input() isEdit = false;
   @Input('post')
-  set setPost(val: object) {
-    this.data = val;
-  }
+  set setPost(val: object) { this.data = val; }
 
   constructor(private element: ElementRef, public dialog: MatDialog) {
     ImageBlot.blotName = 'bimage';
