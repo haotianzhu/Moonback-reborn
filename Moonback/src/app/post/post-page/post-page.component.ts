@@ -7,6 +7,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { AuthService } from 'src/app/authentication/shared/auth.service';
 import { environment } from 'src/environments/environment';
+import { post } from 'selenium-webdriver/http';
 
 
 
@@ -71,9 +72,22 @@ export class PostPageComponent implements OnInit {
   }
 
   onSave() {
-    if (this.post) {
+    if (this.post && !this.post.id) {
       this.http.post<any>(
         `${environment.baseUrl + 'posts/'}`,
+        { post: this.post },
+        { observe: 'response' }
+      ).subscribe(
+        res => {
+          if (res.status === 200) {
+            this.router.navigate(['/']);
+          }
+        },
+        error => {
+        });
+    } else if (this.post && this.post.id) {
+      this.http.patch<any>(
+        `${environment.baseUrl + 'posts/' + this.post.id}`,
         { post: this.post },
         { observe: 'response' }
       ).subscribe(
