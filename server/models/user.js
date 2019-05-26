@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken')
 var userSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
+  email: { type: String, required: true },
+  isActivated: { type: Boolean, default: false, required: true },
   createDate: { type: Date, default: Date.now },
   modifyDate: { type: Date, default: Date.now },
   token: { type: String, default: '' }
@@ -36,6 +38,11 @@ userSchema.statics.toAuthJSON = function (user) {
   }
 
   return userJson
+}
+
+// email verification
+userSchema.statics.execute = function (query, callback) {
+  return this.find(query.select).skip(query.skip).limit(query.limit).sort(query.sort).exec(callback)
 }
 
 userSchema.statics.execute = function (query, callback) {
