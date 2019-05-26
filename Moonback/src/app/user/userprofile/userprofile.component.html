@@ -9,7 +9,7 @@
   <mat-tab label="Your Post">
     <ng-template matTabContent>
       <div class="my-3 p-3 rounded box-shadow">
-        <app-post-list-page [userId]=this.userInfo.id></app-post-list-page>
+        <app-post-list-page [userId]=this.userInfo.id [isEdit]= true></app-post-list-page>
       </div>
     </ng-template>
   </mat-tab>
