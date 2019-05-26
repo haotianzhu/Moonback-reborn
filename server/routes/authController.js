@@ -68,7 +68,9 @@ authRouter.post('/signin', awaitHandlerFactory(async (req, res) => {
           const usrJson = {
             id: user.id,
             username: user.username,
-            token: user.token
+            token: user.token,
+            email: user.email,
+            isActivated: user.isActivated
           }
           res.status(200).send({ user: usrJson, query: 'signIn', status: 'sucessful' })
           logger.info('/signin => 200 ')

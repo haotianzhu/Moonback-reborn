@@ -1,90 +1,42 @@
-<div *ngIf="post" class="row">
-  <div class="col mt-1 mb-1">
-    <div class="card border-primary">
+<div *ngIf="data" class="row">
+  <div class="col">
+    <div class="card border-danger">
       <div *ngIf="isView">
-        <div class="card-header">{{post.title}}</div>
+        <div class="card-header">{{data.title}}</div>
         <div class="card-body">
           <div>
-            <quill-editor [bounds]="self" [readOnly]="true" [(ngModel)]="post.content" placeholder=""
-              [styles]="{border: 'none', 'max-height':'40rem'}" [modules]="{ toolbar: false}">
+            <quill-editor
+              [bounds]="self" [readOnly]="true" [(ngModel)]="data.overview||data.content" placeholder=""
+              [styles]="{border: 'none'}" [modules]="{ toolbar: false}">
             </quill-editor>
           </div>
-          <p class="card-text"><small class="text-muted">Last updated {{post.modifyDate}}</small></p>
-          <div>
-            <small><a *ngIf="!isSingle" [routerLink]="[ '/posts', post.id ]">More Detail</a></small>
-          </div>
+          <p class="card-text">
+            <small class="text-muted">Last updated {{data.modifyDate}}</small>
+            <a *ngIf="isEdit" routerLink = '/posts/{{data.id}}' class = "float-right">Edit</a>
+          </p>
         </div>
       </div>
 
       <div *ngIf="!isView" class="form-group">
-        <div class="form-group card-header">
+        <div class="card-header">
           <input type="text" class="form-control " name="title" required #title="ngModel"
             [class.is-invalid]="title.invalid && title.touched" maxlength="30" placeholder="Title"
-            [(ngModel)]="tmpPost.title">
-          <small class="text-danger" [class.d-none]="title.valid || title.untouched">Title is required for a new
-            post.</small>
+            [(ngModel)]="data.title">
+          <small class="text-danger" [class.d-none]="title.valid || title.untouched">
+            Title is required for a new data.
+          </small>
         </div>
-        <div class="card-body ">
-          <quill-editor id='contentEditor' [styles]="{border: 'none', 'max-height':'40rem'}" #content="ngModel"
-            [(ngModel)]="tmpPost.content" [class.is-invalid]="content.invalid && content.touched">
+
+        <div class="card-body">
+          <quill-editor id='contentEditor' [modules]='quillconifg' (onEditorCreated)="editorCreated($event)"
+            #content="ngModel" required [(ngModel)]="data.content"
+            [class.is-invalid]="content.invalid && content.touched" placeholder="Please Enter Your Post!">
           </quill-editor>
           <small class="text-danger" [class.d-none]="content.valid || content.untouched">
             Content is required for a post.
           </small>
-          <p class="card-text"><small class="text-muted">Last updated {{tmpPost.modifyDate}}</small></p>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-
-<div *ngIf="post&&(isSingle||!isView)" class="mt-4 mb-2">
-  <div class="row">
-    <div class="col"></div>
-    <div class="col"></div>
-    <div *ngIf="isView&&isEditable" class="col mx-4 mb-1 btn btn-outline-primary" (click)="onEdit()">
-      &nbsp;Edit&nbsp;
-    </div>
-  </div>
-  <div class="row">
-    <div class="col"></div>
-    <div class="col"></div>
-    <div *ngIf="isView&&isSingle" class="col mx-4 mb-1 btn btn-outline-secondary "  (click)="onBack()">
-      &nbsp;Back&nbsp;
-    </div>
-  </div>
-  <div class="row">
-    <div class="col"></div>
-    <div class="col"></div>
-    <button *ngIf="!isView" [disabled]='isPending' class="col mx-4 mb-1 btn btn-outline-primary" (click)="onSave()">
-      &nbsp;Save&nbsp;
-    </button>
-  </div>
-  <div class="row">
-    <div class="col"></div>
-    <div class="col"></div>
-    <button *ngIf="!isView" [disabled]='isPending' class="col mx-4 mb-1 btn btn-outline-secondary" (click)="onCancel()">
-      Cancel
-    </button>
-  </div>
-
-
-</div>
-
-
-<div *ngIf="!post" class="row">
-  <div class="col"></div>
-  <div class="col loading">
-    <div *ngIf="isLoading" class="spinner-border" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-  </div>
-  <div class="col"></div>
-</div>
-
-<div *ngIf="isPending"  style="bottom: 0rem; position: sticky">
-  <ngb-progressbar type="success" [striped]='true' [max]='100' [animated]='true' [value]="sideBarvalue" height="0.7rem">
-  {{sideBarvalue}}%
-  </ngb-progressbar>
 </div>

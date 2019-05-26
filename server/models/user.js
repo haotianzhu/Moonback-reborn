@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-var bcrypt = require('bcryptjs');
+var bcrypt = require('bcryptjs')
 const SALT_WORK_FACTOR = 10
 const jwt = require('jsonwebtoken')
 
 var userSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
+  email: { type: String, required: true },
+  isActivated: { type: Boolean, default: false, required: true },
   createDate: { type: Date, default: Date.now },
   modifyDate: { type: Date, default: Date.now },
   token: { type: String, default: '' }
@@ -26,16 +28,25 @@ userSchema.statics.toAuthJSON = function (user) {
   const token = jwt.sign({
     username: user.username,
     id: user.id,
+    isActivated: user.isActivated,
+    email: user.email,
     exp: parseInt(expirationDate.getTime() / 1000, 10)
   }, 'secret')
 
   const userJson = {
     id: user.id,
     username: user.username,
-    token: token
+    token: token,
+    email: user.email,
+    isActivated: user.isActivated
   }
 
   return userJson
+}
+
+// email verification
+userSchema.statics.execute = function (query, callback) {
+  return this.find(query.select).skip(query.skip).limit(query.limit).sort(query.sort).exec(callback)
 }
 
 userSchema.statics.execute = function (query, callback) {

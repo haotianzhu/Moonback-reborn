@@ -24,7 +24,7 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
     if (this.auth.isAuth()) { this.router.navigate(['/']); }
     this.signupForm = new FormGroup({
-      email: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
       termsCheck: new FormControl('', [Validators.required]),
