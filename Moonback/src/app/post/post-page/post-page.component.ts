@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { switchMap, tap, filter } from 'rxjs/operators';
@@ -20,8 +20,7 @@ export class PostPageComponent implements OnInit {
   isViewable = true;
   isCreate = false;
   isConfirmed = false;
-  isValidate: boolean;
-  @ViewChildren('child') private  childComponent: PostComponent;
+  @ViewChild('child') private childComponent: PostComponent;
 
   constructor(
     private http: HttpClient,
@@ -75,36 +74,37 @@ export class PostPageComponent implements OnInit {
   }
 
   onSave() {
-    this.childComponent.validateForm();
-    console.log(this.isValidate)
-    // if (this.post && !this.post.id) {
-    //   this.http.post<any>(
-    //     `${environment.baseUrl + 'posts/'}`,
-    //     { post: this.post },
-    //     { observe: 'response' }
-    //   ).subscribe(
-    //     res => {
-    //       if (res.status === 200) {
-    //         this.router.navigate(['/']);
-    //       }
-    //     },
-    //     error => {
-    //     });
-    // } else if (this.post && this.post.id) {
-    //   this.http.patch<any>(
-    //     `${environment.baseUrl + 'posts/' + this.post.id}`,
-    //     { post: this.post },
-    //     { observe: 'response' }
-    //   ).subscribe(
-    //     res => {
-    //       if (res.status === 200) {
-    //         this.router.navigate(['/']);
-    //       }
-    //     },
-    //     error => {
-    //     });
-    // }
+    if (this.childComponent.validate()) {
+      if (this.post && !this.post.id) {
+        this.http.post<any>(
+          `${environment.baseUrl + 'posts/'}`,
+          { post: this.post },
+          { observe: 'response' }
+        ).subscribe(
+          res => {
+            if (res.status === 200) {
+              this.router.navigate(['/']);
+            }
+          },
+          error => {
+          });
+      } else if (this.post && this.post.id) {
+        this.http.patch<any>(
+          `${environment.baseUrl + 'posts/' + this.post.id}`,
+          { post: this.post },
+          { observe: 'response' }
+        ).subscribe(
+          res => {
+            if (res.status === 200) {
+              this.router.navigate(['/']);
+            }
+          },
+          error => {
+          });
+      }
+    }
   }
+
   onDelete() {
     if (this.post) {
       this.http.delete<any>(

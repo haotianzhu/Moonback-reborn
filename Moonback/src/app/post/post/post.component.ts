@@ -21,9 +21,9 @@ export class PostComponent implements OnInit {
   @Input() overview = false;
   @Input() isEdit = false;
   @Input('post')
-  set setPost(val: object) { this.data = val; }
-  @Output() isFormValidate = new EventEmitter<boolean>();
-  @ViewChild('postForm') form;
+  set setPost(val: object) { this.data = val;}
+  @ViewChild('title') titleController;
+  @ViewChild('content') contentController;
 
   constructor(private element: ElementRef, public dialog: MatDialog) {
     ImageBlot.blotName = 'bimage';
@@ -35,11 +35,13 @@ export class PostComponent implements OnInit {
   ngOnInit() {
   }
 
-  validateForm() {
-    if (this.form.valid) {
-      this.isFormValidate.emit(true);
+  validate() {
+    if (this.contentController.valid && this.titleController.valid) {
+      return true;
     } else {
-      this.isFormValidate.emit(false);
+      this.titleController.control.pristine = false;
+      this.contentController.control.pristine = false;
+      return false;
     }
   }
 

@@ -1,5 +1,5 @@
 <div class = 'mt-4 mb-4'>
-  <app-post #child (isFormValidate)='isValidate' [isClickable]='false' [isView]='isViewable' [post]=post ></app-post>
+  <app-post #child [isClickable]='false' [isView]='isViewable' [post]=post ></app-post>
 </div>
 
 <div *ngIf = '!isViewable && !isCreate'>
