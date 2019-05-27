@@ -37,6 +37,9 @@
                 <option value="manga">Manga</option>
               </select>
             </div>
+            <small class="text-danger" *ngIf="category.invalid && !category.pristine">
+                Content is required for a post.
+            </small>
 
           <quill-editor id='contentEditor' [modules]='quillconifg' (onEditorCreated)="editorCreated($event)"
             #content="ngModel" [(ngModel)] = "data.content " placeholder="Please Enter Your Post!" required>
