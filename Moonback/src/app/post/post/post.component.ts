@@ -24,6 +24,7 @@ export class PostComponent implements OnInit {
   set setPost(val: object) { this.data = val;}
   @ViewChild('title') titleController;
   @ViewChild('content') contentController;
+  @ViewChild('category') categoryController;
 
   constructor(private element: ElementRef, public dialog: MatDialog) {
     ImageBlot.blotName = 'bimage';
@@ -36,11 +37,13 @@ export class PostComponent implements OnInit {
   }
 
   validate() {
-    if (this.contentController.valid && this.titleController.valid) {
+    console.log(this.categoryController)
+    if (this.contentController.valid && this.titleController.valid && this.categoryController.valid) {
       return true;
     } else {
       this.titleController.control.pristine = false;
       this.contentController.control.pristine = false;
+      this.categoryController.control.pristine = false;
       return false;
     }
   }
@@ -61,6 +64,7 @@ export class PostComponent implements OnInit {
       data: {
         title: this.data.title,
         content: this.data.content,
+        category:this.data.category,
         modifyDate: this.data.modifyDate
       }
     });
