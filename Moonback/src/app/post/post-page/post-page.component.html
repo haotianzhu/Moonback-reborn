@@ -1,14 +1,14 @@
-<div class = 'mt-4 mb-4'>
-  <app-post #child [isClickable]='false' [isView]='isViewable' [post]=post ></app-post>
+<div class='mt-4 mb-4'>
+  <app-post #child [isClickable]='false' [isView]='isViewable' [post]=post></app-post>
 </div>
 
-<div *ngIf = '!isViewable && !isCreate'>
-  <button (click) = 'onDelete()' class="btn btn-danger float-left">Delete</button>
-  <button (click) = 'onSave()' class="btn btn-outline-danger float-right ml-4">Save</button>
-  <button routerLink = '/account/settings'  class="btn btn-outline-secondary float-right">Cancel</button>
+<div *ngIf='!isViewable && !isCreate'>
+  <button (click)='onDelete()' class="btn btn-danger float-left">Delete</button>
+  <button (click)='onSave()' class="btn btn-outline-danger float-right ml-4">Save</button>
+  <button routerLink='/account/settings' class="btn btn-outline-secondary float-right">Cancel</button>
 </div>
 
-<div *ngIf = isCreate>
-    <button (click) = 'onSave()' class="btn btn-outline-danger float-right ml-4">Save</button>
-    <button routerLink = '/'  class="btn btn-outline-secondary float-right">Cancel</button>
+<div *ngIf=isCreate>
+  <button (click)='onSave()' class="btn btn-outline-danger float-right ml-4">Save</button>
+  <button routerLink='/' class="btn btn-outline-secondary float-right">Cancel</button>
 </div>

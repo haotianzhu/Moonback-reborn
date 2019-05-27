@@ -18,8 +18,7 @@
 
       <div *ngIf="!isView" class="form-group">
         <div class="card-header">
-          <input type="text" class="form-control" required #title="ngModel" 
-          maxlength="30" placeholder="Title"
+          <input type="text" class="form-control" required #title="ngModel" maxlength="30" placeholder="Title"
             [(ngModel)]="data.title">
           <small class="text-danger" *ngIf="title.invalid && !title.pristine">
             Title is required for a new data.
@@ -27,28 +26,27 @@
         </div>
 
         <div class="card-body">
-            <div class="form-group">
-              <label class="mr-sm-2">Category</label>
-              <select class="form-control" #category="ngModel" [(ngModel)]="data.category" required>
-                <option selected>Choose...</option>
-                <option value="game">Game</option>
-                <option value="novel">Light Novel</option>
-                <option value="anime">Animate</option>
-                <option value="manga">Manga</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label class="mr-sm-2">Category</label>
+            <select class="form-control" #category="ngModel" [(ngModel)]="data.category" required>
+              <option value="game">Game</option>
+              <option value="novel">Light Novel</option>
+              <option value="anime">Animate</option>
+              <option value="manga">Manga</option>
+            </select>
             <small class="text-danger" *ngIf="category.invalid && !category.pristine">
-                Content is required for a post.
+              Category is required for a post.
             </small>
+          </div>
 
           <quill-editor id='contentEditor' [modules]='quillconifg' (onEditorCreated)="editorCreated($event)"
-            #content="ngModel" [(ngModel)] = "data.content " placeholder="Please Enter Your Post!" required>
+            #content="ngModel" [(ngModel)]="data.content " placeholder="Please Enter Your Post!" required>
           </quill-editor>
           <small class="text-danger" *ngIf="content.invalid && !content.pristine">
             Content is required for a post.
           </small>
 
-          
+
         </div>
       </div>
     </div>

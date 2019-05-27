@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { AuthService } from 'src/app/authentication/shared/auth.service';
 import { environment } from 'src/environments/environment';
 import { PostComponent } from '../post/post.component';
+import { Content } from '@angular/compiler/src/render3/r3_ast';
 
 
 
@@ -74,6 +75,7 @@ export class PostPageComponent implements OnInit {
   }
 
   onSave() {
+    console.log(this.post);
     if (this.childComponent.validate()) {
       if (this.post && !this.post.id) {
         this.http.post<any>(

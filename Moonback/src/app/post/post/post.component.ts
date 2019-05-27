@@ -21,7 +21,7 @@ export class PostComponent implements OnInit {
   @Input() overview = false;
   @Input() isEdit = false;
   @Input('post')
-  set setPost(val: object) { this.data = val;}
+  set setPost(val: object) { this.data = val; }
   @ViewChild('title') titleController;
   @ViewChild('content') contentController;
   @ViewChild('category') categoryController;
@@ -37,7 +37,6 @@ export class PostComponent implements OnInit {
   }
 
   validate() {
-    console.log(this.categoryController)
     if (this.contentController.valid && this.titleController.valid && this.categoryController.valid) {
       return true;
     } else {
@@ -64,7 +63,7 @@ export class PostComponent implements OnInit {
       data: {
         title: this.data.title,
         content: this.data.content,
-        category:this.data.category,
+        category: this.data.category,
         modifyDate: this.data.modifyDate
       }
     });
