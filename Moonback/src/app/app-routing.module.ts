@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'signout', component: SignoutComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'game', component: PostListComponent },
-  { path: 'animate', component: PostListComponent },
+  { path: 'anime', component: PostListComponent },
   { path: 'novel', component: PostListComponent },
   { path: 'manga', component: PostListComponent },
   { path: 'user/:id', component: PostListComponent },
