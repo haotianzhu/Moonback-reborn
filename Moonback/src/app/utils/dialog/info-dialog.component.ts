@@ -12,7 +12,10 @@ export class InformationDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
+  }
+  onYesClick(): void {
+    this.dialogRef.close(true);
   }
 
 }
