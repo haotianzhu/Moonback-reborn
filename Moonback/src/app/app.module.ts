@@ -23,6 +23,7 @@ import { NotFound404Component } from './not-found404/not-found404.component';
 import { PostModalComponent } from './post/post-modal/post-modal.component';
 import { PostPageComponent } from './post/post-page/post-page.component';
 import { UserChartComponent } from './user/user-chart/user-chart.component';
+import { InformationDialogComponent } from './utils/dialog/info-dialog.component';
 
 
 
@@ -41,6 +42,7 @@ import { UserChartComponent } from './user/user-chart/user-chart.component';
     UserChartComponent,
     SidebarComponent,
     NotFound404Component,
+    InformationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +59,7 @@ import { UserChartComponent } from './user/user-chart/user-chart.component';
   providers: [
     [{ provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true }]
   ],
-  entryComponents: [PostModalComponent],
+  entryComponents: [PostModalComponent, InformationDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
