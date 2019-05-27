@@ -10,15 +10,20 @@ import { NotFound404Component } from './not-found404/not-found404.component';
 import { PostPageComponent } from './post/post-page/post-page.component';
 
 const routes: Routes = [
-  { path: '', component: PostListComponent},
-  { path: 'signin', component: SigninComponent},
-  { path: 'signout', component: SignoutComponent},
-  { path: 'signup', component: SignupComponent},
-  { path: 'user/:id', component: PostListComponent},
-  { path: 'posts/:id', component: PostPageComponent},
-  { path: 'account/settings', component: UserprofileComponent},
+  { path: '', component: PostListComponent },
+  { path: 'signin', component: SigninComponent },
+  { path: 'signout', component: SignoutComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'game', component: PostListComponent },
+  { path: 'animate', component: PostListComponent },
+  { path: 'novel', component: PostListComponent },
+  { path: 'manga', component: PostListComponent },
+  { path: 'user/:id', component: PostListComponent },
+  { path: 'posts/:id', component: PostPageComponent },
+  { path: 'account/settings', component: UserprofileComponent },
   { path: 'post/new', component: PostPageComponent },
-  { path: '**', component: NotFound404Component }
+  { path: '404', component: NotFound404Component },
+  { path: '**', redirectTo: '/404' },
 ];
 
 @NgModule({

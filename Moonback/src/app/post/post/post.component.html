@@ -5,36 +5,48 @@
         <div class="card-header">{{data.title}}</div>
         <div class="card-body">
           <div>
-            <quill-editor
-              [bounds]="self" [readOnly]="true" [(ngModel)]="data.overview||data.content" placeholder=""
+            <quill-editor [bounds]="self" [readOnly]="true" [(ngModel)]="data.overview||data.content" placeholder=""
               [styles]="{border: 'none'}" [modules]="{ toolbar: false}">
             </quill-editor>
           </div>
           <p class="card-text">
             <small class="text-muted">Last updated {{data.modifyDate}}</small>
-            <a *ngIf="isEdit" routerLink = '/posts/{{data.id}}' class = "float-right">Edit</a>
+            <a *ngIf="isEdit" routerLink='/posts/{{data.id}}' class="float-right">Edit</a>
           </p>
         </div>
       </div>
 
       <div *ngIf="!isView" class="form-group">
         <div class="card-header">
-          <input type="text" class="form-control " name="title" required #title="ngModel"
-            [class.is-invalid]="title.invalid && title.touched" maxlength="30" placeholder="Title"
+          <input type="text" class="form-control" required #title="ngModel" maxlength="30" placeholder="Title"
             [(ngModel)]="data.title">
-          <small class="text-danger" [class.d-none]="title.valid || title.untouched">
+          <small class="text-danger" *ngIf="title.invalid && !title.pristine">
             Title is required for a new data.
           </small>
         </div>
 
         <div class="card-body">
+          <div class="form-group">
+            <label class="mr-sm-2">Category</label>
+            <select class="form-control" #category="ngModel" [(ngModel)]="data.category" required>
+              <option value="game">Game</option>
+              <option value="novel">Light Novel</option>
+              <option value="anime">Animate</option>
+              <option value="manga">Manga</option>
+            </select>
+            <small class="text-danger" *ngIf="category.invalid && !category.pristine">
+              Category is required for a post.
+            </small>
+          </div>
+
           <quill-editor id='contentEditor' [modules]='quillconifg' (onEditorCreated)="editorCreated($event)"
-            #content="ngModel" required [(ngModel)]="data.content"
-            [class.is-invalid]="content.invalid && content.touched" placeholder="Please Enter Your Post!">
+            #content="ngModel" [(ngModel)]="data.content " placeholder="Please Enter Your Post!" required>
           </quill-editor>
-          <small class="text-danger" [class.d-none]="content.valid || content.untouched">
+          <small class="text-danger" *ngIf="content.invalid && !content.pristine">
             Content is required for a post.
           </small>
+
+
         </div>
       </div>
     </div>
