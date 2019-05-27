@@ -75,7 +75,6 @@ export class PostPageComponent implements OnInit {
   }
 
   onSave() {
-    console.log(this.post);
     if (this.childComponent.validate()) {
       if (this.post && !this.post.id) {
         this.http.post<any>(

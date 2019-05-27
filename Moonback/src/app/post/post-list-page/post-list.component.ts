@@ -24,6 +24,7 @@ export class PostListComponent implements OnInit {
   scollPosInit: boolean;
   postsRoute$: Observable<any>;
   scroll$: Observable<any>;
+  category: string;
   @Input() userId = null;
   @Input() isEdit = false;
 
@@ -55,7 +56,12 @@ export class PostListComponent implements OnInit {
             this.handlePosts(this.postArray);
           } else {
             // home page
-            this.url = `${environment.baseUrl + 'posts?limit=' + this.limit + '&sort=-modifyDate'}`;
+            if (this.router.url.split('?')[0] === '/') {
+              this.url = `${environment.baseUrl + 'posts?limit=' + this.limit + '&sort=-modifyDate'}`;
+            } else {
+              this.category = this.router.url.split('?')[0].split('/')[1];
+              this.url = `${environment.baseUrl + 'posts?limit=' + this.limit + '&category=' + this.category + '&sort=-modifyDate'}`;
+            }
             await this.loadingPost(this.url + '&skip=' + this.postArray.length);
             this.handlePosts(this.postArray);
           }
