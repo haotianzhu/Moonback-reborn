@@ -7,6 +7,7 @@ function checkCategory (category) {
   var isValidate = false
   switch (category) {
     case 'game':
+      isValidate = true
       break
     case 'anime':
       isValidate = true

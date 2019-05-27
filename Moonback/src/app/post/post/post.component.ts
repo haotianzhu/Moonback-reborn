@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, HostListener, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { editorOptions } from '../quill/quill-config';
 import { ImageBlot } from '../quill/block-image';
@@ -22,6 +22,9 @@ export class PostComponent implements OnInit {
   @Input() isEdit = false;
   @Input('post')
   set setPost(val: object) { this.data = val; }
+  @ViewChild('title') titleController;
+  @ViewChild('content') contentController;
+  @ViewChild('category') categoryController;
 
   constructor(private element: ElementRef, public dialog: MatDialog) {
     ImageBlot.blotName = 'bimage';
@@ -30,8 +33,18 @@ export class PostComponent implements OnInit {
     Quill.register(ImageBlot, true);
   }
 
-
   ngOnInit() {
+  }
+
+  validate() {
+    if (this.contentController.valid && this.titleController.valid && this.categoryController.valid) {
+      return true;
+    } else {
+      this.titleController.control.pristine = false;
+      this.contentController.control.pristine = false;
+      this.categoryController.control.pristine = false;
+      return false;
+    }
   }
 
   @HostListener('click', ['$event'])
@@ -50,6 +63,7 @@ export class PostComponent implements OnInit {
       data: {
         title: this.data.title,
         content: this.data.content,
+        category: this.data.category,
         modifyDate: this.data.modifyDate
       }
     });
