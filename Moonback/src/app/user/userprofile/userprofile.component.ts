@@ -19,6 +19,7 @@ export class UserprofileComponent implements OnInit {
   isVerified = false;
   isVerficationFail = false;
   postArray = [];
+  selectedTab = 0;
 
   constructor(
     private http: HttpClient,
@@ -82,6 +83,9 @@ export class UserprofileComponent implements OnInit {
         }
       );
     }
+  }
+  onReset(){
+    this.selectedTab = 3;
   }
 }
 
