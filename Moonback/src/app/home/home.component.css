@@ -1,5 +1,8 @@
-.navbar-brand .nav-icon-image {
+.navbar-brand .nav-icon-spinner {
   width: 3rem;
   height: 3rem;
 }
 
+.navbar-brand .nav-icon-image {
+  width: 3rem;
+}

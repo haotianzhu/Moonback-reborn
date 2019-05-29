@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, AfterContentChecked, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, map, tap, distinctUntilChanged } from 'rxjs/operators';
 import { Event as MyRouterEvent } from '@angular/router';
 import { LoadingService } from '../utils/loading.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -37,7 +36,7 @@ export class HomeComponent implements OnInit {
       if (state) {
         const spinnerElement = this.rder.createElement('div') as Element;
         spinnerElement.setAttribute('role', 'status');
-        spinnerElement.classList.add('spinner-border', 'nav-icon-image');
+        spinnerElement.classList.add('spinner-border', 'nav-icon-spinner');
         while (this.loadingElement.firstChild) {
           this.loadingElement.removeChild(this.loadingElement.firstChild);
         }
