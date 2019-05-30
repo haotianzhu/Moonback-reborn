@@ -42,7 +42,7 @@ import { InformationDialogComponent } from './utils/dialog/info-dialog.component
     UserChartComponent,
     SidebarComponent,
     NotFound404Component,
-    InformationDialogComponent
+    InformationDialogComponent,
   ],
   imports: [
     BrowserModule,
