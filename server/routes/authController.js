@@ -1,8 +1,10 @@
+
 const express = require('express')
 const authRouter = express.Router()
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
-const logger = require('../logger')
+const logger = require('../shared/logger')
+const { dailyLogin } = require('../shared/chart')
 
 // api/authentication/signup
 authRouter.post('/signup', (req, res) => {
@@ -36,7 +38,6 @@ const awaitHandlerFactory = (middleware) => {
 
 // api/authentication/signin
 authRouter.post('/signin', awaitHandlerFactory(async (req, res) => {
-  logger.error('api/authentication/signin => 400 ', req.body)
   let data = req.body
   let signinUser = new User(data.user)
   await User.findOne({ username: signinUser.username }, (error, user) => {
@@ -47,12 +48,11 @@ authRouter.post('/signin', awaitHandlerFactory(async (req, res) => {
     }
     if (!user || user === undefined) {
       logger.info('/signin => 400 ', 'password or username is not correct')
-      res.status(400).send({
+      return res.status(400).send({
         message: 'password/username is not correct',
         query: 'signIn',
         status: 'unsucessful'
       })
-      return
     }
     // verify password
     User.validatePassword(user.password, signinUser.password, async (error, isMatch) => {
@@ -65,24 +65,31 @@ authRouter.post('/signin', awaitHandlerFactory(async (req, res) => {
           // token exists
           // check if token is expired
           jwt.verify(user.token, 'secret')
-          const usrJson = {
-            id: user.id,
-            username: user.username,
-            token: user.token,
-            email: user.email,
-            isActivated: user.isActivated
-          }
-          res.status(200).send({ user: usrJson, query: 'signIn', status: 'sucessful' })
-          logger.info('/signin => 200 ')
-          return
+          const usrJson = User.toAuthJSON(user)
+          await User.findById(user.id, '-password', (err, data) => {
+            if (err) return res.sendStatus(520)
+            if (data) {
+              data.echart = dailyLogin(user)
+              data.save()
+              logger.info('api/signin => 200 ')
+              return res.status(200).send({ user: usrJson, query: 'signIn', status: 'sucessful' })
+            }
+          })
         } catch (error) {
           // token is expire
           // generate token
           if (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError') {
-            const usrJson = User.toAuthJSON(user)
-            await User.updateOne(user, { token: usrJson.token })
-            res.status(200).send({ user: usrJson, query: 'signIn', status: 'sucessful' })
-            logger.info('/signin => 200 ')
+            const usrJson = User.toAuthJSON(user, true)
+            await User.findById(user.id, '-password', (err, data) => {
+              if (err) return res.sendStatus(520)
+              if (data) {
+                data.token = usrJson.token
+                data.echart = dailyLogin(user)
+                data.save()
+                logger.info('api/signin => 200 token refresh')
+                res.status(200).send({ user: usrJson, query: 'signIn', status: 'sucessful' })
+              }
+            })
           } else {
             logger.info('/signin => 400 ', error)
             res.status(400).send({ message: error, query: 'signIn', status: 'unsucessful' })
@@ -113,7 +120,7 @@ authRouter.delete('/signout', verifyToken, (req, res) => {
   })
 })
 
-function verifyToken (req, res, next) {
+function verifyToken(req, res, next) {
   // verify the Json Token
   if (!req.headers.authorization) {
     logger.info('verifyToken => 401 ', 'Unauthorized request')

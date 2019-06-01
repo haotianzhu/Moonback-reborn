@@ -1,7 +1,7 @@
 const express = require('express')
 const userRouter = express.Router()
 const User = require('../models/user')
-const logger = require('../logger')
+const logger = require('../shared/logger')
 
 // GET api/user/:id
 userRouter.get('/:id', (req, res) => {

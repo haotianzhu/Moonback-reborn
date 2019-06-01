@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
 const emailRouter = express.Router()
 const User = require('../models/user')
-const logger = require('../logger')
+const logger = require('../shared/logger')
 const EMAILPATH = 'https://moonback-reborn.azurewebsites.net/email/v?token='
 
 var transporter = nodemailer.createTransport({

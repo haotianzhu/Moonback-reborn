@@ -9,7 +9,7 @@ const postApi = require('./routes/postController')
 const authApi = require('./routes/authController')
 const userApi = require('./routes/userController')
 const emailApi = require('./routes/emailController')
-const logger = require('./logger')
+const logger = require('./shared/logger')
 const database = 'mongodb://yz:qaz98765432@ds155213.mlab.com:55213/db1'
 const app = express()
 mongoose.set('useCreateIndex', true)
