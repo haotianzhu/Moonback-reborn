@@ -42,6 +42,8 @@ emailRouter.post('/s', (req, res) => {
     return res.sendStatus(400)
   }
 
+  const protocol = (req.body.isHttps) ? 'https://' : 'http://'
+
   User.findOneAndUpdate(targetUser, '-password -token', (error, data) => {
     if (error) {
       logger.info('=> api/email/s', error)
@@ -62,7 +64,7 @@ emailRouter.post('/s', (req, res) => {
           from: 'moonbackreborn@gmail.com',
           to: data.email,
           subject: 'MoonBack-reborn Email Vertification',
-          text: `${'please confirm your email address. ' + req.headers.host + EMAILPATH + token}`
+          text: `${'please confirm your email address. ' + protocol + req.headers.host + EMAILPATH + token}`
         }
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
