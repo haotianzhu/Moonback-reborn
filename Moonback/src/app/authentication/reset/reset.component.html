@@ -1,4 +1,4 @@
-<div *ngIf="userInfo.isActive">
+<div *ngIf="userInfo.isActive" class = "mt-3">
   <form [formGroup]='verifyEamilForm' novalidate *ngIf="!isVerified ">
     <h6 class="form-text">
       To continue, please enter your email address.
@@ -6,20 +6,18 @@
     <ngb-alert [dismissible]="false" type="danger" *ngIf="isVerficationEmailFail" class="mt-4">
       <strong>Error!</strong> Email address is not correct.
     </ngb-alert>
-    <mat-form-field class="full-width">
+    <mat-form-field class="w-100 mt-4">
       <input matInput type="email" placeholder="email" required formControlName='email'>
       <mat-error>
         Email is required.
       </mat-error>
     </mat-form-field>
     <div class="mt-4">
-      <button (click)="onVerifyEmail()" class="btn btn-primary">
-        Next
-      </button>
+      <button (click)="onVerifyEmail()" class="btn btn-primary btn-block">Next</button>
     </div>
   </form>
   <div *ngIf="isVerified">
-    Your reset email has been sent.
+    <h6>Your reset email has been sent please check your inbox.</h6>
   </div>
 </div>
 
