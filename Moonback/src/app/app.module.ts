@@ -24,6 +24,7 @@ import { PostModalComponent } from './post/post-modal/post-modal.component';
 import { PostPageComponent } from './post/post-page/post-page.component';
 import { UserChartComponent } from './user/user-chart/user-chart.component';
 import { InformationDialogComponent } from './utils/dialog/info-dialog.component';
+import { ResetComponent } from './authentication/reset/reset.component';
 
 
 
@@ -42,7 +43,8 @@ import { InformationDialogComponent } from './utils/dialog/info-dialog.component
     UserChartComponent,
     SidebarComponent,
     NotFound404Component,
-    InformationDialogComponent
+    InformationDialogComponent,
+    ResetComponent
   ],
   imports: [
     BrowserModule,

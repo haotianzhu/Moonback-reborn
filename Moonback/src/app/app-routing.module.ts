@@ -8,12 +8,14 @@ import { PostListComponent } from './post/post-list-page/post-list.component';
 import { UserprofileComponent } from './user/userprofile/userprofile.component';
 import { NotFound404Component } from './not-found404/not-found404.component';
 import { PostPageComponent } from './post/post-page/post-page.component';
+import { ResetComponent } from './authentication/reset/reset.component';
 
 const routes: Routes = [
   { path: '', component: PostListComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'signout', component: SignoutComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'account/reset', component: ResetComponent },
   { path: 'game', component: PostListComponent },
   { path: 'anime', component: PostListComponent },
   { path: 'novel', component: PostListComponent },
