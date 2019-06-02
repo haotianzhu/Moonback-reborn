@@ -1,7 +1,7 @@
 const express = require('express')
 const postRouter = express.Router()
 const Post = require('../models/post')
-const logger = require('../logger')
+const logger = require('../shared/logger')
 
 function checkCategory (category) {
   var isValidate = false

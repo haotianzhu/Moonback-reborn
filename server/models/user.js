@@ -7,11 +7,12 @@ const jwt = require('jsonwebtoken')
 var userSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, default: '' },
   isActivated: { type: Boolean, default: false, required: true },
   createDate: { type: Date, default: Date.now },
   modifyDate: { type: Date, default: Date.now },
-  token: { type: String, default: '' }
+  token: { type: String, default: '' },
+  echart: { type: Object, default: { anime: 10, level: 1, game: 10, manga: 10, novel: 10 } }
 })
 
 userSchema.set('toJSON', {
@@ -20,28 +21,24 @@ userSchema.set('toJSON', {
   transform: function (doc, ret) { delete ret._id }
 })
 
-userSchema.statics.toAuthJSON = function (user) {
+userSchema.statics.toAuthJSON = function (user, isGenerateToken) {
+  var token = null
   const today = new Date()
-  const expirationDate = new Date(today)
-  expirationDate.setDate(today.getDate() + 30)
+  if (isGenerateToken) {
+    const expirationDate = new Date(today)
+    expirationDate.setDate(today.getDate() + 30)
 
-  const token = jwt.sign({
-    username: user.username,
-    id: user.id,
-    isActivated: user.isActivated,
-    email: user.email,
-    exp: parseInt(expirationDate.getTime() / 1000, 10)
-  }, 'secret')
-
-  const userJson = {
-    id: user.id,
-    username: user.username,
-    token: token,
-    email: user.email,
-    isActivated: user.isActivated
+    token = jwt.sign({
+      username: user.username,
+      id: user.id,
+      isActivated: user.isActivated,
+      email: user.email,
+      exp: parseInt(expirationDate.getTime() / 1000, 10)
+    }, 'moonback-reborn-secrete')
   }
-
-  return userJson
+  user.token = token || user.token
+  user.modifyDate = today
+  return user
 }
 
 // email verification
