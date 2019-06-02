@@ -100,7 +100,7 @@ emailRouter.get('/v', (req, res) => {
           res.sendStatus(520)
         }
         logger.info('GET api/email/v  => 200')
-        res.sendStatus(200)
+        res.status(200).send({ token })
       })
     }
   }
