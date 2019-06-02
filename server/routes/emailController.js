@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const emailRouter = express.Router()
 const User = require('../models/user')
 const logger = require('../shared/logger')
-const EMAILPATH = 'https://moonback-reborn.azurewebsites.net/api/email/v?token='
+const EMAILPATH = '/api/email/v?token='
 
 var transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -62,7 +62,7 @@ emailRouter.post('/s', (req, res) => {
           from: 'moonbackreborn@gmail.com',
           to: data.email,
           subject: 'MoonBack-reborn Email Vertification',
-          text: `${'please confirm your email address. ' + EMAILPATH + token}`
+          text: `${'please confirm your email address. ' + req.headers.host + EMAILPATH + token}`
         }
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
