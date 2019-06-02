@@ -14,7 +14,8 @@ export class ResetComponent implements OnInit {
   isVerficationEmailFail = false;
   isVerified = false;
   isSent = false;
-  userInfo:any;
+  isActive: boolean;
+  userInfo: any;
 
   constructor( 
     private auth: AuthService,
@@ -22,10 +23,12 @@ export class ResetComponent implements OnInit {
 
   ngOnInit() {
     this.userInfo = this.auth.getAuth()
-    console.log(this.userInfo.isActice)
+    this.isActive = (this.userInfo.isActive=== 'true'); 
+    console.log(this.isActive)
     this.verifyEamilForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email])
     });
+    console.log(typeof this.isActive)
   }
   onVerifyEmail(){
     if(this.verifyEamilForm.value.email === this.auth.getAuth().email){
@@ -42,12 +45,14 @@ export class ResetComponent implements OnInit {
       { observe: 'response' }
     ).subscribe(
       res => {
+        console.log(res)
         if (res.status === 200) {
           this.isSent = true
         } else {
           console.log("sent email error")
         }
       },error => {
+        console.log(error)
     })
   }
 }
