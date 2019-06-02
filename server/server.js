@@ -9,7 +9,7 @@ const postApi = require('./routes/postController')
 const authApi = require('./routes/authController')
 const userApi = require('./routes/userController')
 const emailApi = require('./routes/emailController')
-const logger = require('./logger')
+const logger = require('./shared/logger')
 const database = 'mongodb://yz:qaz98765432@ds155213.mlab.com:55213/db1'
 const app = express()
 mongoose.set('useCreateIndex', true)
@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }))
 app.use(bodyParser.json({ limit: '5mb' }))
 app.use(haltOnTimedout)
 // add api controllers
-app.use('/api/email', verifyToken, emailApi)
+app.use('/api/email', emailApi)
 app.use('/api/posts', verifyToken, postApi)
 app.use('/api/authentication', authApi)
 app.use('/api/user', verifyToken, userApi)
@@ -58,7 +58,7 @@ function verifyToken (req, res, next) {
     return res.status(401).send('Unauthorized request')
   }
   try {
-    let payload = jwt.verify(token, 'secret')
+    let payload = jwt.verify(token, 'moonback-reborn-secrete')
     req.userid = payload.id
     req.username = payload.username
   } catch (error) {
