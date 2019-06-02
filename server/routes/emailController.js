@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const emailRouter = express.Router()
 const User = require('../models/user')
 const logger = require('../shared/logger')
-const EMAILPATH = 'https://moonback-reborn.azurewebsites.net/email/v?token='
+const EMAILPATH = 'https://moonback-reborn.azurewebsites.net/api/email/v?token='
 
 var transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -33,8 +33,8 @@ emailRouter.post('/s', (req, res) => {
   const expirationDate = new Date(today)
   expirationDate.setDate(today.getDate() + 1)
 
-  if (req.data.id && req.data.email) {
-    User.findById(req.data.id, '-password -token', (error, data) => {
+  if (req.body.id) {
+    User.findById(req.body.id, '-password -token', (error, data) => {
       if (error) {
         logger.info('=> api/email/s', error)
         return res.sendStatus(520)
@@ -45,7 +45,10 @@ emailRouter.post('/s', (req, res) => {
           id: data.id,
           exp: parseInt(expirationDate.getTime() / 1000, 10)
         }, 'secretEmailVertification')
-
+        if (!data.email) {
+          logger.info('Email sent:  no email address')
+          return res.sendStatus(400)
+        }
         if (token) {
           const mailOptions = {
             from: 'moonbackreborn@gmail.com',
@@ -56,6 +59,7 @@ emailRouter.post('/s', (req, res) => {
           transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
               logger.error(error)
+              return res.sendStatus(520)
             }
             if (info) {
               logger.info('Email sent: ' + info.response)

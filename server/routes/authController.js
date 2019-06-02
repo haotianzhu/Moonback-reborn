@@ -120,7 +120,7 @@ authRouter.delete('/signout', verifyToken, (req, res) => {
   })
 })
 
-function verifyToken(req, res, next) {
+function verifyToken (req, res, next) {
   // verify the Json Token
   if (!req.headers.authorization) {
     logger.info('verifyToken => 401 ', 'Unauthorized request')

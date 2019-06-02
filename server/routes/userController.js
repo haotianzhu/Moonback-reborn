@@ -42,26 +42,54 @@ userRouter.patch('/:id', (req, res) => {
   }
   var reqData = req.body
   var reqUser = reqData.user
+  var updateEmail = false
+
+  if (reqUser && reqUser.email) {
+    // change email address
+    updateEmail = true
+  } else if (reqUser && reqUser.password) {
+    updateEmail = false
+  } else {
+    logger.info('PATCH api/user/:id => 400, no password and no email')
+    return res.sendStatus('400')
+  }
 
   if (hasPermission) {
-    User.generateHashPassword(reqUser.password, async (error, newHashPassword) => {
-      // get new information
-      if (error) {
-        logger.info('PATCH api/user/:id => 520', error)
-        res.status(520).send({ query: 'updateUserById', status: 'unsucessful', message: error })
-      }
+    if (updateEmail) {
       var newUser = {
-        password: newHashPassword
+        email: reqUser.email,
+        isActivated: false
       }
-      await User.findByIdAndUpdate(authUserid, newUser, { useFindAndModify: false }, (error) => {
+      User.findByIdAndUpdate(authUserid, newUser, { useFindAndModify: false }, (error) => {
         if (error) {
-          logger.info('PATCH api/user/:id => 520', error)
+          logger.error('PATCH api/user/:id => 520', error)
           res.status(520).send({ query: 'updateUserById', status: 'unsucessful' })
         }
-        res.status(200).send({ query: 'updateUserById', status: 'sucessful' })
         logger.info('PATCH api/user/:id => 200')
+        res.status(200).send({ query: 'updateUserById', status: 'sucessful' })
       })
-    })
+    } else {
+      User.generateHashPassword(reqUser.password, async (error, newHashPassword) => {
+        // get new information
+        if (error) {
+          logger.info('PATCH api/user/:id => 520', error)
+          res.status(520).send({ query: 'updateUserById', status: 'unsucessful', message: error })
+        }
+
+        var newUser = {
+          password: newHashPassword
+        }
+
+        await User.findByIdAndUpdate(authUserid, newUser, { useFindAndModify: false }, (error) => {
+          if (error) {
+            logger.info('PATCH api/user/:id => 520', error)
+            res.status(520).send({ query: 'updateUserById', status: 'unsucessful' })
+          }
+          res.status(200).send({ query: 'updateUserById', status: 'sucessful' })
+          logger.info('PATCH api/user/:id => 200')
+        })
+      })
+    }
   } else {
     // no permission
     logger.info('PATCH api/user/:id => 403 ', 'no permission')
