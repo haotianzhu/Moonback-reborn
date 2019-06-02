@@ -17,7 +17,7 @@ var transporter = nodemailer.createTransport({
   }
 })
 
-function verifyEmailToken (token) {
+const verifyEmailToken = (token) => {
   try {
     let payload = jwt.verify(token, 'moonback-reborn-secrete')
     return payload
@@ -32,49 +32,54 @@ emailRouter.post('/s', (req, res) => {
   const today = new Date()
   const expirationDate = new Date(today)
   expirationDate.setDate(today.getDate() + 1)
-
+  var targetUser = {}
   if (req.body.id) {
-    User.findById(req.body.id, '-password -token', (error, data) => {
-      if (error) {
-        logger.info('=> api/email/s', error)
-        return res.sendStatus(520)
-      }
-      if (data) {
-        token = jwt.sign({
-          username: data.username,
-          id: data.id,
-          exp: parseInt(expirationDate.getTime() / 1000, 10)
-        }, 'moonback-reborn-secrete')
-        if (!data.email) {
-          logger.info('Email sent:  no email address')
-          return res.sendStatus(400)
-        }
-        if (token) {
-          const mailOptions = {
-            from: 'moonbackreborn@gmail.com',
-            to: data.email,
-            subject: 'MoonBack-reborn Email Vertification',
-            text: `${'please confirm your email address. ' + EMAILPATH + token}`
-          }
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              logger.error(error)
-              return res.sendStatus(520)
-            }
-            if (info) {
-              logger.info('Email sent: ' + info.response)
-              return res.sendStatus(200)
-            }
-          })
-        }
-      } else {
-        logger.info('=> api/email/s => 404', 'not found')
-        return res.sendStatus(404)
-      }
-    })
+    targetUser._id = req.body.id
+  } else if (req.body.username) {
+    targetUser.username = req.body.username
   } else {
-    return res.sendStatus(520)
+    logger.info('=> api/email/s, no username and no id')
+    return res.sendStatus(400)
   }
+
+  User.findOneAndUpdate(targetUser, '-password -token', (error, data) => {
+    if (error) {
+      logger.info('=> api/email/s', error)
+      return res.sendStatus(520)
+    }
+    if (data) {
+      token = jwt.sign({
+        username: data.username,
+        id: data.id,
+        exp: parseInt(expirationDate.getTime() / 1000, 10)
+      }, 'moonback-reborn-secrete')
+      if (!data.email) {
+        logger.info('Email sent:  no email address')
+        return res.sendStatus(400)
+      }
+      if (token) {
+        const mailOptions = {
+          from: 'moonbackreborn@gmail.com',
+          to: data.email,
+          subject: 'MoonBack-reborn Email Vertification',
+          text: `${'please confirm your email address. ' + EMAILPATH + token}`
+        }
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            logger.error(error)
+            return res.sendStatus(520)
+          }
+          if (info) {
+            logger.info('Email sent: ' + info.response)
+            return res.status(200).send({ email: data.email })
+          }
+        })
+      }
+    } else {
+      logger.info('=> api/email/s => 404', 'not found')
+      return res.sendStatus(404)
+    }
+  })
 })
 
 emailRouter.get('/v', (req, res) => {
