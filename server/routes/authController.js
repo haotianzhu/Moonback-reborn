@@ -64,7 +64,7 @@ authRouter.post('/signin', awaitHandlerFactory(async (req, res) => {
         try {
           // token exists
           // check if token is expired
-          jwt.verify(user.token, 'secret')
+          jwt.verify(user.token, 'moonback-reborn-secrete')
           const usrJson = User.toAuthJSON(user)
           await User.findById(user.id, '-password', (err, data) => {
             if (err) return res.sendStatus(520)
@@ -132,7 +132,7 @@ function verifyToken (req, res, next) {
     return res.status(401).send('Unauthorized request')
   }
   try {
-    let payload = jwt.verify(token, 'secret')
+    let payload = jwt.verify(token, 'moonback-reborn-secrete')
     req.username = payload.username
     req.userid = payload.id
   } catch (error) {

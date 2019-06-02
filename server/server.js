@@ -58,7 +58,7 @@ function verifyToken (req, res, next) {
     return res.status(401).send('Unauthorized request')
   }
   try {
-    let payload = jwt.verify(token, 'secret')
+    let payload = jwt.verify(token, 'moonback-reborn-secrete')
     req.userid = payload.id
     req.username = payload.username
   } catch (error) {

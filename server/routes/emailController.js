@@ -19,7 +19,7 @@ var transporter = nodemailer.createTransport({
 
 function verifyEmailToken (token) {
   try {
-    let payload = jwt.verify(token, 'secretEmailVertification')
+    let payload = jwt.verify(token, 'moonback-reborn-secrete')
     return payload
   } catch (error) {
     logger.info('token is not correct')
@@ -44,7 +44,7 @@ emailRouter.post('/s', (req, res) => {
           username: data.username,
           id: data.id,
           exp: parseInt(expirationDate.getTime() / 1000, 10)
-        }, 'secretEmailVertification')
+        }, 'moonback-reborn-secrete')
         if (!data.email) {
           logger.info('Email sent:  no email address')
           return res.sendStatus(400)

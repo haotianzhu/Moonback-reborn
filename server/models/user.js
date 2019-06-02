@@ -34,7 +34,7 @@ userSchema.statics.toAuthJSON = function (user, isGenerateToken) {
       isActivated: user.isActivated,
       email: user.email,
       exp: parseInt(expirationDate.getTime() / 1000, 10)
-    }, 'secret')
+    }, 'moonback-reborn-secrete')
   }
   user.token = token || user.token
   user.modifyDate = today
