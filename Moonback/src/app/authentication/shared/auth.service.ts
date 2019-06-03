@@ -38,6 +38,8 @@ export class AuthService {
     this.setToken(user.token);
     localStorage.setItem('authUsername', user.username);
     localStorage.setItem('authId', user.id);
+    localStorage.setItem('authEmail', user.email);
+    localStorage.setItem('authActive', user.isActivated);
     this.username = user.username;
   }
 
@@ -46,6 +48,8 @@ export class AuthService {
       return {
         id: localStorage.getItem('authId'),
         username: localStorage.getItem('authUsername'),
+        email: localStorage.getItem('authEmail'),
+        isActive: localStorage.getItem('authActive'),
       };
     }
     return null;
