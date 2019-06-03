@@ -22,7 +22,7 @@ export class ResetComponent implements OnInit {
     private http: HttpClient) { }
 
   ngOnInit() {
-    this.userInfo = this.auth.getAuth()
+    this.userInfo = this.auth.getAuth();
     this.isActive = (this.userInfo.isActive === 'true');
     this.verifyEamilForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email])
@@ -44,11 +44,11 @@ export class ResetComponent implements OnInit {
     ).subscribe(
       res => {
         if (res.status === 200) {
-          this.isSent = true
+          this.isSent = true;
         } else {
         }
       }, error => {
-        console.log(error)
-      })
+        console.log(error);
+      });
   }
 }
