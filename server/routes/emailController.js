@@ -1,6 +1,5 @@
 const express = require('express')
 const nodemailer = require('nodemailer')
-const jwt = require('jsonwebtoken')
 const emailRouter = express.Router()
 const User = require('../models/user')
 const Token = require('../models/token')
