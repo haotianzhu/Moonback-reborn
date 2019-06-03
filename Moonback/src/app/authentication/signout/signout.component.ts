@@ -29,7 +29,8 @@ export class SignoutComponent implements OnInit {
           this.router.navigate(['/signin']);
           return;
         }
-        this.router.navigate(['/']);
+        this.auth.clearAuth();
+        this.router.navigate(['/signin']);
         return;
       });
     }
