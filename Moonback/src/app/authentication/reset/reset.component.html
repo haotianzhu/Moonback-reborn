@@ -1,27 +1,4 @@
-<div *ngIf = 'isActive' class = "mt-3">
-  <form [formGroup]='verifyEamilForm' novalidate *ngIf="!isVerified">
-    <h6 class="form-text">
-      To continue, please enter your email address.
-    </h6>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="isVerficationEmailFail" class="mt-4">
-      <strong>Error!</strong> Email address is not correct.
-    </ngb-alert>
-    <mat-form-field class="w-100 mt-4">
-      <input matInput type="email" placeholder="email" required formControlName='email'>
-      <mat-error>
-        Email is required.
-      </mat-error>
-    </mat-form-field>
-    <div class="mt-4">
-      <button (click)="onVerifyEmail()" class="btn btn-primary btn-block">Next</button>
-    </div>
-  </form>
-  <div *ngIf="isVerified">
-    <h6>Your reset email has been sent please check your inbox.</h6>
-  </div>
-</div>
-
-<div *ngIf="!isActive" class = "mt-3">
+<div *ngIf="auth.isAuth() && !isActive" class = "mt-3">
   <div *ngIf = "!isSent" class = "mt-3">
     <h6>Please verify your email before reset password. </h6>
     <button (click)="onResentEmail()" class="btn btn-primary btn-block">Resent Email</button>
@@ -31,3 +8,27 @@
     <h6>Please check your inbox for verifaction email. </h6>
   </div>
 </div>
+
+<div *ngIf = '(auth.isAuth() && isActive) || !auth.isAuth()' class = "mt-3">
+  <form [formGroup]='verifyForm' novalidate *ngIf="!isVerified">
+    <h6 class="form-text">To continue, please enter your user name and email address.</h6>
+    <ngb-alert [dismissible]="false" type="danger" *ngIf="isVerficationFail" class="mt-4">
+      <strong>Error!</strong> Email address is not correct.
+    </ngb-alert>
+    <mat-form-field class="w-100 mt-4">
+      <input matInput type="text" placeholder="username" required formControlName='username'>
+      <mat-error>Username is required.</mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-100 mt-4">
+      <input matInput type="email" placeholder="email" required formControlName='email'>
+      <mat-error>Email is required.</mat-error>
+    </mat-form-field>
+    <div class="mt-4">
+      <button (click)="onVerifyEmail()" class="btn btn-primary btn-block">Next</button>
+    </div>
+  </form>
+  <div *ngIf="isVerified">
+    <h6>Your reset email has been sent please check your inbox.</h6>
+  </div>
+</div>
+  
