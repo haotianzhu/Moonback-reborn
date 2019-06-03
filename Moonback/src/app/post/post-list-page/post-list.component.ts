@@ -16,7 +16,7 @@ import { LoadingService } from 'src/app/utils/loading.service';
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css']
 })
-export class PostListComponent implements OnInit, AfterViewInit {
+export class PostListComponent implements OnInit {
   postArray = [];
   url = null;
   limit = 10;
@@ -37,7 +37,21 @@ export class PostListComponent implements OnInit, AfterViewInit {
     private loading: LoadingService) {
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
+    // api/post/user/id
+    if (!this.auth.isAuth()) {
+      return this.router.navigate(['/signin']);
+    }
+    // https://angular.io/guide/router
+    this.postsRoute$ = this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => of(params.get('id')))
+    );
+
+    this.scroll$ = fromEvent(document, 'scroll')
+      .pipe(
+        map(() => window.scrollY + window.innerHeight >= document.body.scrollHeight),
+        filter(needFetch => needFetch && this.pullable)
+      );
     this.postsRoute$.subscribe(
       async (id) => {
         if (this.postArray.length === 0) {
@@ -65,23 +79,6 @@ export class PostListComponent implements OnInit, AfterViewInit {
         this.loadingPost(this.url + '&skip=' + this.postArray.length);
       }
     );
-  }
-
-  ngOnInit() {
-    // api/post/user/id
-    if (!this.auth.isAuth()) {
-      this.router.navigate(['/signin']);
-    }
-    // https://angular.io/guide/router
-    this.postsRoute$ = this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => of(params.get('id')))
-    );
-
-    this.scroll$ = fromEvent(document, 'scroll')
-      .pipe(
-        map(() => window.scrollY + window.innerHeight >= document.body.scrollHeight),
-        filter(needFetch => needFetch && this.pullable)
-      );
   }
 
   handlePosts(posts: any[]) {
