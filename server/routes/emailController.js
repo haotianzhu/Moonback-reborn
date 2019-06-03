@@ -3,8 +3,8 @@ const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
 const emailRouter = express.Router()
 const User = require('../models/user')
-const logger = require('../logger')
-const EMAILPATH = 'https://moonback-reborn.azurewebsites.net/email/v?token='
+const logger = require('../shared/logger')
+const EMAILPATH = '/api/email/v?token='
 
 var transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -17,60 +17,71 @@ var transporter = nodemailer.createTransport({
   }
 })
 
-function verifyEmailToken (username, id, token) {
+const verifyEmailToken = (token) => {
   try {
-    let payload = jwt.verify(token, 'secretEmailVertification')
-    return username === payload.username && id === payload.id
+    let payload = jwt.verify(token, 'moonback-reborn-secrete')
+    return payload
   } catch (error) {
     logger.info('token is not correct')
-    return false
+    return null
   }
 }
 
-emailRouter.get('/s', (req, res) => {
+emailRouter.post('/s', (req, res) => {
   var token = null
   const today = new Date()
   const expirationDate = new Date(today)
   expirationDate.setDate(today.getDate() + 1)
-
-  if (req.username && req.userid) {
-    User.findById(req.userid, '-password -token', (error, data) => {
-      if (error) {
-        logger.info('=> api/email/s', error)
-        return res.sendStatus(520)
-      }
-      if (data) {
-        token = jwt.sign({
-          username: req.username,
-          id: req.userid,
-          exp: parseInt(expirationDate.getTime() / 1000, 10)
-        }, 'secretEmailVertification')
-
-        if (token) {
-          const mailOptions = {
-            from: 'moonbackreborn@gmail.com',
-            to: data.email,
-            subject: 'MoonBack-reborn Email Vertification',
-            text: `${'please confirm your email address. ' + EMAILPATH + token}`
-          }
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              logger.error(error)
-            }
-            if (info) {
-              logger.info('Email sent: ' + info.response)
-              return res.sendStatus(200)
-            }
-          })
-        }
-      } else {
-        logger.info('=> api/email/s => 404', 'not found')
-        return res.sendStatus(404)
-      }
-    })
+  var targetUser = {}
+  if (req.body.id) {
+    targetUser._id = req.body.id
+  } else if (req.body.username) {
+    targetUser.username = req.body.username
   } else {
-    return res.sendStatus(520)
+    logger.info('=> api/email/s, no username and no id')
+    return res.sendStatus(400)
   }
+
+  const protocol = (req.body.isHttps) ? 'https://' : 'http://'
+
+  User.findOneAndUpdate(targetUser, '-password -token', (error, data) => {
+    if (error) {
+      logger.info('=> api/email/s', error)
+      return res.sendStatus(520)
+    }
+    if (data) {
+      token = jwt.sign({
+        username: data.username,
+        id: data.id,
+        exp: parseInt(expirationDate.getTime() / 1000, 10)
+      }, 'moonback-reborn-secrete')
+      if (!data.email) {
+        logger.info('Email sent:  no email address')
+        return res.sendStatus(400)
+      }
+      if (token) {
+        const mailOptions = {
+          from: 'moonbackreborn@gmail.com',
+          to: data.email,
+          subject: 'MoonBack-reborn Email Vertification',
+          text: `${'please confirm your email address. ' + protocol + req.headers.host + EMAILPATH + token}`
+        }
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            logger.error(error)
+            return res.sendStatus(520)
+          }
+          if (info) {
+            logger.info('Email sent: ' + info.response)
+            return res.status(200).send({ email: data.email })
+          }
+        })
+      }
+    } else {
+      logger.info('=> api/email/s => 404', 'not found')
+      return res.sendStatus(404)
+    }
+  })
 })
 
 emailRouter.get('/v', (req, res) => {
@@ -82,15 +93,16 @@ emailRouter.get('/v', (req, res) => {
     return res.sendStatus(400)
   }
   if (token) {
-    if (verifyEmailToken(req.username, req.userid, token)) {
+    const payload = verifyEmailToken(token)
+    if (payload) {
       // true
-      User.findByIdAndUpdate(req.userid, { isActivated: true }, { useFindAndModify: false }, (error) => {
+      User.findByIdAndUpdate(payload.id, { isActivated: true }, { useFindAndModify: false }, (error) => {
         if (error) {
           logger.info('GET api/email/v => 520 ', error)
           res.sendStatus(520)
         }
         logger.info('GET api/email/v  => 200')
-        res.sendStatus(200)
+        res.status(200).send({ token })
       })
     }
   }

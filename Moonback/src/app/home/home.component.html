@@ -1,5 +1,5 @@
 <div class="row">
-<!-- hearder image -->
+  <!-- hearder image -->
   <div class="col">
     <img class="img-fluid w-100" [src]="imgHeader">
   </div>
@@ -7,9 +7,10 @@
 <!-- navigation bar -->
 <div class="row sticky-top" [ngStyle]="{'z-index': 99}">
   <div class="col">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger" style="height: 4rem">
+      <span id='loading-span' name='loading-span' class="navbar-brand">
+      </span>
       <span class="navbar-brand">
-        <img src="assets/img/main/brand-icon.png" class="nav-icon-image" alt="brand">
         Moonback
       </span>
       <button class="navbar-toggler btn btn-outline-danger" type="button" data-toggle="collapse"
@@ -46,12 +47,12 @@
 
 <!-- content  -->
 <div class="row">
-  <div class = "col-2"> </div>
+  <div class="col-2"> </div>
   <div class="col">
     <router-outlet></router-outlet>
   </div>
-  <div *ngIf="viewable" class = "col-2">
+  <div *ngIf="viewable" class="col-2">
     <app-sidebar></app-sidebar>
   </div>
-  <div class = "col-2"> </div>
+  <div class="col-2"> </div>
 </div>

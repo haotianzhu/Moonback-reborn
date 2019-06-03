@@ -1,10 +1,17 @@
-import { Component, OnInit, Input, ElementRef, HostListener, Output, EventEmitter, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  HostListener,
+  ViewChild
+} from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { editorOptions } from '../quill/quill-config';
 import { ImageBlot } from '../quill/block-image';
 import Quill from 'quill';
 
 import { PostModalComponent } from '../post-modal/post-modal.component';
+
 
 @Component({
   selector: 'app-post',
@@ -26,7 +33,7 @@ export class PostComponent implements OnInit {
   @ViewChild('content') contentController;
   @ViewChild('category') categoryController;
 
-  constructor(private element: ElementRef, public dialog: MatDialog) {
+  constructor( public dialog: MatDialog) {
     ImageBlot.blotName = 'bimage';
     ImageBlot.tagName = 'img';
     ImageBlot.className = 'imgcenter';
