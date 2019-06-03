@@ -15,7 +15,7 @@ import { AuthService } from 'src/app/authentication/shared/auth.service';
 export class UserprofileComponent implements OnInit {
   verifyPasswordForm: FormGroup;
   changePasswordForm: FormGroup;
-  
+
   userInfo: any;
   isVerified = false;
   isVerficationFail = false;

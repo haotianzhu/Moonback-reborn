@@ -10,45 +10,45 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./reset.component.css']
 })
 export class ResetComponent implements OnInit {
-  verifyEamilForm:FormGroup;
+  verifyEamilForm: FormGroup;
   isVerficationEmailFail = false;
   isVerified = false;
   isSent = false;
   isActive: boolean;
   userInfo: any;
 
-  constructor( 
+  constructor(
     private auth: AuthService,
     private http: HttpClient) { }
 
   ngOnInit() {
     this.userInfo = this.auth.getAuth()
-    this.isActive = (this.userInfo.isActive=== 'true'); 
+    this.isActive = (this.userInfo.isActive === 'true');
     this.verifyEamilForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email])
     });
   }
-  onVerifyEmail(){
-    if(this.verifyEamilForm.value.email === this.auth.getAuth().email){
+  onVerifyEmail() {
+    if (this.verifyEamilForm.value.email === this.auth.getAuth().email) {
       this.isVerified = true;
-    }else{
+    } else {
       this.isVerficationEmailFail = true;
     }
   }
 
-  onResentEmail(){
+  onResentEmail() {
     this.http.post<any>(
       `${environment.baseUrl + 'email/s'}`,
-      { username:this.userInfo.username},
+      { username: this.userInfo.username },
       { observe: 'response' }
     ).subscribe(
       res => {
-        console.log(res)
         if (res.status === 200) {
           this.isSent = true
         } else {
         }
-      },error => {
-    })
+      }, error => {
+        console.log(error)
+      })
   }
 }
