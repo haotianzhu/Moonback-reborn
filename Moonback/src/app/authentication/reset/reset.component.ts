@@ -22,14 +22,14 @@ export class ResetComponent implements OnInit {
     private http: HttpClient) { }
 
   ngOnInit() {
-    if(this.auth.isAuth()){
+    if (this.auth.isAuth()) {
       this.userInfo = this.auth.getAuth();
       this.isActive = (this.userInfo.isActive === 'true');
       this.verifyForm = new FormGroup({
-      username: new FormControl(this.userInfo.username, [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email])
-    });
-    }else {
+        username: new FormControl(this.userInfo.username, [Validators.required]),
+        email: new FormControl('', [Validators.required, Validators.email])
+      });
+    } else {
       this.verifyForm = new FormGroup({
         username: new FormControl('', [Validators.required]),
         email: new FormControl('', [Validators.required, Validators.email])
@@ -43,7 +43,7 @@ export class ResetComponent implements OnInit {
       this.isVerficationFail = true;
     }
   }
-s
+  
   onResentEmail() {
     this.http.post<any>(
       `${environment.baseUrl + 'email/s'}`,
@@ -59,11 +59,11 @@ s
         console.log(error);
       });
   }
-  onResetPassword(){
-    if(this.auth.isAuth()){
+  onResetPassword() {
+    if (this.auth.isAuth()) {
 
     }
-    else{
+    else {
 
     }
   }
