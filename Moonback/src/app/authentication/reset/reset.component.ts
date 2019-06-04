@@ -36,7 +36,7 @@ export class ResetComponent implements OnInit {
     this.isActive = (this.userInfo.isActive === 'true');
     this.userId = this.userInfo.id;
     this.verifyCodeForm = new FormGroup({
-      code: new FormControl("", [Validators.required]),
+      code: new FormControl('', [Validators.required]),
     });
     this.changePasswordForm = new FormGroup({
       password: new FormControl('', [Validators.required]),
@@ -53,7 +53,7 @@ export class ResetComponent implements OnInit {
       {
         email: this.userInfo.email,
         username: this.userInfo.username,
-        message: "Here is your verifaction code for email verifacation: "
+        message: 'Here is your verifaction code for email verifacation: '
       },
       { observe: 'response' }
     ).subscribe(
@@ -76,7 +76,7 @@ export class ResetComponent implements OnInit {
         },
       ).subscribe(
         res => {
-          if (res.status === "success") {
+          if (res.status === 'success') {
             this.isCodeVerified = true;
           }
         },
