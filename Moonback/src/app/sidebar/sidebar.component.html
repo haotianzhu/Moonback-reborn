@@ -1,4 +1,4 @@
-<div class="bd-highlight mt-1 d-none d-lg-block">
+<div class="bd-highlight mt-1 d-none d-lg-block" *ngIf="auth.isAuth()">
   <div class="card mb-4">
       <div class="card-header">Home</div>
       <div class="card-body">
@@ -12,14 +12,8 @@
       </div>
   </div>
 
-  <div class="card ">
+  <div class="card" *ngIf="auth.isAuth()">
     <div class="card-body">
-      <div *ngIf="!auth.isAuth()" class="row justify-content-center mb-1">
-        <button class="btn btn-danger btn-block mx-2" (click)="signIn()">Sign In</button>
-        <h6>Don't Have an Account?</h6>
-        <a routerLink="/signup"> sign up</a>
-      </div>
-
       <div *ngIf="auth.isAuth()">
         <button class="btn btn-danger btn-block mx-2" (click)="signOut()">Sign Out</button>
       </div>
@@ -28,5 +22,4 @@
   <div class="d-flex justify-content-end">
     <button *ngIf = 'isbackTop' class="btn btn-danger back-top" (click)="backTop()"> Back to Top </button>
   </div>
-  
 </div>

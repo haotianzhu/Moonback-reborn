@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit {
 
   checkUrl(path) {
     this.randomHeaderImg(path);
-    const urls = ['/signin', '/signup', '/signout', '/account/settings', '/404'];
+    const urls = ['/signin', '/signup', '/signout', '/account/settings', '/404', '/account/reset'];
     return urls.some(oneUrl => {
       return (path === oneUrl);
     });
