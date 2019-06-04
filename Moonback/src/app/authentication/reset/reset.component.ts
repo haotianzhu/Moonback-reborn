@@ -25,7 +25,7 @@ export class ResetComponent implements OnInit {
 
 
   constructor(
-    private auth: AuthService,
+    public auth: AuthService,
     private http: HttpClient,
     private router: Router) { }
 
