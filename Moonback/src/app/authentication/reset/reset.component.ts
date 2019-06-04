@@ -32,27 +32,29 @@ export class ResetComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-      this.userInfo = this.auth.getAuth();
-      this.isActive = (this.userInfo.isActive === 'true');
-      this.userId = this.userInfo.id;
-      this.verifyCodeForm = new FormGroup({
-        code: new FormControl("", [Validators.required]),
-      });
-      this.changePasswordForm = new FormGroup({
-        password: new FormControl('', [Validators.required]),
-        confirmpassword: new FormControl('', [Validators.required])
-      });
-      this.verifyForm = new FormGroup({
-        username: new FormControl('', [Validators.required]),
-        email: new FormControl('', [Validators.required, Validators.email])
-      });
+    this.userInfo = this.auth.getAuth();
+    this.isActive = (this.userInfo.isActive === 'true');
+    this.userId = this.userInfo.id;
+    this.verifyCodeForm = new FormGroup({
+      code: new FormControl("", [Validators.required]),
+    });
+    this.changePasswordForm = new FormGroup({
+      password: new FormControl('', [Validators.required]),
+      confirmpassword: new FormControl('', [Validators.required])
+    });
+    this.verifyForm = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email])
+    });
   }
   onSentEmail() {
     this.http.post<any>(
       `${environment.baseUrl + 'email/s'}`,
-        {email: this.userInfo.email,
-        username:this.userInfo.username,
-        message: "Here is your verifaction code for email verifacation: "},
+      {
+        email: this.userInfo.email,
+        username: this.userInfo.username,
+        message: "Here is your verifaction code for email verifacation: "
+      },
       { observe: 'response' }
     ).subscribe(
       res => {
@@ -62,14 +64,16 @@ export class ResetComponent implements OnInit {
         }
       }, error => {
         console.log(error);
-    });
+      });
   }
   onCodeVerify() {
     if (this.verifyCodeForm.valid) {
       this.http.post<any>(
         `${environment.baseUrl + 'email/v'}`,
-        { value: this.verifyCodeForm.value.code,
-          id: this.userId},
+        {
+          value: this.verifyCodeForm.value.code,
+          id: this.userId
+        },
       ).subscribe(
         res => {
           if (res.status === "success") {
@@ -87,7 +91,7 @@ export class ResetComponent implements OnInit {
     if (this.changePasswordForm.valid) {
       this.http.patch<any>(
         `${environment.baseUrl + 'user/' + this.userInfo.id}`,
-        { user: { password: this.changePasswordForm.value.password}},
+        { user: { password: this.changePasswordForm.value.password } },
         { observe: 'response' }
       ).subscribe(
         res => {
