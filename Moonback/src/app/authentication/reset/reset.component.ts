@@ -12,16 +12,18 @@ import { Router } from '@angular/router';
 })
 export class ResetComponent implements OnInit {
   verifyForm: FormGroup;
+  verifyCodeForm: FormGroup;
+  changePasswordForm: FormGroup;
   isVerficationFail = false;
   isVerified = false;
   isSent = false;
+  isCodeVerficationFail = false;
+  isCodeVerified = false;
   isActive: boolean;
   userInfo: any;
   userId: any;
-  verifyPasswordForm: any;
-  changePasswordForm: any;
-  isCodeVerficationFail = false;
-  isCodeVerified = false;
+
+
 
 
   constructor(
@@ -30,24 +32,27 @@ export class ResetComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    if (this.auth.isAuth()) {
       this.userInfo = this.auth.getAuth();
       this.isActive = (this.userInfo.isActive === 'true');
-      this.verifyForm = new FormGroup({
-        username: new FormControl(this.userInfo.username, [Validators.required]),
-        email: new FormControl('', [Validators.required, Validators.email])
+      this.userId = this.userInfo.id;
+      this.verifyCodeForm = new FormGroup({
+        code: new FormControl("", [Validators.required]),
       });
-    } else {
+      this.changePasswordForm = new FormGroup({
+        password: new FormControl('', [Validators.required]),
+        confirmpassword: new FormControl('', [Validators.required])
+      });
       this.verifyForm = new FormGroup({
         username: new FormControl('', [Validators.required]),
         email: new FormControl('', [Validators.required, Validators.email])
       });
-    }
   }
-  onResentEmail() {
+  onSentEmail() {
     this.http.post<any>(
       `${environment.baseUrl + 'email/s'}`,
-      { user: this.verifyForm },
+        {email: this.userInfo.email,
+        username:this.userInfo.username,
+        message: "Here is your verifaction code for email verifacation: "},
       { observe: 'response' }
     ).subscribe(
       res => {
@@ -57,54 +62,18 @@ export class ResetComponent implements OnInit {
         }
       }, error => {
         console.log(error);
-      });
+    });
   }
-  
-  onVerifyEmail() {
-    if (this.verifyForm.valid) {
-      this.http.post<any>(
-        `${environment.baseUrl + 'email/s'}`,
-        {
-          username: this.verifyForm.value.username,
-          email: this.verifyForm.value.email,
-          message: "Here is your verifaction code for reset your password: "
-        },
-        { observe: 'response' }
-      ).subscribe(
-        res => {
-          if (res.status === 200) {
-            this.isVerified = true;
-            this.userId = res.body.id;
-            this.verifyPasswordForm = new FormGroup({
-              code: new FormControl('', [Validators.required]),
-            });
-          } else {
-            this.isVerficationFail = true;
-          }
-        }, error => {
-          console.log(error);
-        });
-    } else {
-      console.log("invalide form")
-    }
-  }
-  onVerify() {
-    if (this.verifyPasswordForm.valid) {
+  onCodeVerify() {
+    if (this.verifyCodeForm.valid) {
       this.http.post<any>(
         `${environment.baseUrl + 'email/v'}`,
-        {
-          value: this.verifyPasswordForm.value.code,
-          id: this.userId
-        },
-        // { observe: 'response' }
+        { value: this.verifyCodeForm.value.code,
+          id: this.userId},
       ).subscribe(
         res => {
           if (res.status === "success") {
             this.isCodeVerified = true;
-            this.changePasswordForm = new FormGroup({
-              password: new FormControl('', [Validators.required]),
-              confirmpassword: new FormControl('', [Validators.required])
-            });
           }
         },
         error => {
@@ -118,7 +87,7 @@ export class ResetComponent implements OnInit {
     if (this.changePasswordForm.valid) {
       this.http.patch<any>(
         `${environment.baseUrl + 'user/' + this.userInfo.id}`,
-        { password: this.changePasswordForm.value.password},
+        { user: { password: this.changePasswordForm.value.password}},
         { observe: 'response' }
       ).subscribe(
         res => {

@@ -69,7 +69,7 @@ export class UserprofileComponent implements OnInit {
     if (this.changePasswordForm.valid) {
       this.http.patch<any>(
         `${environment.baseUrl + 'user/' + this.userInfo.id}`,
-        { password: this.changePasswordForm.value.password },
+        { user: { password: this.changePasswordForm.value.password}},
         { observe: 'response' }
       ).subscribe(
         res => {

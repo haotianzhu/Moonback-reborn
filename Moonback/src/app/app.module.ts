@@ -44,7 +44,7 @@ import { ResetComponent } from './authentication/reset/reset.component';
     SidebarComponent,
     NotFound404Component,
     InformationDialogComponent,
-    ResetComponent
+    ResetComponent,
   ],
   imports: [
     BrowserModule,
