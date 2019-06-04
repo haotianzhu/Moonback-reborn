@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../shared/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reset',
@@ -16,10 +17,17 @@ export class ResetComponent implements OnInit {
   isSent = false;
   isActive: boolean;
   userInfo: any;
+  userId: any;
+  verifyPasswordForm: any;
+  changePasswordForm: any;
+  isCodeVerficationFail = false;
+  isCodeVerified = false;
+
 
   constructor(
     private auth: AuthService,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private router: Router) { }
 
   ngOnInit() {
     if (this.auth.isAuth()) {
@@ -36,14 +44,6 @@ export class ResetComponent implements OnInit {
       });
     }
   }
-  onVerifyEmail() {
-    if (this.verifyForm.value.email === this.auth.getAuth().email) {
-      this.isVerified = true;
-    } else {
-      this.isVerficationFail = true;
-    }
-  }
-  
   onResentEmail() {
     this.http.post<any>(
       `${environment.baseUrl + 'email/s'}`,
@@ -59,12 +59,79 @@ export class ResetComponent implements OnInit {
         console.log(error);
       });
   }
-  onResetPassword() {
-    if (this.auth.isAuth()) {
-
+  
+  onVerifyEmail() {
+    if (this.verifyForm.valid) {
+      this.http.post<any>(
+        `${environment.baseUrl + 'email/s'}`,
+        {
+          username: this.verifyForm.value.username,
+          email: this.verifyForm.value.email,
+          message: "Here is your verifaction code for reset your password: "
+        },
+        { observe: 'response' }
+      ).subscribe(
+        res => {
+          if (res.status === 200) {
+            this.isVerified = true;
+            this.userId = res.body.id;
+            this.verifyPasswordForm = new FormGroup({
+              code: new FormControl('', [Validators.required]),
+            });
+          } else {
+            this.isVerficationFail = true;
+          }
+        }, error => {
+          console.log(error);
+        });
+    } else {
+      console.log("invalide form")
     }
-    else {
+  }
+  onVerify() {
+    if (this.verifyPasswordForm.valid) {
+      this.http.post<any>(
+        `${environment.baseUrl + 'email/v'}`,
+        {
+          value: this.verifyPasswordForm.value.code,
+          id: this.userId
+        },
+        // { observe: 'response' }
+      ).subscribe(
+        res => {
+          if (res.status === "success") {
+            this.isCodeVerified = true;
+            this.changePasswordForm = new FormGroup({
+              password: new FormControl('', [Validators.required]),
+              confirmpassword: new FormControl('', [Validators.required])
+            });
+          }
+        },
+        error => {
+          this.isCodeVerficationFail = true;
+        }
+      );
+    }
+  }
 
+  onPatch() {
+    if (this.changePasswordForm.valid) {
+      this.userInfo.password = this.changePasswordForm.value.password;
+      this.http.patch<any>(
+        `${environment.baseUrl + 'user/' + this.userInfo.id}`,
+        { user: this.userInfo },
+        { observe: 'response' }
+      ).subscribe(
+        res => {
+          if (res.status === 200) {
+            this.router.navigate(['/signout']);
+          }
+        },
+        error => {
+          this.changePasswordForm.controls.username.markAsPristine();
+          this.changePasswordForm.controls.confirmpassword.markAsPristine();
+        }
+      );
     }
   }
 }

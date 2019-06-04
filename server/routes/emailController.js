@@ -30,8 +30,8 @@ emailRouter.post('/s', (req, res) => {
     logger.info('=> api/email/s, no username and no email')
     return res.sendStatus(400)
   }
-  const message = (req.body.message) ? req.body.message : 'please confirm your email address. '
-
+  const message = (req.body.message) ? req.body.message : 'Please confirm your email address. '
+  
   User.findOne(targetUser, '-password -token', (error, data) => {
     if (error) {
       logger.info('=> api/email/s', error)
@@ -89,21 +89,23 @@ emailRouter.post('/v', (req, res) => {
       }
       if (data) {
         if (verifyEmailToken(data.date)) {
-          User.findByIdAndUpdate(data.userId, { isActivated: true }, { useFindAndModify: false }, (error) => {
+          User.findByIdAndUpdate(data.userId, { isActivated: true }, { useFindAndModify: false }, (error, data) => {
             if (error) {
               logger.error('GET api/email/v => 520 ', error)
-              res.sendStatus(520)
+              return res.sendStatus(520)
             }
-            logger.info('GET api/email/v  => 200')
-            res.sendStatus(200)
+            if (data) {
+              logger.info('GET api/email/v  => 200')
+              return res.status(200).send({'status': 'success'})
+            }
           })
         } else {
           logger.info('=> api/email/v 401 token expired')
-          res.sendStatus(401)
+          return res.sendStatus(401)
         }
       } else {
         logger.info('=> api/email/v 404 no token is found')
-        res.sendStatus(404)
+        return res.sendStatus(404)
       }
     })
   }
