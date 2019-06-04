@@ -116,10 +116,9 @@ export class ResetComponent implements OnInit {
 
   onPatch() {
     if (this.changePasswordForm.valid) {
-      this.userInfo.password = this.changePasswordForm.value.password;
       this.http.patch<any>(
         `${environment.baseUrl + 'user/' + this.userInfo.id}`,
-        { user: this.userInfo },
+        { password: this.changePasswordForm.value.password},
         { observe: 'response' }
       ).subscribe(
         res => {
