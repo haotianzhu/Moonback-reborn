@@ -1,21 +1,25 @@
 // +x to some field on echart
 const echartModify = (user, key, value) => {
-  user.echart[key] = parseInt(user.echart[key]) + value
+  var echart = Object.assign({}, user.echart)
+  echart[key] = parseInt(value)
+  echart[key] = parseInt(user.echart[key]) + parseInt(value)
   // user.echart.level = calculateLevel(user)
-  return user
+  return echart
 }
 
 const echartSet = (user, key, value) => {
-  user.echart[key] = value
+  var echart = Object.assign({}, user.echart)
+  echart[key] = parseInt(value)
   // user.echart.level = calculateLevel(user)
-  return user
+  return echart
 }
 
 const dailyLogin = (user) => {
+  var echart = Object.assign({}, user.echart)
   if (!checkIsFirstLogin(user.modifyDate)) {
-    user.echart.level = parseInt(user.echart.level) + 1
+    echart.level = parseInt(user.echart.level) + 1
   }
-  return user.echart
+  return echart
 }
 
 const checkIsFirstLogin = (date) => {

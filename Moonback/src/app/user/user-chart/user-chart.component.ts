@@ -1,14 +1,16 @@
 import { EChartOption } from 'echarts';
-
-import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { Component, OnInit, ChangeDetectorRef, AfterContentInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'src/app/authentication/shared/auth.service';
 
 @Component({
   selector: 'app-user-chart',
   templateUrl: './user-chart.component.html',
   styleUrls: ['./user-chart.component.css']
 })
-export class UserChartComponent implements OnInit {
-  data = [10, 10, 10, 10, 50];
+export class UserChartComponent implements OnInit, AfterContentInit {
+  echartsInstance: any;
   chartOption: EChartOption = {
     tooltip: {
       trigger: 'item',
@@ -55,7 +57,7 @@ export class UserChartComponent implements OnInit {
         },
         data: [
           {
-            value: this.data,
+            value: [1, 1, 1, 1, 1],
             symbol: 'circle',
           }
         ]
@@ -63,6 +65,33 @@ export class UserChartComponent implements OnInit {
     ],
   };
 
+  constructor(private http: HttpClient, private auth: AuthService, private cdref: ChangeDetectorRef) { }
+
+  onChartInit(instance) {
+    this.echartsInstance = instance;
+  }
+
   ngOnInit() {
+  }
+
+  ngAfterContentInit() {
+    if (this.auth.isAuth()) {
+      this.http.get<any>(
+        `${environment.baseUrl + 'user/' + this.auth.getAuth().id}`
+      ).subscribe(
+        body => {
+          const chartDate = body.user.echart;
+          const data = [chartDate.level, chartDate.game, chartDate.anime, chartDate.novel, chartDate.manga];
+          this.chartOption.series[0].data[0].value = data;
+          this.echartsInstance.setOption(this.chartOption, true);
+          this.cdref.detectChanges();
+        },
+        error => {
+          console.log(error);
+        }
+      );
+
+    } else {
+    }
   }
 }

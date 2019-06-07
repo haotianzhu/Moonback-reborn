@@ -31,19 +31,31 @@ emailRouter.post('/s', (req, res) => {
     return res.sendStatus(400)
   }
   const message = (req.body.message) ? req.body.message : 'Please confirm your email address. '
-  
-  User.findOne(targetUser, '-password -token', (error, data) => {
+
+  User.findOne(targetUser, '-password -token', async (error, data) => {
     if (error) {
       logger.info('=> api/email/s', error)
       return res.sendStatus(520)
     }
     if (data) {
-      var token = new Token({ userId: data.id })
       if (!data.email) {
         logger.info('Email sent:  no email address')
         return res.sendStatus(400)
       }
-      token.save()
+      // try find token
+      var oldToken = await Token.findOne({ userId: data.id, type: 'email' }, (err) => {
+        if (err) logger.error('=> api/email/s find old token', err)
+      })
+
+      if (oldToken) {
+        await oldToken.remove()
+      }
+
+      const token = new Token(Token.generateNewTokenDate(data.id))
+
+      await token.save((err) => {
+        if (err) logger.error('=> api/email/s create bew token', err)
+      })
       if (token) {
         const mailOptions = {
           from: 'moonbackreborn@gmail.com',
@@ -96,7 +108,7 @@ emailRouter.post('/v', (req, res) => {
             }
             if (data) {
               logger.info('GET api/email/v  => 200')
-              return res.status(200).send({'status': 'success'})
+              return res.status(200).send({ 'status': 'success' })
             }
           })
         } else {

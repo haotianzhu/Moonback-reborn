@@ -1,9 +1,11 @@
 const express = require('express')
 const postRouter = express.Router()
 const Post = require('../models/post')
+const User = require('../models/user')
 const logger = require('../shared/logger')
+const { echartModify } = require('../shared/chart')
 
-function checkCategory (category) {
+const checkCategory = (category) => {
   var isValidate = false
   switch (category) {
     case 'game':
@@ -24,7 +26,7 @@ function checkCategory (category) {
   return isValidate
 }
 
-function pasrseUrlToQuery (params) {
+const pasrseUrlToQuery = (params) => {
   let query = { select: {}, limit: 100, skip: 0, sort: {} }
   for (var key in params) {
     var value = params[key]
@@ -60,7 +62,7 @@ postRouter.get('/', (req, res) => {
 })
 
 // post api/posts create a new post
-postRouter.post('/', (req, res) => {
+postRouter.post('/', async (req, res) => {
   let reqData = req.body
   try {
     const authUserid = req.userid
@@ -74,11 +76,21 @@ postRouter.post('/', (req, res) => {
     return res.sendStatus(400)
   }
   let newPost = new Post(reqData.post)
-  newPost.save((error, data) => {
+  await newPost.save(async (error, data) => {
     if (error) {
       logger.info('POST /posts => 520', error)
       res.status(520).send({ query: 'createNewPost', status: 'unsucessful', message: error })
     } else {
+      await User.findById(data.author, (err, user) => {
+        if (err) {
+          logger.err('update user eachrt after successfully create a post', err)
+        }
+        if (user) {
+          user.echart = echartModify(user, data.category, 1)
+          console.log(user.echart)
+          user.save()
+        }
+      })
       res.status(200).send({ post: data, query: 'createNewPost', status: 'sucessful' })
       logger.info('POST /posts => 200', error)
     }

@@ -11,10 +11,14 @@ var getExpireDate = () => {
 // this token is used for verification (not authetication)
 var tokenSchema = new Schema({
   type: { type: String, required: true, default: 'email' },
-  value: { type: String, default: (Math.floor(Math.random() * 90000) + 10000).toString(), required: true },
+  value: { type: String, required: true },
   userId: { type: mongoose.Schema.ObjectId, ref: 'user' },
-  date: { type: Date, default: getExpireDate, required: true }
+  date: { type: Date, required: true }
 })
+
+tokenSchema.statics.generateNewTokenDate = function (userId) {
+  return { userId: userId, date: getExpireDate(), value: (Math.floor(Math.random() * 90000) + 10000).toString() }
+}
 
 tokenSchema.index({ type: 1, userId: 1 }, { unique: true })
 
