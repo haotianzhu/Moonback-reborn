@@ -65,14 +65,15 @@ authRouter.post('/signin', awaitHandlerFactory(async (req, res) => {
           // token exists
           // check if token is expired
           jwt.verify(user.token, 'moonback-reborn-secrete')
-          const usrJson = User.toAuthJSON(user)
           await User.findById(user.id, '-password', (err, data) => {
             if (err) return res.sendStatus(520)
             if (data) {
+              // update echart and lastModified
               data.echart = dailyLogin(user)
+              data.modifyDate = new Date()
               data.save()
               logger.info('api/signin => 200 ')
-              return res.status(200).send({ user: usrJson, query: 'signIn', status: 'sucessful' })
+              return res.status(200).send({ user: data, query: 'signIn', status: 'sucessful' })
             }
           })
         } catch (error) {

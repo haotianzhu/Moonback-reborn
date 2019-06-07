@@ -83,11 +83,13 @@ export class PostListComponent implements OnInit {
 
   handlePosts(posts: any[]) {
     posts.forEach((post, index) => {
-      const parts = post.content.split('</p>', 5);
-      if (parts.length > 4) {
-        post.overview = post.content.split('</p>', 5).join('</p>') + '</p><br><br><h2>...</h2>';
-      } else {
-        post.overview = post.content.split('</p>', 5).join('</p>') + '</p><br><br>';
+      if (post.content) {
+        const parts = post.content.split('</p>', 5);
+        if (parts.length > 4) {
+          post.overview = post.content.split('</p>', 5).join('</p>') + '</p><br><br><h2>...</h2>';
+        } else {
+          post.overview = post.content.split('</p>', 5).join('</p>') + '</p><br><br>';
+        }
       }
       posts[index] = post;
     });

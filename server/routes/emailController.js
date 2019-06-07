@@ -31,7 +31,7 @@ emailRouter.post('/s', (req, res) => {
     return res.sendStatus(400)
   }
   const message = (req.body.message) ? req.body.message : 'Please confirm your email address. '
-  
+
   User.findOne(targetUser, '-password -token', (error, data) => {
     if (error) {
       logger.info('=> api/email/s', error)
@@ -96,7 +96,7 @@ emailRouter.post('/v', (req, res) => {
             }
             if (data) {
               logger.info('GET api/email/v  => 200')
-              return res.status(200).send({'status': 'success'})
+              return res.status(200).send({ 'status': 'success' })
             }
           })
         } else {

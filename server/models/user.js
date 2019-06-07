@@ -12,7 +12,7 @@ var userSchema = new Schema({
   createDate: { type: Date, default: Date.now },
   modifyDate: { type: Date, default: Date.now },
   token: { type: String, default: '' },
-  echart: { type: Object, default: { anime: 10, level: 1, game: 10, manga: 10, novel: 10 } }
+  echart: { type: Object, default: { anime: 10, level: 10, game: 10, manga: 10, novel: 10 } }
 })
 
 userSchema.set('toJSON', {
