@@ -1,7 +1,7 @@
 <form [formGroup]='signinForm' class="w-100" novalidate>
-  <div class="mt-4">
+  <div class="pt-3">
     <img class="rounded mx-auto d-block" src="/assets/img/login/signup_icon.png" alt="signin" width="20%" height="20%">
-    <h1 class="h3 mb-3 font-weight-normal text-center">Please sign in</h1>
+    <h1 class="h3 pb-3 font-weight-normal text-center">Please sign in</h1>
   </div>
 
   <div *ngIf="!isCorrect" class="alert alert-danger">Username or password is not correct.</div>
@@ -13,7 +13,7 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field class="w-100" b>
+  <mat-form-field class="w-100">
     <input matInput type="password" formControlName='password' placeholder="Your Password" required>
     <mat-error>
       Please enter a valid password.
@@ -22,8 +22,8 @@
 
   <div>
     <mat-checkbox>Remember Me</mat-checkbox>
-    <button (click)="onSignIn()" type="submit" class="btn btn-danger btn-block mt-3 mb-3">Sign In </button>
-    <div class="mt-2 text-center">
+    <button (click)="onSignIn()" type="submit" class="btn btn-danger btn-block py-3">Sign In </button>
+    <div class="pt-2 text-center">
       <p>Do not have a account? <a routerLink="/signup">Sign Up</a> </p>
       <p>ALready had a account? <a routerLink="/account/reset">Forget the password?</a></p>
     </div>

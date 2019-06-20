@@ -1,7 +1,7 @@
 <form [formGroup]='signupForm' class="w-100" novalidate>
-  <div class="mt-4">
+  <div class="pt-3">
     <img class="rounded mx-auto d-block" src="assets/img/login/login_icon.png" alt="signup" width="20%" height="20%">
-    <h1 class="h3 mb-3 font-weight-normal text-center">Please sign up</h1>
+    <h1 class="h3 pb-3 font-weight-normal text-center">Please sign up</h1>
   </div>
 
   <mat-form-field class="w-100">
@@ -35,8 +35,8 @@
   </mat-form-field>
   <div>
     <mat-checkbox formControlName="termsCheck" required>I Accept terms of services</mat-checkbox>
-    <button type='submit' (click)="onSignUp()" class="btn btn-danger btn-block mb-3 mt-3">Sign Up</button>
-    <div class="mt-2 text-center">
+    <button type='submit' (click)="onSignUp()" class="btn btn-danger btn-block my-3">Sign Up</button>
+    <div class="pt-3 text-center">
       <a routerLink="/signin">Already have an account?</a>
     </div>
   </div>
