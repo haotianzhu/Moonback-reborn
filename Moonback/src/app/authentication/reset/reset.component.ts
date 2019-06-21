@@ -23,9 +23,6 @@ export class ResetComponent implements OnInit {
   userInfo: any;
   userId: any;
 
-
-
-
   constructor(
     public auth: AuthService,
     private http: HttpClient,
@@ -47,24 +44,27 @@ export class ResetComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email])
     });
   }
+
   onSentEmail() {
-    this.http.post<any>(
-      `${environment.baseUrl + 'email/s'}`,
-      {
-        email: this.userInfo.email,
-        username: this.userInfo.username,
-        message: 'Here is your verifaction code for email verifacation: '
-      },
-      { observe: 'response' }
-    ).subscribe(
-      res => {
-        if (res.status === 200) {
-          this.isSent = true;
-        } else {
-        }
-      }, error => {
-        console.log(error);
-      });
+    if (this.verifyForm.valid) {
+      this.http.post<any>(
+        `${environment.baseUrl + 'email/s'}`,
+        {
+          email: this.userInfo.email,
+          username: this.userInfo.username,
+          message: 'Here is your verifaction code for email verifacation: '
+        },
+        { observe: 'response' }
+      ).subscribe(
+        res => {
+          if (res.status === 200) {
+            this.isSent = true;
+          } else {
+          }
+        }, error => {
+          console.log(error);
+        });
+    }
   }
   onCodeVerify() {
     if (this.verifyCodeForm.valid) {
