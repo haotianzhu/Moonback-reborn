@@ -108,7 +108,11 @@ emailRouter.post('/v', (req, res) => {
             }
             if (data) {
               logger.info('GET api/email/v  => 200')
-              return res.status(200).send({ 'status': 'success' })
+              let user = User.toAuthJSON(data, true)
+              data.token = user.token
+              data.modifyDate = user.modifyDate
+              data.save()
+              return res.status(200).send({ 'status': 'success', 'user': User.toAuthJSON(data)})
             }
           })
         } else {

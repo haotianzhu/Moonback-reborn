@@ -22,6 +22,7 @@ export class ResetComponent implements OnInit {
   isActive: boolean;
   userInfo: any;
   userId: any;
+  token: any;
 
   constructor(
     public auth: AuthService,
@@ -29,9 +30,15 @@ export class ResetComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.userInfo = this.auth.getAuth();
-    this.isActive = (this.userInfo.isActive === 'true');
-    this.userId = this.userInfo.id;
+    if (this.auth.isAuth()) {
+      this.userInfo = this.auth.getAuth();
+      this.isActive = (this.userInfo.isActive === 'true');
+      this.userId = this.userInfo.id;
+    }
+    else {
+      this.isActive = false;
+    }
+
     this.verifyCodeForm = new FormGroup({
       code: new FormControl('', [Validators.required]),
     });
@@ -47,11 +54,12 @@ export class ResetComponent implements OnInit {
 
   onSentEmail() {
     if (this.verifyForm.valid) {
+      console.log(this.userInfo);
       this.http.post<any>(
         `${environment.baseUrl + 'email/s'}`,
         {
-          email: this.userInfo.email,
-          username: this.userInfo.username,
+          email: this.verifyForm.value.email,
+          username: this.verifyForm.value.username,
           message: 'Here is your verifaction code for email verifacation: '
         },
         { observe: 'response' }
@@ -59,6 +67,7 @@ export class ResetComponent implements OnInit {
         res => {
           if (res.status === 200) {
             this.isSent = true;
+            this.userId = res.body.id
           } else {
           }
         }, error => {
@@ -78,6 +87,7 @@ export class ResetComponent implements OnInit {
         res => {
           if (res.status === 'success') {
             this.isCodeVerified = true;
+            this.auth.setToken(res.user.token);
           }
         },
         error => {
@@ -90,7 +100,7 @@ export class ResetComponent implements OnInit {
   onPatch() {
     if (this.changePasswordForm.valid) {
       this.http.patch<any>(
-        `${environment.baseUrl + 'user/' + this.userInfo.id}`,
+        `${environment.baseUrl + 'user/' + this.userId}`,
         { user: { password: this.changePasswordForm.value.password } },
         { observe: 'response' }
       ).subscribe(
