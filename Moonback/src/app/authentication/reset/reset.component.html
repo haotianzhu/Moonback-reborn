@@ -25,11 +25,11 @@
         <ngb-alert [dismissible]="false" type="danger" *ngIf="isVerficationFail" class="mt-4">
           <strong>Error!</strong> Email address is not correct.
         </ngb-alert>
-        <mat-form-field class="w-100 p-2">
+        <mat-form-field class="w-100 my-4">
           <input matInput type="text" placeholder="username" required formControlName='username'>
           <mat-error>Username is required.</mat-error>
         </mat-form-field>
-        <mat-form-field class="w-100 p-2">
+        <mat-form-field class="w-100 my-4">
           <input matInput type="email" placeholder="email" required formControlName='email'>
           <mat-error>Email is required.</mat-error>
         </mat-form-field>
