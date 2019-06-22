@@ -34,8 +34,7 @@ export class ResetComponent implements OnInit {
       this.userInfo = this.auth.getAuth();
       this.isActive = (this.userInfo.isActive === 'true');
       this.userId = this.userInfo.id;
-    }
-    else {
+    }else {
       this.isActive = false;
     }
 
@@ -67,7 +66,7 @@ export class ResetComponent implements OnInit {
         res => {
           if (res.status === 200) {
             this.isSent = true;
-            this.userId = res.body.id
+            this.userId = res.body.id;
           } else {
           }
         }, error => {
