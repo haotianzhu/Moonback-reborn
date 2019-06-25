@@ -1,21 +1,33 @@
-<div class="bd-highlight mt-1 d-none d-lg-block" *ngIf="auth.isAuth()">
+<div class="bd-highlight mt-1 d-none d-lg-block" >
   <div class="card mb-4">
       <div class="card-header">Home</div>
-      <div class="card-body">
-        <div *ngIf="auth.isAuth()" class="card-title">{{auth.username}}</div>
-        <div *ngIf="auth.isAuth()"  class="card-text">
+      <div class="card-body" >
+        <div class="card-title" *ngIf="auth.isAuth()">{{auth.username}}</div>
+        <div class="card-text" *ngIf="auth.isAuth()">
             A horse, a horse!
             My kingdom for a horse!
         </div>
-        <button class="btn btn-danger text-white btn-block mt-4 mb-2" routerLink="/post/new" >CREATE POST</button>
-        <button class="btn btn-light text-danger btn-block mt-2 mb-2" routerLink="/account/settings" >VIEW YOUR POST</button>
+        <div class="card-text" *ngIf="!auth.isAuth()">
+          sign in to create a post!
+        </div>
+        <button *ngIf="auth.isAuth()"
+        class="btn btn-danger text-white btn-block mt-4 mb-2"
+        routerLink="/post/new" >CREATE POST</button>
+        <button *ngIf="auth.isAuth()"
+        class="btn btn-light text-danger btn-block mt-2 mb-2"
+        routerLink="/account/settings" >VIEW YOUR POST</button>
       </div>
   </div>
 
-  <div class="card" *ngIf="auth.isAuth()">
+  <div class="card">
     <div class="card-body">
       <div *ngIf="auth.isAuth()">
         <button class="btn btn-danger btn-block mx-2" (click)="signOut()">Sign Out</button>
+      </div>
+      <div *ngIf="!auth.isAuth()">
+        <button class="btn btn-danger btn-block mx-2" (click)="signIn()">Sign In</button>
+
+        <small class="mx-2"><a routerLink="/signup">Don't have an account?</a></small>
       </div>
     </div>
   </div>
