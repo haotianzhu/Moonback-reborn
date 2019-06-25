@@ -34,7 +34,7 @@ app.use(bodyParser.json({ limit: '5mb' }))
 app.use(haltOnTimedout)
 // add api controllers
 app.use('/api/email', emailApi)
-app.use('/api/posts', verifyToken, postApi)
+app.use('/api/posts', postApi)
 app.use('/api/authentication', authApi)
 app.use('/api/user', verifyToken, userApi)
 app.all('/*', function (req, res, next) {
