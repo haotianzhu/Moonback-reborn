@@ -39,9 +39,9 @@ export class PostListComponent implements OnInit {
 
   ngOnInit() {
     // api/post/user/id
-    if (!this.auth.isAuth()) {
-      return this.router.navigate(['/signin']);
-    }
+    // if (!this.auth.isAuth()) {
+    //   return this.router.navigate(['/signin']);
+    // }
     // https://angular.io/guide/router
     this.postsRoute$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) => of(params.get('id')))

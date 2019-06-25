@@ -62,7 +62,7 @@ postRouter.get('/', (req, res) => {
 })
 
 // post api/posts create a new post
-postRouter.post('/', async (req, res) => {
+postRouter.post('/', verifyToken, async (req, res) => {
   let reqData = req.body
   try {
     const authUserid = req.userid
@@ -126,7 +126,7 @@ const awaitHandlerFactory = (middleware) => {
 }
 
 // PATCH api/posts
-postRouter.patch('/:id', awaitHandlerFactory(async (req, res) => {
+postRouter.patch('/:id', verifyToken, awaitHandlerFactory(async (req, res) => {
   // check permission
   var hasPermission = false
   const authUserid = req.userid
@@ -181,7 +181,7 @@ postRouter.patch('/:id', awaitHandlerFactory(async (req, res) => {
 }))
 
 // delete posts by id
-postRouter.delete('/:id', (req, res) => {
+postRouter.delete('/:id', verifyToken, (req, res) => {
   // TODO: permission check
   Post.findByIdAndDelete(req.params.id, (error, data) => {
     if (error) {
@@ -209,5 +209,26 @@ postRouter.get('/user/:id', (req, res) => {
     }
   })
 })
+
+function verifyToken (req, res, next) {
+  // verify the Json Token
+  if (!req.headers.authorization) {
+    return res.status(401).send('Unauthorized request')
+  }
+  let token = req.headers.authorization.split(' ')[1]
+  if (token === 'null') {
+    return res.status(401).send('Unauthorized request')
+  }
+  try {
+    let payload = jwt.verify(token, 'moonback-reborn-secrete')
+    req.userid = payload.id
+    req.username = payload.username
+  } catch (error) {
+    logger.info('verifyToken => ' + error)
+    return res.status(401).send({ error: error })
+  }
+  next()
+}
+
 
 module.exports = postRouter
